@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes spin-reverse-slow {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+@keyframes pulse-gentle {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.05); }
+}
+@keyframes float-snow {
+  0% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+  50% { transform: translateY(-12px) rotate(180deg); opacity: 0.3; }
+  100% { transform: translateY(0px) rotate(360deg); opacity: 0.8; }
+}
+@keyframes sword-slash {
+  0% { transform: translateX(-120%) skewX(-20deg); opacity: 0; }
+  35% { opacity: 1; }
+  70% { opacity: 0.9; }
+  100% { transform: translateX(140%) skewX(-20deg); opacity: 0; }
+}
+.animate-spin-slow {
+  animation: spin-slow 24s linear infinite;
+}
+.animate-spin-reverse-slow {
+  animation: spin-reverse-slow 36s linear infinite;
+}
+.animate-pulse-gentle {
+  animation: pulse-gentle 4s ease-in-out infinite;
+}
+.animate-float-snow {
+  animation: float-snow 6s ease-in-out infinite;
+}
+.sword-slash-beam {
+  animation: sword-slash 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "on-secondary-fixed": "#001d31",
+          "inverse-surface": "#2d3133",
+          "surface-container-highest": "#e0e3e5",
+          "surface-container-low": "#f2f4f6",
+          "error": "#ba1a1a",
+          "on-tertiary": "#ffffff",
+          "surface-container": "#eceef0",
+          "surface-variant": "#e0e3e5",
+          "on-tertiary-fixed-variant": "#3f465c",
+          "on-primary": "#ffffff",
+          "error-container": "#ffdad6",
+          "tertiary": "#41485e",
+          "on-tertiary-fixed": "#131b2e",
+          "background": "#f7f9fb",
+          "tertiary-container": "#586076",
+          "on-surface-variant": "#5b4041",
+          "primary": "#95002a",
+          "primary-fixed": "#ffdadb",
+          "on-primary-fixed-variant": "#920029",
+          "surface": "#f7f9fb",
+          "on-secondary-container": "#00476e",
+          "on-primary-fixed": "#40000d",
+          "primary-container": "#be123c",
+          "secondary-fixed-dim": "#93ccff",
+          "secondary": "#006398",
+          "on-primary-container": "#ffd0d2",
+          "on-error": "#ffffff",
+          "on-surface": "#191c1e",
+          "on-background": "#191c1e",
+          "inverse-on-surface": "#eff1f3",
+          "secondary-container": "#5bb8fe",
+          "on-secondary": "#ffffff",
+          "on-error-container": "#93000a",
+          "surface-bright": "#f7f9fb",
+          "inverse-primary": "#ffb2b7",
+          "secondary-fixed": "#cce5ff",
+          "surface-container-lowest": "#ffffff",
+          "on-tertiary-container": "#d4dbf5",
+          "tertiary-fixed-dim": "#bec6e0",
+          "surface-tint": "#bb0f3a",
+          "surface-dim": "#d8dadc",
+          "outline": "#8f6f70",
+          "tertiary-fixed": "#dae2fd",
+          "on-secondary-fixed-variant": "#004b73",
+          "surface-container-high": "#e6e8ea",
+          "outline-variant": "#e3bdbf",
+          "primary-fixed-dim": "#ffb2b7"
+        },
+        "borderRadius": {
+          "DEFAULT": "0.125rem",
+          "lg": "0.25rem",
+          "xl": "0.5rem",
+          "full": "0.75rem"
+        },
+        "spacing": {
+          "space-xs": "0.25rem",
+          "space-xl": "2.5rem",
+          "space-lg": "1.5rem",
+          "margin": "2.5rem",
+          "gutter-mobile": "0.75rem",
+          "space-md": "1rem",
+          "gutter": "1.5rem",
+          "margin-mobile": "1rem",
+          "space-sm": "0.5rem"
+        },
+        "fontFamily": {
+          "display-lg": [
+            "Bodoni Moda"
+          ],
+          "headline-lg-mobile": [
+            "Bodoni Moda"
+          ],
+          "label-md": [
+            "Be Vietnam Pro"
+          ],
+          "body-lg": [
+            "Be Vietnam Pro"
+          ],
+          "label-lg": [
+            "Be Vietnam Pro"
+          ],
+          "body-sm": [
+            "Be Vietnam Pro"
+          ],
+          "display-lg-mobile": [
+            "Bodoni Moda"
+          ],
+          "headline-md": [
+            "Bodoni Moda"
+          ],
+          "body-md": [
+            "Be Vietnam Pro"
+          ],
+          "headline-lg": [
+            "Bodoni Moda"
+          ],
+          "headline-sm": [
+            "Bodoni Moda"
+          ],
+          "label-sm": [
+            "Be Vietnam Pro"
+          ]
+        },
+        "fontSize": {
+          "display-lg": [
+            "3.5rem",
+            {
+              "lineHeight": "4rem",
+              "letterSpacing": "-0.02em",
+              "fontWeight": "700"
+            }
+          ],
+          "headline-lg-mobile": [
+            "1.75rem",
+            {
+              "lineHeight": "2.25rem",
+              "letterSpacing": "0em",
+              "fontWeight": "600"
+            }
+          ],
+          "label-md": [
+            "0.75rem",
+            {
+              "lineHeight": "1rem",
+              "letterSpacing": "0.08em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-lg": [
+            "1.125rem",
+            {
+              "lineHeight": "1.75rem",
+              "fontWeight": "400"
+            }
+          ],
+          "label-lg": [
+            "0.875rem",
+            {
+              "lineHeight": "1.25rem",
+              "letterSpacing": "0.05em",
+              "fontWeight": "600"
+            }
+          ],
+          "body-sm": [
+            "0.875rem",
+            {
+              "lineHeight": "1.25rem",
+              "fontWeight": "400"
+            }
+          ],
+          "display-lg-mobile": [
+            "2.25rem",
+            {
+              "lineHeight": "2.75rem",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "700"
+            }
+          ],
+          "headline-md": [
+            "1.75rem",
+            {
+              "lineHeight": "2.25rem",
+              "fontWeight": "600"
+            }
+          ],
+          "body-md": [
+            "1rem",
+            {
+              "lineHeight": "1.5rem",
+              "fontWeight": "400"
+            }
+          ],
+          "headline-lg": [
+            "2.25rem",
+            {
+              "lineHeight": "2.75rem",
+              "letterSpacing": "-0.01em",
+              "fontWeight": "600"
+            }
+          ],
+          "headline-sm": [
+            "1.25rem",
+            {
+              "lineHeight": "1.75rem",
+              "fontWeight": "500"
+            }
+          ],
+          "label-sm": [
+            "0.6875rem",
+            {
+              "lineHeight": "0.875rem",
+              "letterSpacing": "0.1em",
+              "fontWeight": "700"
+            }
+          ]
+        }
+      },
+    },
+  }</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary"><header class="fixed top-0 w-full z-50 bg-surface-container-lowest/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(15,23,42,0.04)]"><div class="h-20 w-full px-margin flex items-center justify-between"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center shadow-[0_4px_12px_rgba(190,18,60,0.2)]"><span class="text-on-primary font-headline-sm text-headline-sm font-bold select-none">傲</span></div><div><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm tracking-wide text-on-surface font-bold">踏雪笑傲</span><span class="px-space-xs py-0.5 rounded-lg bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm uppercase tracking-wider">雪地水墨規範 v2.0</span></div><p class="font-label-sm text-label-sm text-on-surface-variant">網頁核心元件庫 · 規範指引</p></div></div><nav class="hidden xl:flex items-center gap-space-xs" data-active-classes="bg-surface-container-high text-primary font-bold rounded-lg"><a aria-current="page" class="px-space-sm py-2 transition-all duration-200 bg-surface-container-high text-primary font-bold rounded-lg" data-path="overview" href="#">元件總覽</a><a class="px-space-sm py-2 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-200" data-path="navigation-and-buttons" href="#">導航與按鈕</a><a class="px-space-sm py-2 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-200" data-path="data-display-and-cards" href="#">資料展示與卡片</a><a class="px-space-sm py-2 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-200" data-path="forms-and-feedback" href="#">表單與反饋</a><a class="px-space-sm py-2 rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all duration-200" data-path="modals-and-effects" href="#">互動視窗與特效</a></nav></div><div class="flex items-center gap-space-md"><a class="hidden sm:inline-flex items-center px-space-md py-2 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg shadow-[0_2px_8px_rgba(149,0,42,0.18)] hover:bg-primary-container transition-all duration-200" data-path="system-guidelines" href="#">查看全站規範</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-surface"><div class="flex flex-col w-full">
+<!-- Immersive Page Header / Breadcrumb & Intro Banner -->
+<section class="relative w-full overflow-hidden bg-surface-container-lowest px-margin py-space-xl shadow-sm">
+<div class="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-secondary-fixed opacity-40 blur-3xl pointer-events-none"></div>
+<div class="absolute right-1/3 -bottom-20 w-80 h-80 rounded-full bg-primary-fixed opacity-30 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-space-lg">
+<div class="flex flex-col gap-space-sm max-w-3xl">
+<div class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md">
+<span class="hover:text-primary transition-colors cursor-pointer">元件總覽</span>
+<span class="">/</span>
+<span class="text-primary font-bold">雪白水墨旗艦規範 v2.0</span>
+<span class="">/</span>
+<span class="px-space-xs py-0.5 rounded-lg bg-surface-container text-on-surface font-label-sm text-label-sm">Design Tokens &amp; Component Matrix</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+          踏雪笑傲 · 網頁核心元件展示庫
+        </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+          以千仞雪嶺之高曠為紙、枯筆松墨為骨、硃砂玉印為魄。融合極致通透的白玉微光與凜冽冰晶折射，重塑武俠數位美學典範。
+        </p>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="px-space-md py-space-sm rounded-lg bg-surface-container-low shadow-sm flex items-center gap-space-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">規範覆蓋率 100%</span>
+</div>
+<div class="px-space-md py-space-sm rounded-lg bg-surface-container-low shadow-sm flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">verified_user</span>
+<span class="font-label-md text-label-md text-on-surface">宗門殿堂認證</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Quick Jump Anchors -->
+<div class="sticky top-20 z-40 w-full bg-surface-container-lowest/90 backdrop-blur-md shadow-sm">
+<div class="max-w-7xl mx-auto px-margin py-space-sm flex items-center gap-space-md overflow-x-auto no-scrollbar">
+<a class="px-space-md py-1.5 rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container hover:text-primary transition-colors whitespace-nowrap" href="#section-tokens">01. 配色印記體系</a>
+<a class="px-space-md py-1.5 rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container hover:text-primary transition-colors whitespace-nowrap" href="#section-buttons">02. 拔劍行氣按鈕</a>
+<a class="px-space-md py-1.5 rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container hover:text-primary transition-colors whitespace-nowrap" href="#section-nav">03. 導航與白玉分頁</a>
+<a class="px-space-md py-1.5 rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container hover:text-primary transition-colors whitespace-nowrap" href="#section-cards">04. 畫卷與傳奇卡片</a>
+<a class="px-space-md py-1.5 rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container hover:text-primary transition-colors whitespace-nowrap" href="#section-forms">05. 靈竅表單輸入</a>
+<a class="px-space-md py-1.5 rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container hover:text-primary transition-colors whitespace-nowrap" href="#section-feedback">06. 宗門徽章與靈兆</a>
+<a class="px-space-md py-1.5 rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container hover:text-primary transition-colors whitespace-nowrap" href="#section-inventory">07. 神兵道具與修為輪盤</a><a class="px-space-md py-1.5 rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container hover:text-primary transition-colors whitespace-nowrap" href="#section-modals">08. 浮層、抽屜與滑桿</a><a class="px-space-md py-1.5 rounded-lg font-label-md text-label-md text-on-surface hover:bg-surface-container hover:text-primary transition-colors whitespace-nowrap" href="#section-fx">09. 水墨與雪境動效矩陣</a><a class="px-space-md py-1.5 rounded-lg font-label-md text-label-md text-primary font-bold bg-primary-fixed hover:bg-primary hover:text-on-primary transition-colors whitespace-nowrap" href="#section-imperial-fx">10. 仙俠神異與奇門特效</a></div>
+</div>
+<div class="max-w-7xl mx-auto w-full px-margin py-space-xl flex flex-col gap-space-xl">
+<!-- 1. 設計原則與配色規範 (Color & Token Palette) -->
+<section class="flex flex-col gap-space-md" id="section-tokens">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-bold">Foundation &amp; Spirit</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">01 · 色彩法度與印記規範</h2>
+</div>
+<span class="hidden sm:inline-block font-label-sm text-label-sm text-on-surface-variant">雪白水墨調色軸盤</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Token 1: 羊脂白玉 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between h-56 relative overflow-hidden group">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant font-medium">雪地雪魄 · 基礎基底</p>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1">羊脂白玉</h3>
+</div>
+<span class="px-2 py-0.5 rounded-lg bg-surface-container font-label-sm text-label-sm text-on-surface">Canvas</span>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-label-md text-label-md text-on-surface">
+<span class="">#FFFFFF / #F7F9FB</span>
+<span class="font-mono text-on-surface-variant">surface-lowest</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              如同大雪初霽之天池，清透澄明，提供純淨負空間，免除沈重繁雜。
+            </p>
+</div>
+<div class="h-1.5 w-full rounded-full bg-surface-container-high mt-space-xs"></div>
+</div>
+<!-- Token 2: 硃砂印紅 -->
+<div class="p-space-lg rounded-xl bg-primary text-on-primary shadow-md hover:shadow-xl transition-shadow flex flex-col justify-between h-56 relative overflow-hidden group">
+<div class="absolute -right-8 -bottom-8 w-28 h-28 rounded-full bg-primary-container opacity-40 blur-xl"></div>
+<div class="flex justify-between items-start relative z-10">
+<div>
+<p class="font-label-sm text-label-sm text-primary-fixed-dim font-medium">帝王印信 · 拔劍殺陣</p>
+<h3 class="font-headline-sm text-headline-sm text-on-primary font-bold mt-1">硃砂印紅</h3>
+</div>
+<span class="px-2 py-0.5 rounded-lg bg-primary-container font-label-sm text-label-sm text-on-primary font-bold">Primary</span>
+</div>
+<div class="flex flex-col gap-1 relative z-10">
+<div class="flex items-center justify-between font-label-md text-label-md text-on-primary">
+<span class="">#95002A / #BE123C</span>
+<span class="font-mono text-primary-fixed">primary</span>
+</div>
+<p class="font-body-sm text-body-sm text-primary-fixed-dim">
+              冬雪紅梅，帝王印泥。專用於核心行動喚起、殺招判定與皇家詔令。
+            </p>
+</div>
+<div class="h-1.5 w-full rounded-full bg-primary-container relative z-10"></div>
+</div>
+<!-- Token 3: 冰魄冷霜 -->
+<div class="p-space-lg rounded-xl bg-secondary text-on-secondary shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between h-56 relative overflow-hidden group">
+<div class="absolute -right-8 -bottom-8 w-28 h-28 rounded-full bg-secondary-container opacity-30 blur-xl"></div>
+<div class="flex justify-between items-start relative z-10">
+<div>
+<p class="font-label-sm text-label-sm text-secondary-fixed font-medium">九幽玄冰 · 氣勁凝華</p>
+<h3 class="font-headline-sm text-headline-sm text-on-secondary font-bold mt-1">冰魄冷霜</h3>
+</div>
+<span class="px-2 py-0.5 rounded-lg bg-on-secondary-container font-label-sm text-label-sm text-on-secondary">Secondary</span>
+</div>
+<div class="flex flex-col gap-1 relative z-10">
+<div class="flex items-center justify-between font-label-md text-label-md text-on-secondary">
+<span class="">#006398 / #5BB8FE</span>
+<span class="font-mono text-secondary-fixed">secondary</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary-fixed">
+              高山寒泉與清冽劍光，賦予聚焦狀態、心法輔助與流轉冰霜光暈。
+            </p>
+</div>
+<div class="h-1.5 w-full rounded-full bg-secondary-container relative z-10"></div>
+</div>
+<!-- Token 4: 枯筆松墨 -->
+<div class="p-space-lg rounded-xl bg-inverse-surface text-inverse-on-surface shadow-md hover:shadow-lg transition-shadow flex flex-col justify-between h-56 relative overflow-hidden group">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-sm text-label-sm text-surface-container-highest font-medium">黃山徽墨 · 鐵畫銀鉤</p>
+<h3 class="font-headline-sm text-headline-sm text-inverse-on-surface font-bold mt-1">枯筆松墨</h3>
+</div>
+<span class="px-2 py-0.5 rounded-lg bg-tertiary-container font-label-sm text-label-sm text-inverse-on-surface">Ink Charcoal</span>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between font-label-md text-label-md text-inverse-on-surface">
+<span class="">#191C1E / #2D3133</span>
+<span class="font-mono text-surface-container-highest">inverse-surface</span>
+</div>
+<p class="font-body-sm text-body-sm text-surface-container-highest">
+              松煙研磨之古墨，落筆深沉穩健，構築字體筆意與高對比視覺錨點。
+            </p>
+</div>
+<div class="h-1.5 w-full rounded-full bg-surface-container-highest"></div>
+</div>
+</div>
+</section>
+<!-- 2. 按鈕體系 (Button Matrix) -->
+<section class="flex flex-col gap-space-md" id="section-buttons">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-bold">Action Dynamics</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">02 · 按鈕法度矩陣</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">朱砂流光、冰魄凝霜與墨色漸隱態</p>
+</div>
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-lg">
+<!-- Group 1: Standard CTAs -->
+<div class="flex flex-col gap-space-sm">
+<h3 class="font-label-lg text-label-lg text-on-surface font-semibold flex items-center gap-space-xs">
+<span class="w-1.5 h-3 bg-primary rounded-full"></span>
+            標準武學操作態 (Interactive Actions)
+          </h3>
+<div class="flex flex-wrap items-center gap-space-md">
+<!-- Primary CTA -->
+<button class="group relative px-space-lg py-3 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px] transition-transform group-hover:rotate-45">swords</span>
+<span class="tracking-wide">硃砂流光 · 拔劍出鞘</span>
+</button>
+<!-- Secondary CTA -->
+<button class="px-space-lg py-3 rounded-lg bg-secondary-fixed hover:bg-secondary text-on-secondary-fixed hover:text-on-secondary font-label-lg text-label-lg shadow-sm hover:shadow-md transition-all flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px]">self_improvement</span>
+<span class="tracking-wide">冰魄凝霜 · 參悟心法</span>
+</button>
+<!-- Ghost / Light CTA -->
+<button class="px-space-lg py-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-lg text-label-lg transition-all flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px]">air</span>
+<span class="tracking-wide">清風拂袖 · 隱沒墨跡</span>
+</button>
+<!-- Disabled Button -->
+<button class="px-space-lg py-3 rounded-lg bg-surface-container-low text-outline opacity-60 font-label-lg text-label-lg cursor-not-allowed flex items-center gap-space-sm" disabled="">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+<span class="tracking-wide">墨氣散盡 · 修為不足</span>
+</button>
+</div>
+</div>
+<!-- Group 2: Pill Badges & Icon Buttons -->
+<div class="flex flex-col gap-space-sm pt-space-md border-t-0 bg-surface-container-low p-space-md rounded-lg">
+<div class="flex items-center justify-between">
+<h4 class="font-label-md text-label-md text-on-surface font-semibold">隨身密令 · 圖標與微型膠囊按鈕 (Utility Tools)</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Hover to trigger kinetic pulse</span>
+</div>
+<div class="flex flex-wrap items-center gap-space-md">
+<!-- Icon Action: Download -->
+<button class="w-10 h-10 rounded-full bg-surface-container-lowest hover:bg-primary hover:text-on-primary text-on-surface shadow-sm transition-all flex items-center justify-center" title="下載秘笈">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+<!-- Icon Action: Share -->
+<button class="w-10 h-10 rounded-full bg-surface-container-lowest hover:bg-secondary hover:text-on-secondary text-on-surface shadow-sm transition-all flex items-center justify-center" title="傳書天下">
+<span class="material-symbols-outlined text-[20px]">share</span>
+</button>
+<!-- Icon Action: Copy -->
+<button class="w-10 h-10 rounded-full bg-surface-container-lowest hover:bg-primary-container hover:text-on-primary text-on-surface shadow-sm transition-all flex items-center justify-center" title="拓印真跡">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+<!-- Icon Action: Bookmark -->
+<button class="w-10 h-10 rounded-full bg-surface-container-lowest hover:bg-secondary-fixed text-on-surface shadow-sm transition-all flex items-center justify-center" title="納入藏經閣">
+<span class="material-symbols-outlined text-[20px]">bookmark</span>
+</button>
+<div class="h-6 w-px bg-outline-variant mx-space-xs"></div>
+<!-- Pill Badges -->
+<button class="px-space-md py-1 rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold hover:bg-primary-container hover:text-on-primary transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">local_fire_department</span>
+<span class="">天山試煉 · 熱門</span>
+</button>
+<button class="px-space-md py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-semibold hover:bg-secondary hover:text-on-secondary transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">ac_unit</span>
+<span class="">萬梅孤霜 · 副本中</span>
+</button>
+<button class="px-space-md py-1 rounded-full bg-surface-container-highest text-on-surface font-label-sm text-label-sm hover:bg-surface-dim transition-all">
+              全服宗門論道 榜首
+            </button>
+</div>
+</div>
+<div class="flex flex-col gap-space-sm pt-space-md border-t-0 bg-surface-container-low p-space-md rounded-lg"><div class="flex items-center justify-between"><h4 class="font-label-md text-label-md text-on-surface font-semibold">宗派特號召出征、載入態與浮動行氣樞紐 (Hero &amp; Action Tokens)</h4><span class="font-label-sm text-label-sm text-on-surface-variant">Hero CTA &amp; Floating Action Buttons</span></div><div class="flex flex-wrap items-center gap-space-md"><button class="group px-space-xl py-3.5 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-headline-sm text-headline-sm shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 flex items-center gap-space-sm"><span class="material-symbols-outlined text-[24px] group-hover:rotate-45 transition-transform">flare</span><span class="">萬仙赴盟 · 即刻號召出征</span><span class="material-symbols-outlined text-[20px]">arrow_forward</span></button><button class="px-space-lg py-3 rounded-lg bg-surface-container-highest text-on-surface font-label-lg text-label-lg flex items-center gap-space-sm cursor-wait shadow-inner"><span class="material-symbols-outlined animate-spin text-secondary text-[20px]">progress_activity</span><span class="">太極行氣運轉中...</span></button><div class="h-8 w-px bg-outline-variant mx-space-xs"></div><div class="flex items-center gap-space-sm"><button class="w-12 h-12 rounded-full bg-primary text-on-primary shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center" title="傳召仙禽"><span class="material-symbols-outlined text-[22px]">send</span></button><button class="w-12 h-12 rounded-full bg-secondary text-on-secondary shadow-md hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center" title="開啟真氣護罩"><span class="material-symbols-outlined text-[22px]">security</span></button><button class="w-12 h-12 rounded-full bg-surface-container-lowest text-on-surface hover:text-primary shadow-md hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center border border-outline-variant" title="回歸雪嶺行宮"><span class="material-symbols-outlined text-[22px]">roofing</span></button></div></div></div></div>
+</section>
+<!-- 3. 導航與標籤切換元件 (Navigation & Tabs) -->
+<section class="flex flex-col gap-space-md" id="section-nav">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest font-bold">Wayfinding &amp; Flow</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">03 · 羊脂白玉分頁與導航</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">清爽無界分隔、數值計數徽標</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-md">
+<!-- Segment Tabs Component (2 cols) -->
+<div class="lg:col-span-2 p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-space-lg">
+<div class="flex flex-col gap-space-sm">
+<h3 class="font-label-lg text-label-lg text-on-surface font-semibold flex items-center gap-space-xs">
+<span class="w-1.5 h-3 bg-secondary rounded-full"></span>
+              白玉分頁滑軌 (Snow Jade Pill Tabs)
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              以清爽白玉為底色，動態微光切換，內嵌江湖消息未讀數。
+            </p>
+<!-- Segmented Control Bar -->
+<div class="p-1 rounded-lg bg-surface-container-low flex flex-wrap items-center gap-1 mt-space-sm" id="demo-tab-group">
+<button class="demo-tab px-space-md py-2 rounded-lg bg-surface-container-lowest text-primary font-bold shadow-sm flex items-center gap-space-xs font-label-md text-label-md transition-all" onclick="setActiveTab(this)">
+<span class="">全部公告</span>
+<span class="px-1.5 py-0.2 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm">48</span>
+</button>
+<button class="demo-tab px-space-md py-2 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all flex items-center gap-space-xs" onclick="setActiveTab(this)">
+<span class="">最新活動</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">3</span>
+</button>
+<button class="demo-tab px-space-md py-2 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all flex items-center gap-space-xs" onclick="setActiveTab(this)">
+<span class="">劍宗盛典</span>
+<span class="px-1.5 py-0.2 rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm">新</span>
+</button>
+<button class="demo-tab px-space-md py-2 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all flex items-center gap-space-xs" onclick="setActiveTab(this)">
+<span class="">例行維護錄</span>
+<span class="px-1.5 py-0.2 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">12</span>
+</button>
+</div>
+</div>
+<!-- Breadcrumb & Pagination Demonstration -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md pt-space-md bg-surface-container-low p-space-md rounded-lg">
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">home</span>
+<span class="text-on-surface font-medium">天下百曉生</span>
+<span class="">/</span>
+<span class="text-on-surface font-medium">華山論劍</span>
+<span class="">/</span>
+<span class="text-primary font-bold">第七卷·雪嶺折梅</span>
+</div>
+<!-- Pagination Module -->
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface shadow-sm hover:bg-surface-container flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-bold shadow-sm">1</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors shadow-sm">2</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors shadow-sm">3</button>
+<span class="px-1 text-on-surface-variant font-label-sm text-label-sm">…</span>
+<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors shadow-sm">18</button>
+<button class="w-8 h-8 rounded-lg bg-surface-container-lowest text-on-surface shadow-sm hover:bg-surface-container flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Dropdown & Menu Component (1 col) -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-space-md">
+<div>
+<h3 class="font-label-lg text-label-lg text-on-surface font-semibold flex items-center gap-space-xs">
+<span class="w-1.5 h-3 bg-tertiary rounded-full"></span>
+              典雅水墨下拉框 (Sect Filter)
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              輕透浮動式菜單，支援宗門圖騰與未讀印記標註。
+            </p>
+</div>
+<div class="relative w-full">
+<div class="w-full px-space-md py-2.5 rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md flex items-center justify-between cursor-pointer shadow-sm hover:bg-surface-container transition-colors">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+<span class="">天山靈鷲宮 · 九品真傳</span>
+</div>
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</div>
+<div class="mt-2 w-full rounded-xl bg-surface-container-lowest shadow-lg p-1.5 flex flex-col gap-0.5">
+<div class="px-space-md py-2 rounded-lg bg-primary-fixed text-on-primary-fixed-variant font-label-md text-label-md font-semibold flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span class="">華山純陽宮 · 鎮岳</span>
+</div>
+<span class="font-label-sm text-label-sm bg-primary text-on-primary px-1.5 rounded">目前</span>
+</div>
+<div class="px-space-md py-2 rounded-lg hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-between cursor-pointer transition-colors">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="">崑崙冰玄門 · 守印</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">142人</span>
+</div>
+<div class="px-space-md py-2 rounded-lg hover:bg-surface-container text-on-surface font-label-md text-label-md flex items-center justify-between cursor-pointer transition-colors">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="">雪山隱修客 · 獨行</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">38人</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. 資料展示與卡片元件 (Cards & Data Display) -->
+<section class="flex flex-col gap-space-md" id="section-cards">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-bold">Scrolls &amp; Vaults</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">04 · 畫卷、武學與指標卡片</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">雙層折光邊框、梅角霜飾與即時氣勁數值</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Card 1: Event Showcase Card with Plum Corner -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col group relative">
+<!-- Vermilion Plum Corner Stamp -->
+<div class="absolute top-0 right-0 w-12 h-12 bg-primary text-on-primary flex items-center justify-center rounded-bl-xl font-display-lg text-headline-sm font-bold z-20 shadow-md">
+<span class="">梅</span>
+</div>
+<!-- Thumbnail with Ink Scrim -->
+<div class="relative h-48 w-full overflow-hidden">
+<div class="bg-cover bg-center w-full h-full transform group-hover:scale-105 transition-transform duration-500" data-alt="Lone swordsman in white and black flowing martial robes standing on a snowy mountain summit cliff edge overlooking sea of clouds, Chinese ink wash fantasy wuxia painting style, dramatic cinematic lighting, scattered vermilion red plum blossoms drifting across icy wind." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCOc2qrmY4_IVhSBx2gP7eeR4mBGk_QXPQrPyWQyADdTZMiPAQRQN6ifhTCypkVUkK8PkNuj4oQARikGv0fyB91-aYC9D4JyWs6TrXZp-n6OUOMR9Lf0rafoFfApCtwM8bSYjVH-SmHxAP87YkhfOEkmHQYqI_ALd1jrTlMVVxgQoflEVvmMZrxCMDeozemPy71TH4tXbub7clCRhxmO8IFNeatvJs-YMs4sDawR2rX8ugMZyzccc0_uQ')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-3 left-3 flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-lg bg-primary-container text-on-primary font-label-sm text-label-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+                剩餘 03天 14時
+              </span>
+<span class="px-2 py-0.5 rounded-lg bg-inverse-surface/80 text-inverse-on-surface font-label-sm text-label-sm backdrop-blur-sm">
+                全服聯動
+              </span>
+</div>
+</div>
+<!-- Content Body -->
+<div class="p-space-lg flex flex-col justify-between flex-grow gap-space-md">
+<div>
+<div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[16px]">landscape</span>
+<span class="">天山絕頂 · 限時盛會</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1 group-hover:text-primary transition-colors">
+                踏雪飛鴻 · 萬梅劍塚秘境初啟
+              </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-2">
+                天山初雪封山之際，萬梅劍塚現世。凡達到金丹大圓滿之俠士皆可入陣奪取太古神兵殘篇。
+              </p>
+</div>
+<div class="flex items-center justify-between pt-space-sm bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">workspace_premium</span>
+<span class="font-label-md text-label-md font-bold text-on-surface">絕品心法【寒梅九式】</span>
+</div>
+<button class="px-space-md py-1.5 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm hover:bg-primary-container transition-colors shadow-sm">
+                即刻赴約
+              </button>
+</div>
+</div>
+</div>
+<!-- Card 2: Character/Artifact Stat Card -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 p-space-lg flex flex-col justify-between gap-space-md relative">
+<!-- Frost Corner Accent -->
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-14 h-14 rounded-xl bg-surface-container-low flex items-center justify-center relative overflow-hidden shadow-inner">
+<span class="material-symbols-outlined text-secondary text-[32px]">shield</span>
+<span class="absolute bottom-0 right-0 px-1 rounded-tl bg-primary text-on-primary font-label-sm text-label-sm font-bold">傳奇</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">神兵古卷 · 甲級</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">玄冰照膽劍</h3>
+</div>
+</div>
+<span class="px-2 py-1 rounded-lg bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold">
+              強化 +12
+            </span>
+</div>
+<!-- Progress Bars / Martial Qi Vitals -->
+<div class="flex flex-col gap-space-sm">
+<!-- Vitality Bar (HP - Vermilion) -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-primary text-[14px]">favorite</span>
+                  氣血上限 (HP)
+                </span>
+<span class="font-bold text-on-surface">48,920 / 50,000</span>
+</div>
+<div class="h-2 w-full rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 94%"></div>
+</div>
+</div>
+<!-- Qi Bar (MP - Glacial Frost) -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-secondary text-[14px]">bolt</span>
+                  內家真元 (Qi)
+                </span>
+<span class="font-bold text-on-surface">19,400 / 22,000</span>
+</div>
+<div class="h-2 w-full rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-secondary rounded-full transition-all duration-500" style="width: 82%"></div>
+</div>
+</div>
+<!-- Frost Resistance (Spirit - Ink) -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-tertiary text-[14px]">ac_unit</span>
+                  極寒抗性 (Frost Res)
+                </span>
+<span class="font-bold text-on-surface">99.2% 極致</span>
+</div>
+<div class="h-2 w-full rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-tertiary rounded-full transition-all duration-500" style="width: 99%"></div>
+</div>
+</div>
+</div>
+<!-- Bottom Meta Matrix -->
+<div class="grid grid-cols-2 gap-space-xs text-center pt-space-xs">
+<div class="p-space-xs rounded bg-surface-container-low">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">破甲穿透</span>
+<span class="font-headline-sm text-headline-sm text-primary font-bold">+1,420</span>
+</div>
+<div class="p-space-xs rounded bg-surface-container-low">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">會心一擊</span>
+<span class="font-headline-sm text-headline-sm text-secondary font-bold">48.6%</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Metric Stat Cards & Server Load Chart -->
+<div class="rounded-xl bg-surface-container-lowest shadow-sm hover:shadow-xl transition-all duration-300 p-space-lg flex flex-col justify-between gap-space-md">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">九天算籌 · 即時天下志</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">伺服器靈壓氣脈</h3>
+</div>
+<span class="w-3 h-3 rounded-full bg-primary animate-ping"></span>
+</div>
+<!-- SVG Sparkline Chart / Real-time Qi Flow -->
+<div class="w-full flex flex-col gap-2">
+<div class="flex items-baseline justify-between">
+<div>
+<span class="font-display-lg text-headline-lg text-on-surface font-bold tracking-tight">128,490</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant ml-1">在線俠士</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold flex items-center">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span> +14.8%
+              </span>
+</div>
+<!-- Inline SVG Chart (Lightweight < 2KB) -->
+<div class="w-full h-24 pt-2">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 300 100">
+<defs>
+<lineargradient id="snowSparkline" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#be123c" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#be123c" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,80 Q30,65 60,70 T120,40 T180,55 T240,20 T300,10 L300,100 L0,100 Z" fill="url(#snowSparkline)"></path>
+<path d="M0,80 Q30,65 60,70 T120,40 T180,55 T240,20 T300,10" fill="none" stroke="#be123c" stroke-linecap="round" stroke-width="3"></path>
+<circle class="animate-pulse" cx="300" cy="10" fill="#be123c" r="4"></circle>
+</svg>
+</div>
+</div>
+<div class="flex flex-col gap-2 pt-space-xs">
+<div class="flex items-center justify-between p-space-xs rounded bg-surface-container-low font-label-md text-label-md">
+<span class="text-on-surface-variant">俠義信譽評級</span>
+<span class="font-bold text-on-surface flex items-center gap-1">
+<span class="text-primary font-bold">98</span> / 100 宗師印
+              </span>
+</div>
+<div class="flex items-center justify-between p-space-xs rounded bg-surface-container-low font-label-md text-label-md">
+<span class="text-on-surface-variant">藏金閣碎銀結餘</span>
+<span class="font-bold text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">monetization_on</span>
+                388,400 兩
+              </span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. 表單與輸入元件 (Forms & Inputs) -->
+<section class="flex flex-col gap-space-md" id="section-forms">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest font-bold">Inputs &amp; Registers</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">05 · 靈竅表單與輸入法度</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">冰藍焦點光暈、密碼強度度量與水墨印章勾選</p>
+</div>
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
+<!-- Field 1: Character Name / Text Input with Icon -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface font-semibold flex items-center justify-between">
+<span class="">大俠名牒 (Character Handle)</span>
+<span class="text-primary font-label-sm text-label-sm">* 必填真名</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px]">badge</span>
+<input class="w-full pl-10 pr-space-md py-2.5 rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md shadow-inner outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-secondary transition-all" placeholder="例：獨孤雪客" type="text" value="冷月照孤城"/>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">限制二至六個正規繁體漢字，不得包含禁制魔宗字詞。</p>
+</div>
+<!-- Field 2: Password with Strength Meter -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface font-semibold flex items-center justify-between">
+<span class="">金盾神魄密碼 (Seal Token)</span>
+<span class="text-secondary font-label-sm text-label-sm">強度：極固</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px]">key</span>
+<input class="w-full pl-10 pr-space-md py-2.5 rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md shadow-inner outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-secondary transition-all" type="password" value="SnowSwordsman99!#"/>
+<button class="absolute right-3 text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+<!-- Security Meter Bars -->
+<div class="grid grid-cols-4 gap-1.5 mt-1">
+<div class="h-1.5 rounded-full bg-primary"></div>
+<div class="h-1.5 rounded-full bg-primary"></div>
+<div class="h-1.5 rounded-full bg-secondary"></div>
+<div class="h-1.5 rounded-full bg-secondary"></div>
+</div>
+</div>
+<!-- Field 3: Sect Select Picker -->
+<div class="flex flex-col gap-space-xs">
+<label class="font-label-md text-label-md text-on-surface font-semibold">
+<span class="">投身宗派 (Primary School)</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-[20px]">temple_buddhist</span>
+<select class="w-full pl-10 pr-8 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-body-md text-body-md appearance-none outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-secondary transition-all cursor-pointer">
+<option selected="">天山劍派 · 白梅別苑</option>
+<option>純陽武宗 · 紫極真經</option>
+<option>崑崙霜月 · 靈樞峰</option>
+<option>散仙隱士 · 仗劍紅塵</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 pointer-events-none text-on-surface-variant text-[18px]">arrow_drop_down</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">入派後可修習專屬門派鎮山絕學。</p>
+</div>
+</div>
+<!-- Selection Controls: Ink Checkbox, Radio, and Switch -->
+<div class="pt-space-md border-t-0 bg-surface-container-low p-space-md rounded-lg flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex flex-wrap items-center gap-space-lg">
+<!-- Ink Checkbox -->
+<label class="flex items-center gap-space-sm cursor-pointer select-none">
+<input checked="" class="w-5 h-5 rounded accent-primary cursor-pointer" type="checkbox"/>
+<span class="font-label-md text-label-md text-on-surface">啟動「踏雪無痕」隱身結界</span>
+</label>
+<label class="flex items-center gap-space-sm cursor-pointer select-none">
+<input class="w-5 h-5 rounded accent-primary cursor-pointer" type="checkbox"/>
+<span class="font-label-md text-label-md text-on-surface">登入即傳音入密同盟摯友</span>
+</label>
+<!-- Ink Radio -->
+<div class="flex items-center gap-space-md">
+<label class="flex items-center gap-space-xs cursor-pointer select-none">
+<input checked="" class="accent-primary cursor-pointer" name="wuxia-mode" type="radio"/>
+<span class="font-label-md text-label-md text-on-surface">經典水墨視角</span>
+</label>
+<label class="flex items-center gap-space-xs cursor-pointer select-none">
+<input class="accent-primary cursor-pointer" name="wuxia-mode" type="radio"/>
+<span class="font-label-md text-label-md text-on-surface">真極寒冰視角</span>
+</label>
+</div>
+</div>
+<!-- Switch Toggle Button -->
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">雪花飛散特效</span>
+<button class="w-12 h-6 rounded-full bg-primary p-0.5 flex items-center transition-colors" onclick="toggleSwitch(this)">
+<div class="w-5 h-5 rounded-full bg-on-primary transform translate-x-6 transition-transform"></div>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. 狀態反饋與徽章提示 (Badges, Alerts & Banners) -->
+<section class="flex flex-col gap-space-md" id="section-feedback">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-bold">Echoes &amp; Alerts</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">06 · 狀態反饋與印章徽記</h2>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">四象靈氣橫幅與皇朝水墨金石戳印</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-space-md">
+<!-- System Alerts / Banners -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col gap-space-sm">
+<h3 class="font-label-lg text-label-lg text-on-surface font-semibold flex items-center gap-space-xs">
+<span class="w-1.5 h-3 bg-primary rounded-full"></span>
+            宗派諭告橫幅 (System Banners)
+          </h3>
+<!-- Success Banner -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[22px]">check_circle</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">功法參悟成功</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">大俠已成功領悟【踏雪笑傲】第七重，身法速度提升 35%。</p>
+</div>
+</div>
+<!-- Warning Banner -->
+<div class="p-space-md rounded-lg bg-surface-container-low flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-on-surface-variant text-[22px]">warning</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">暴風雪封山警戒</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">天山北麓將於子時降下極寒冰暴，未佩戴禦寒辟寒珠者將受寒毒內蝕。</p>
+</div>
+</div>
+<!-- Danger / Error Banner -->
+<div class="p-space-md rounded-lg bg-primary-fixed text-on-primary-fixed flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary text-[22px]">error</span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-primary font-bold">真氣逆流 · 險招受阻</span>
+<p class="font-body-sm text-body-sm text-on-primary-fixed-variant">經脈閉塞，內力不足以駕馭此神兵，強行催動將損耗修為根基。</p>
+</div>
+</div>
+</div>
+<!-- Seal Badges & Stamp Matrix -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-space-md">
+<div class="flex flex-col gap-space-sm">
+<h3 class="font-label-lg text-label-lg text-on-surface font-semibold flex items-center gap-space-xs">
+<span class="w-1.5 h-3 bg-secondary rounded-full"></span>
+              金石印章戳印體系 (Wuxia Seal Badges)
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              傳承古法篆刻與皇家硃砂鈐印，用於身份認證、裝備品質與論道位階。
+            </p>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm pt-space-xs">
+<!-- Seal 1: Official Seal -->
+<div class="p-space-sm rounded-lg bg-primary text-on-primary flex flex-col items-center justify-center gap-1 shadow-sm">
+<span class="font-display-lg text-headline-sm font-bold">正版</span>
+<span class="font-label-sm text-label-sm opacity-80">官方驗證</span>
+</div>
+<!-- Seal 2: Head Disciple -->
+<div class="p-space-sm rounded-lg bg-secondary text-on-secondary flex flex-col items-center justify-center gap-1 shadow-sm">
+<span class="font-display-lg text-headline-sm font-bold">首席</span>
+<span class="font-label-sm text-label-sm opacity-80">宗門第一</span>
+</div>
+<!-- Seal 3: Verified Wuxia Master -->
+<div class="p-space-sm rounded-lg bg-inverse-surface text-inverse-on-surface flex flex-col items-center justify-center gap-1 shadow-sm">
+<span class="font-display-lg text-headline-sm font-bold">認證</span>
+<span class="font-label-sm text-label-sm text-surface-container-highest">名震八方</span>
+</div>
+<!-- Seal 4: Limited Edition -->
+<div class="p-space-sm rounded-lg bg-surface-container-high text-primary flex flex-col items-center justify-center gap-1 shadow-sm">
+<span class="font-display-lg text-headline-sm font-bold">特典</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">孤本絕響</span>
+</div>
+</div>
+</div>
+<!-- Micro Tags Row -->
+<div class="pt-space-md border-t-0 bg-surface-container-low p-space-md rounded-lg flex flex-wrap items-center gap-space-xs">
+<span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+              【玄天階】
+            </span>
+<span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm text-label-sm font-semibold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+              【寒冰決】
+            </span>
+<span class="px-2.5 py-1 rounded-lg bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-bold">
+              無想轉生
+            </span>
+<span class="px-2.5 py-1 rounded-lg bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold">
+              踏雪留香
+            </span>
+<span class="px-2.5 py-1 rounded-lg bg-surface-container-highest text-on-surface font-label-sm text-label-sm">
+              御劍飛行 · 許可
+            </span>
+</div>
+</div>
+</div>
+</section><section class="flex flex-col gap-space-md" id="section-inventory"><div class="flex items-center justify-between"><div><span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-bold">Artifacts &amp; Cultivation</span><h2 class="font-headline-md text-headline-md text-on-surface font-semibold">07 · 神兵道具與修為輪盤</h2></div><p class="font-body-sm text-body-sm text-on-surface-variant">須彌乾坤百寶囊、法寶浮動銘文與氣海結丹環盤</p></div><div class="grid grid-cols-1 lg:grid-cols-3 gap-space-md"><div class="lg:col-span-2 p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-space-md"><div><div class="flex items-center justify-between"><h3 class="font-label-lg text-label-lg text-on-surface font-semibold flex items-center gap-space-xs"><span class="w-1.5 h-3 bg-primary rounded-full"></span>須彌乾坤囊 (Inventory Grid 3x3)</h3><span class="font-label-sm text-label-sm text-on-surface-variant">容量 9 / 18 格</span></div><p class="font-body-sm text-body-sm text-on-surface-variant mt-1">白玉金紋格陣，懸停可洞察神兵靈息與品階印記。</p></div><div class="grid grid-cols-3 sm:grid-cols-3 gap-space-sm"><div class="p-space-sm rounded-xl bg-surface-container-low border border-primary/30 flex flex-col items-center justify-center relative group hover:bg-surface-container-high transition-all cursor-pointer h-28"><span class="material-symbols-outlined text-primary text-[32px]">swords</span><span class="font-label-sm text-label-sm text-on-surface font-bold mt-1">太阿霜鋒</span><span class="absolute top-1 right-1 px-1.5 py-0.2 rounded bg-primary text-on-primary font-label-sm text-label-sm">神品</span><div class="absolute -top-20 left-1/2 -translate-x-1/2 hidden group-hover:flex flex-col p-2 bg-inverse-surface text-inverse-on-surface rounded-lg shadow-xl text-[12px] z-50 whitespace-nowrap pointer-events-none"><span class="font-bold text-primary-fixed">【太阿霜鋒 · 劍靈】</span><span class="">攻擊力 +890 · 附帶凝霜減速</span></div></div><div class="p-space-sm rounded-xl bg-surface-container-low border border-secondary/30 flex flex-col items-center justify-center relative group hover:bg-surface-container-high transition-all cursor-pointer h-28"><span class="material-symbols-outlined text-secondary text-[32px]">shield</span><span class="font-label-sm text-label-sm text-on-surface font-bold mt-1">玄武寒甲</span><span class="absolute top-1 right-1 px-1.5 py-0.2 rounded bg-secondary text-on-secondary font-label-sm text-label-sm">絕品</span><div class="absolute -top-20 left-1/2 -translate-x-1/2 hidden group-hover:flex flex-col p-2 bg-inverse-surface text-inverse-on-surface rounded-lg shadow-xl text-[12px] z-50 whitespace-nowrap pointer-events-none"><span class="font-bold text-secondary-fixed">【玄武寒甲】</span><span class="">護甲 +640 · 免疫初階冰寒內傷</span></div></div><div class="p-space-sm rounded-xl bg-surface-container-low border border-tertiary/20 flex flex-col items-center justify-center relative group hover:bg-surface-container-high transition-all cursor-pointer h-28"><span class="material-symbols-outlined text-tertiary text-[32px]">vital_signs</span><span class="font-label-sm text-label-sm text-on-surface font-bold mt-1">九轉金丹</span><span class="absolute top-1 right-1 px-1.5 py-0.2 rounded bg-surface-container-highest text-on-surface font-label-sm text-label-sm">上品</span></div><div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col items-center justify-center relative group hover:bg-surface-container-high transition-all cursor-pointer h-28"><span class="material-symbols-outlined text-on-surface-variant text-[28px]">menu_book</span><span class="font-label-sm text-label-sm text-on-surface font-medium mt-1">折梅步法</span></div><div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col items-center justify-center relative group hover:bg-surface-container-high transition-all cursor-pointer h-28"><span class="material-symbols-outlined text-on-surface-variant text-[28px]">diamond</span><span class="font-label-sm text-label-sm text-on-surface font-medium mt-1">寒魄晶石</span></div><div class="p-space-sm rounded-xl bg-surface-container-low flex flex-col items-center justify-center relative group hover:bg-surface-container-high transition-all cursor-pointer h-28"><span class="material-symbols-outlined text-on-surface-variant text-[28px]">spa</span><span class="font-label-sm text-label-sm text-on-surface font-medium mt-1">天山雪蓮</span></div><div class="p-space-sm rounded-xl bg-surface-container-low border border-dashed border-outline-variant flex items-center justify-center h-28 opacity-40"><span class="material-symbols-outlined text-[24px]">add</span></div><div class="p-space-sm rounded-xl bg-surface-container-low border border-dashed border-outline-variant flex items-center justify-center h-28 opacity-40"><span class="material-symbols-outlined text-[24px]">add</span></div><div class="p-space-sm rounded-xl bg-surface-container-low border border-dashed border-outline-variant flex items-center justify-center h-28 opacity-40"><span class="material-symbols-outlined text-[24px]">lock</span></div></div></div><div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between items-center gap-space-md text-center"><div><h3 class="font-label-lg text-label-lg text-on-surface font-semibold flex items-center justify-center gap-space-xs"><span class="w-1.5 h-3 bg-secondary rounded-full"></span>修為氣海 · 圓滿輪盤</h3><p class="font-body-sm text-body-sm text-on-surface-variant mt-1">真元凝練與元嬰破繭進程</p></div><div class="relative w-44 h-44 flex items-center justify-center"><svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100"><circle class="text-surface-container-high" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle><circle class="text-primary transition-all duration-1000 ease-out" cx="50" cy="50" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="37.68" stroke-linecap="round" stroke-width="8"></circle></svg><div class="absolute flex flex-col items-center justify-center"><span class="font-display-lg text-headline-lg font-bold text-on-surface">85%</span><span class="font-label-sm text-label-sm text-primary font-bold">金丹境大圓滿</span></div></div><div class="w-full p-space-sm rounded-lg bg-surface-container-low flex justify-between items-center font-label-sm text-label-sm"><span class="text-on-surface-variant">距破境元嬰尚需</span><span class="font-bold text-secondary">15,200 真元</span></div></div></div></section><section class="flex flex-col gap-space-md" id="section-modals"><div class="flex items-center justify-between"><div><span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-bold">Overlays &amp; Drawers</span><h2 class="font-headline-md text-headline-md text-on-surface font-semibold">08 · 浮層、抽屜與滑桿</h2></div><p class="font-body-sm text-body-sm text-on-surface-variant">金石確認對話框、側邊秘卷抽屜與氣韻滑動器</p></div><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md"><div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-space-md border border-outline-variant/40 relative overflow-hidden"><div class="flex items-start justify-between"><div class="flex items-center gap-space-xs"><div class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed-variant flex items-center justify-center"><span class="material-symbols-outlined text-[18px]">gavel</span></div><h4 class="font-label-lg text-label-lg font-bold text-on-surface">金石印信 · 確認對話框</h4></div><span class="material-symbols-outlined text-outline cursor-pointer text-[18px]">close</span></div><div class="py-space-xs"><p class="font-body-sm text-body-sm text-on-surface-variant">是否確認動用【天山掌門玉印】封鎖雪嶺劍谷？此號令一出，全服修士十二時辰內將不得私鬥。</p></div><div class="flex justify-end items-center gap-space-sm pt-space-xs"><button class="px-space-md py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm">暫緩決策</button><button class="px-space-md py-1.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-sm text-label-sm font-bold shadow-sm">鈐印頒布</button></div></div><div class="p-space-lg rounded-xl bg-surface-container-low shadow-sm flex flex-col justify-between gap-space-md border-l-4 border-secondary"><div class="flex items-center justify-between"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-secondary text-[20px]">auto_stories</span><h4 class="font-label-lg text-label-lg font-bold text-on-surface">側邊秘卷抽屜 (Drawer Preview)</h4></div><span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm">展開態</span></div><div class="flex flex-col gap-1"><span class="font-label-md text-label-md font-semibold text-on-surface">《天山折梅手》秘傳注釋</span><p class="font-body-sm text-body-sm text-on-surface-variant">第三式包含六路掌法與八路擒拿法，需以至純玄冰真元催發方得其奧妙精髓。</p></div><div class="p-space-xs rounded bg-surface-container-lowest flex items-center justify-between"><span class="font-label-sm text-label-sm text-on-surface-variant">傳授宗師：天山童姥</span><button class="px-2 py-1 rounded bg-secondary text-on-secondary font-label-sm text-label-sm">研習</button></div></div><div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between gap-space-md"><div><h4 class="font-label-lg text-label-lg font-bold text-on-surface flex items-center gap-space-xs"><span class="w-1.5 h-3 bg-primary rounded-full"></span>真氣注入滑動器 (Qi Sliders)</h4><p class="font-body-sm text-body-sm text-on-surface-variant mt-1">拖動滑桿調節輸出勁道與雪魄寒氣</p></div><div class="flex flex-col gap-space-md"><div class="flex flex-col gap-1"><div class="flex justify-between font-label-sm text-label-sm"><span class="text-on-surface-variant">硃砂劍芒輸出</span><span class="font-bold text-primary">72% 剛烈</span></div><input class="w-full accent-primary cursor-pointer" max="100" min="0" type="range" value="72"/></div><div class="flex flex-col gap-1"><div class="flex justify-between font-label-sm text-label-sm"><span class="text-on-surface-variant">冰魄寒潮範圍</span><span class="font-bold text-secondary">45 步丈</span></div><input class="w-full accent-secondary cursor-pointer" max="100" min="0" type="range" value="45"/></div></div></div></div></section><section class="flex flex-col gap-space-md" id="section-fx"><div class="flex items-center justify-between"><div><span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-bold">Dynamics &amp; Motion</span><h2 class="font-headline-md text-headline-md text-on-surface font-semibold">09 · 水墨與雪境動效矩陣</h2></div><p class="font-body-sm text-body-sm text-on-surface-variant">枯筆飛白橫掃、硃砂震盪、雪境粒子與琉璃微光</p></div><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md"><div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-center justify-center text-center gap-space-sm h-48 border border-outline-variant/30 group"><div class="w-12 h-12 rounded-xl bg-surface-container-low flex items-center justify-center group-hover:scale-110 transition-transform"><span class="material-symbols-outlined text-on-surface text-[26px]">brush</span></div><span class="font-label-md text-label-md text-on-surface font-bold">枯筆飛白掃掠</span><p class="font-body-sm text-body-sm text-on-surface-variant">切換頁面時墨跡如刀鋒橫掠</p></div><div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-center justify-center text-center gap-space-sm h-48 border border-outline-variant/30 group"><div class="w-12 h-12 rounded-xl bg-primary-fixed flex items-center justify-center group-hover:scale-110 transition-transform"><span class="material-symbols-outlined text-primary text-[26px] animate-bounce">approval</span></div><span class="font-label-md text-label-md text-on-surface font-bold">硃砂鈐印震盪</span><p class="font-body-sm text-body-sm text-on-surface-variant">重按觸發印泥金石震波音效</p></div><div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-center justify-center text-center gap-space-sm h-48 border border-outline-variant/30 group"><div class="w-12 h-12 rounded-xl bg-secondary-fixed flex items-center justify-center group-hover:scale-110 transition-transform"><span class="material-symbols-outlined text-secondary text-[26px] animate-pulse">weather_snowy</span></div><span class="font-label-md text-label-md text-on-surface font-bold">雪境粒子流動</span><p class="font-body-sm text-body-sm text-on-surface-variant">隨游標牽引的細微飛雪微粒</p></div><div class="p-space-md rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-center justify-center text-center gap-space-sm h-48 border border-outline-variant/30 group"><div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center group-hover:scale-110 transition-transform"><span class="material-symbols-outlined text-secondary text-[26px]">filter_vintage</span></div><span class="font-label-md text-label-md text-on-surface font-bold">琉璃呼吸微光</span><p class="font-body-sm text-body-sm text-on-surface-variant">神兵冷芒緩慢均勻呼吸漸層</p></div></div></section>
+<!-- 10. 仙俠神異與動態特效矩陣 (Imperial Wuxia Visual FX & Auras) -->
+<section class="flex flex-col gap-space-md" id="section-imperial-fx">
+<div class="flex items-center justify-between">
+<div>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest font-bold">Imperial Wuxia Visual FX &amp; Auras</span>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold">10 · 仙俠神異與動態特效矩陣</h2>
+</div>
+<span class="hidden sm:inline-block font-label-sm text-label-sm text-secondary font-semibold">奇門陣盤 · 冰霜結界 · 硃砂劍氣 · 梵印心環</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md">
+<!-- 1. 太虛八卦·奇門陣盤 (Interactive Qi-Gong Array) - 7 cols -->
+<div class="lg:col-span-7 p-space-lg rounded-xl bg-surface-container-lowest shadow-md hover:shadow-xl transition-all duration-300 border border-outline-variant/50 relative overflow-hidden flex flex-col justify-between group">
+<!-- Corner Plum Ornament -->
+<div class="absolute top-0 right-0 w-10 h-10 bg-primary/10 text-primary flex items-center justify-center rounded-bl-xl font-bold font-display-lg text-sm border-b border-l border-outline-variant/40">卦</div>
+<div>
+<div class="flex items-center gap-space-xs text-primary font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[18px]">explore</span>
+<span>奇門遁甲 · 天地歸元</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1">太虛八卦 · 奇門陣盤</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+乾坤坎離八方爻位，外設三百六十五周天度數周天刻盤。游標移入激發「內家真氣震盪漣漪」。
+</p>
+</div>
+<!-- Interactive Bagua Canvas/SVG Stage -->
+<div class="relative w-full h-80 my-space-md flex items-center justify-center bg-surface-container-low/60 rounded-xl overflow-hidden cursor-crosshair group-hover:bg-surface-container-low/90 transition-colors" id="bagua-stage">
+<!-- Radial Qi Ripples Background -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-72 h-72 rounded-full border border-secondary/20 animate-pulse-gentle"></div>
+<div class="w-56 h-56 rounded-full border border-primary/20 animate-pulse-gentle" style="animation-delay: 1.5s;"></div>
+<div class="w-40 h-40 rounded-full border border-outline-variant/40"></div>
+</div>
+<!-- Celestial Orbit Stars -->
+<div class="absolute w-72 h-72 rounded-full border border-dashed border-secondary/30 animate-spin-reverse-slow pointer-events-none flex items-start justify-center">
+<div class="w-2.5 h-2.5 rounded-full bg-secondary shadow-[0_0_8px_#5bb8fe] -mt-1.5"></div>
+</div>
+<div class="absolute w-60 h-60 rounded-full border border-dotted border-primary/30 animate-spin-slow pointer-events-none flex items-end justify-center">
+<div class="w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_8px_#be123c] -mb-1.5"></div>
+</div>
+<!-- Interactive Bagua SVG -->
+<div class="relative w-64 h-64 select-none flex items-center justify-center">
+<svg class="w-full h-full animate-spin-slow group-hover:[animation-duration:8s] transition-all duration-700" viewbox="0 0 200 200">
+<!-- Outer Degree Scale Rim -->
+<circle cx="100" cy="100" fill="none" opacity="0.6" r="94" stroke="#8f6f70" stroke-dasharray="2, 4" stroke-width="2"></circle>
+<circle cx="100" cy="100" fill="none" opacity="0.5" r="84" stroke="#006398" stroke-dasharray="1, 8" stroke-width="3"></circle>
+<!-- Eight Trigrams Text Positions (乾 坤 震 巽 坎 離 艮 兌) -->
+<g class="font-serif text-[9px] fill-[#191c1e] font-bold" text-anchor="middle">
+<text x="100" y="24">☰ 乾天</text>
+<text x="154" y="46">☱ 兌澤</text>
+<text x="176" y="103">☲ 離火</text>
+<text x="154" y="160">☳ 震雷</text>
+<text x="100" y="184">☷ 坤地</text>
+<text x="46" y="160">☶ 艮山</text>
+<text x="24" y="103">☵ 坎水</text>
+<text x="46" y="46">☴ 巽風</text>
+</g>
+<!-- Inner Ring -->
+<circle cx="100" cy="100" fill="#f7f9fb" r="50" stroke="#be123c" stroke-width="1.5"></circle>
+<!-- Yin Yang Core (Taiji Fish) -->
+<g transform="translate(100, 100) scale(0.48)">
+<!-- Yang (White side) with Shadow -->
+<path d="M 0 -100 A 100 100 0 0 1 0 100 A 50 50 0 0 1 0 0 A 50 50 0 0 0 0 -100" fill="#ffffff" stroke="#191c1e" stroke-width="2"></path>
+<!-- Yin (Ink side) -->
+<path d="M 0 -100 A 50 50 0 0 1 0 0 A 50 50 0 0 0 0 100 A 100 100 0 0 1 0 -100" fill="#191c1e"></path>
+<!-- Fish Eyes -->
+<circle cx="0" cy="-50" fill="#191c1e" r="14"></circle>
+<circle cx="0" cy="50" fill="#ffffff" r="14"></circle>
+<circle cx="0" cy="50" fill="#be123c" r="5"></circle>
+<circle cx="0" cy="-50" fill="#5bb8fe" r="5"></circle>
+</g>
+</svg>
+<!-- Center Interactive Qi Flare on Hover -->
+<div class="absolute w-12 h-12 rounded-full pointer-events-none group-hover:scale-150 group-hover:bg-primary/20 transition-transform duration-500 blur-sm"></div>
+</div>
+<span class="absolute bottom-3 text-on-surface-variant font-label-sm text-label-sm tracking-wider bg-surface-container-lowest/80 px-space-sm py-0.5 rounded-full border border-outline-variant/30 backdrop-blur-sm">懸停聚氣：陣盤運轉加速 · 觸發八方星宿流動</span>
+</div>
+<!-- Controls / Metadata Row -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs border-t border-outline-variant/30">
+<div class="flex items-center gap-space-sm">
+<span class="px-space-sm py-1 rounded bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-bold">周天 365 爻</span>
+<span class="px-space-sm py-1 rounded bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold">逆行倒施 · 坎水聚頂</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">QI_ARRAY_V2.0 // ACTIVE</span>
+</div>
+</div>
+<!-- 2. 冰魄霜華·護體結界 (Frost Aura Shield) - 5 cols -->
+<div class="lg:col-span-5 p-space-lg rounded-xl bg-surface-container-lowest shadow-md hover:shadow-xl transition-all duration-300 border border-secondary-fixed-dim/60 relative overflow-hidden flex flex-col justify-between">
+<!-- Frost Ambient Glow backdrop -->
+<div class="absolute -right-16 -top-16 w-52 h-52 rounded-full bg-secondary-fixed/40 blur-3xl pointer-events-none"></div>
+<!-- Top Metadata -->
+<div class="flex items-start justify-between relative z-10">
+<div>
+<div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[18px]">ac_unit</span>
+<span>玄冰照膽 · 防禦天罡</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1">冰魄霜華 · 護體結界</h3>
+</div>
+<span class="px-2 py-1 rounded-lg bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold shadow-sm">極寒防壁</span>
+</div>
+<!-- Frost Shield Interactive Display Card -->
+<div class="my-space-md p-space-lg rounded-xl bg-gradient-to-b from-surface-container-lowest to-surface-container-low border-2 border-secondary/30 relative overflow-hidden flex flex-col items-center justify-center text-center group cursor-pointer shadow-inner">
+<!-- Snow Flakes Floating Particles (Pure CSS) -->
+<div class="absolute top-3 left-4 text-secondary/40 text-sm animate-float-snow select-none">❄</div>
+<div class="absolute bottom-4 right-6 text-secondary/60 text-lg animate-float-snow select-none" style="animation-delay: 2s;">❅</div>
+<div class="absolute top-6 right-8 text-secondary/30 text-xs animate-float-snow select-none" style="animation-delay: 3.5s;">✻</div>
+<!-- Concentric Frost Barrier Rings -->
+<div class="relative w-36 h-36 flex items-center justify-center">
+<div class="absolute inset-0 rounded-full border-2 border-dashed border-secondary/40 animate-spin-slow"></div>
+<div class="absolute inset-2 rounded-full border border-secondary/60 animate-pulse-gentle"></div>
+<div class="w-24 h-24 rounded-full bg-gradient-to-tr from-secondary/20 via-surface-container-lowest to-secondary-container/30 flex items-center justify-center shadow-[0_0_20px_rgba(91,184,254,0.35)] backdrop-blur-sm group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-secondary text-[44px] drop-shadow-[0_2px_8px_rgba(0,99,152,0.4)]">shield_with_heart</span>
+</div>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-3">九幽玄冰極境</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-xs mt-1">
+遭受致命外家刀劍襲擊時，自發激盪「冰霜折射護壁」，減免 78% 內功玄傷。
+</p>
+<!-- Live Shield Vitals -->
+<div class="w-full mt-space-md pt-space-sm border-t border-outline-variant/30 flex items-center justify-between text-left font-label-sm text-label-sm">
+<div>
+<span class="text-on-surface-variant block">護盾真元值</span>
+<span class="font-bold text-secondary text-[15px]">12,800 / 12,800</span>
+</div>
+<div class="text-right">
+<span class="text-on-surface-variant block">冰晶反震率</span>
+<span class="font-bold text-primary text-[15px]">42.5% 凝滯</span>
+</div>
+</div>
+</div>
+<!-- Interactive Trigger Button -->
+<button class="w-full py-2.5 rounded-lg bg-secondary hover:bg-secondary-container hover:text-on-secondary-container text-on-secondary font-label-md text-label-md font-bold transition-all shadow-sm flex items-center justify-center gap-space-xs" onclick="triggerShieldPulse(this)">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+<span>灌注寒冰真元 · 激盪護盾漣漪</span>
+</button>
+</div>
+<!-- 3. 硃砂劍氣·拔劍出鞘流光矩陣 (Sword Qi Slash Matrix) - 12 cols -->
+<div class="lg:col-span-12 p-space-lg rounded-xl bg-surface-container-lowest shadow-md hover:shadow-xl transition-all duration-300 border border-outline-variant/50 relative overflow-hidden flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs">
+<div>
+<div class="flex items-center gap-space-xs text-primary font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[18px]">flash_on</span>
+<span>破空芒刃 · 氣貫長虹</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1">硃砂劍氣 · 拔劍出鞘流光矩陣</h3>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+不同品級神兵出鞘劃破虛空之氣勁拖尾，展現水墨筆意與鋒芒光軌。
+</p>
+</div>
+<!-- 3 Sword Types Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md pt-space-xs">
+<!-- Slash 1: 太阿破曉 (Golden Solar Slash) -->
+<div class="p-space-md rounded-xl bg-surface-container-low border border-outline-variant/40 flex flex-col justify-between h-48 relative overflow-hidden group hover:border-primary/50 transition-all">
+<div class="flex items-start justify-between relative z-10">
+<div>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest font-label-sm text-label-sm text-on-surface font-bold">天階金芒</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1">太阿破曉</h4>
+</div>
+<span class="material-symbols-outlined text-amber-600 text-[24px]">wb_sunny</span>
+</div>
+<!-- Kinetic Slash Track -->
+<div class="relative w-full h-16 my-auto flex items-center overflow-hidden bg-surface-container-lowest rounded-lg border border-outline-variant/30">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-amber-200/30 to-transparent"></div>
+<!-- Moving Sword Beam -->
+<div class="sword-slash-beam absolute h-full w-24 bg-gradient-to-r from-transparent via-amber-400 to-white shadow-[0_0_16px_#f59e0b] opacity-80"></div>
+<span class="relative z-10 px-space-md font-label-sm text-label-sm text-on-surface-variant font-mono">烈陽炙炎 · 拔劍一式</span>
+</div>
+<div class="flex items-center justify-between relative z-10 font-label-sm text-label-sm text-on-surface-variant">
+<span>破甲 +1,890</span>
+<span class="text-amber-700 font-bold">附帶灼熱流血</span>
+</div>
+</div>
+<!-- Slash 2: 天山凝霜 (Ice Blue Slash) -->
+<div class="p-space-md rounded-xl bg-surface-container-low border border-secondary/30 flex flex-col justify-between h-48 relative overflow-hidden group hover:border-secondary transition-all">
+<div class="flex items-start justify-between relative z-10">
+<div>
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold">絕品霜刃</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1">天山凝霜</h4>
+</div>
+<span class="material-symbols-outlined text-secondary text-[24px]">ac_unit</span>
+</div>
+<!-- Kinetic Slash Track -->
+<div class="relative w-full h-16 my-auto flex items-center overflow-hidden bg-surface-container-lowest rounded-lg border border-secondary-fixed">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-secondary-fixed/40 to-transparent"></div>
+<!-- Moving Sword Beam -->
+<div class="sword-slash-beam absolute h-full w-28 bg-gradient-to-r from-transparent via-secondary-container to-white shadow-[0_0_20px_#5bb8fe] opacity-85" style="animation-delay: 1.1s;"></div>
+<span class="relative z-10 px-space-md font-label-sm text-label-sm text-on-surface-variant font-mono">寒霜凜冽 · 瞬步封喉</span>
+</div>
+<div class="flex items-center justify-between relative z-10 font-label-sm text-label-sm text-on-surface-variant">
+<span>冰凍減速 65%</span>
+<span class="text-secondary font-bold">冰煞爆破 3 丈</span>
+</div>
+</div>
+<!-- Slash 3: 笑傲乾坤 (Vermilion Ink Slash) -->
+<div class="p-space-md rounded-xl bg-surface-container-low border border-primary/40 flex flex-col justify-between h-48 relative overflow-hidden group hover:border-primary transition-all">
+<div class="flex items-start justify-between relative z-10">
+<div>
+<span class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-bold">宗門極招</span>
+<h4 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1">笑傲乾坤</h4>
+</div>
+<span class="material-symbols-outlined text-primary text-[24px]">brush</span>
+</div>
+<!-- Kinetic Slash Track -->
+<div class="relative w-full h-16 my-auto flex items-center overflow-hidden bg-inverse-surface rounded-lg border border-primary/50 shadow-inner">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-primary-container/20 to-transparent"></div>
+<!-- Ink Wash Splatter & Sword Blade -->
+<div class="sword-slash-beam absolute h-full w-36 bg-gradient-to-r from-transparent via-primary to-primary-fixed shadow-[0_0_24px_#be123c]" style="animation-delay: 2.2s;"></div>
+<span class="relative z-10 px-space-md font-label-sm text-label-sm text-inverse-on-surface font-mono">枯墨硃砂 · 斷海開山</span>
+</div>
+<div class="flex items-center justify-between relative z-10 font-label-sm text-label-sm text-on-surface-variant">
+<span>忽視防禦 100%</span>
+<span class="text-primary font-bold">金石鈐印重擊</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. 絕品法寶·七彩心法呼吸光環 (Heart Sutra Sacred Rings) - 6 cols -->
+<div class="lg:col-span-6 p-space-lg rounded-xl bg-surface-container-lowest shadow-md hover:shadow-xl transition-all duration-300 border border-outline-variant/50 relative overflow-hidden flex flex-col justify-between group">
+<!-- Header -->
+<div>
+<div class="flex items-center gap-space-xs text-primary font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[18px]">all_inclusive</span>
+<span>梵音凝氣 · 萬法歸一</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1">絕品法寶 · 菩提心法呼吸光環</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+九轉天經金梵真言自發旋轉，外層琉璃呼吸光暈隨修士吐納真氣律動。
+</p>
+</div>
+<!-- Sacred Rings Visualization -->
+<div class="relative w-full h-64 my-space-sm flex items-center justify-center bg-surface-container-low/60 rounded-xl overflow-hidden">
+<!-- Background Qi Haze -->
+<div class="absolute w-48 h-48 rounded-full bg-primary/10 blur-2xl animate-pulse-gentle"></div>
+<div class="absolute w-40 h-40 rounded-full bg-secondary/10 blur-xl animate-pulse-gentle" style="animation-delay: 2s;"></div>
+<!-- Concentric Rotating Mantra Rings -->
+<div class="relative w-52 h-52 flex items-center justify-center">
+<!-- Outer Ring with Sanskrit Characters -->
+<div class="absolute inset-0 rounded-full border border-dashed border-primary/40 animate-spin-slow"></div>
+<!-- Rotating Character Glyphs ring -->
+<svg class="absolute inset-0 w-full h-full animate-spin-slow" viewbox="0 0 200 200">
+<path d="M 100, 100 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0" fill="none" id="mantraCircle"></path>
+<text class="fill-primary font-serif text-[10px] tracking-[4px] font-bold" opacity="0.8">
+<textpath href="#mantraCircle">
+嗡嘛呢叭咪吽 · 踏雪笑傲 · 虛極靜篤 · 萬法朝元 ·
+</textpath>
+</text>
+</svg>
+<!-- Middle Ring -->
+<div class="w-36 h-36 rounded-full border-2 border-secondary/50 animate-spin-reverse-slow border-t-transparent border-b-transparent"></div>
+<!-- Inner Sacred Core -->
+<div class="w-20 h-20 rounded-full bg-gradient-to-tr from-primary via-primary-container to-secondary flex flex-col items-center justify-center text-on-primary shadow-[0_0_24px_rgba(190,18,60,0.4)] animate-pulse-gentle">
+<span class="font-display-lg text-headline-sm font-bold leading-none">蓮</span>
+<span class="font-label-sm text-[10px] opacity-80 uppercase tracking-widest mt-0.5">第九重</span>
+</div>
+</div>
+</div>
+<!-- Footnote -->
+<div class="flex items-center justify-between p-space-xs bg-surface-container-low rounded-lg font-label-sm text-label-sm">
+<span class="text-on-surface-variant">心法狀態：天人合一 (Harmonized)</span>
+<span class="text-primary font-bold">每秒恢復真氣 +320 點</span>
+</div>
+</div>
+<!-- 5. 水墨丹青·游標互動筆觸畫布 (Interactive Ink Splash Pad) - 6 cols -->
+<div class="lg:col-span-6 p-space-lg rounded-xl bg-surface-container-lowest shadow-md hover:shadow-xl transition-all duration-300 border border-outline-variant/50 relative overflow-hidden flex flex-col justify-between group">
+<!-- Header -->
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-space-xs text-secondary font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[18px]">draw</span>
+<span>筆走龍蛇 · 枯筆飛白</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mt-1">水墨丹青 · 游標互動試驗台</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+請在此區域內任意滑動游標，即刻綻放水墨飛白拖尾與硃砂落梅微粒。
+</p>
+</div>
+<button class="px-space-sm py-1 rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm" onclick="clearInkCanvas()">
+清空畫卷
+</button>
+</div>
+<!-- Canvas Area -->
+<div class="relative w-full h-64 my-space-sm rounded-xl bg-surface-container-low/40 border border-outline-variant/30 overflow-hidden cursor-crosshair" id="ink-canvas-container">
+<canvas class="w-full h-full block" id="inkCanvas"></canvas>
+<!-- Canvas Overlay Hint -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-500" id="canvas-hint">
+<div class="px-space-md py-1.5 rounded-full bg-surface-container-lowest/90 border border-outline-variant/40 shadow-sm text-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary">edit</span>
+揮灑游標 · 散發真氣雪魄筆墨
+</span>
+</div>
+</div>
+</div>
+<!-- Canvas Footer Status -->
+<div class="flex items-center justify-between p-space-xs bg-surface-container-low rounded-lg font-label-sm text-label-sm">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-on-surface-variant">筆意：徽州油煙松墨 + 硃砂落瓣</span>
+</div>
+<span class="font-mono text-on-surface-variant text-[11px]">CANVAS_PARTICLES: ACTIVE</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Summary Quote -->
+<section class="w-full py-space-xl text-center flex flex-col items-center justify-center gap-space-sm">
+<div class="w-12 h-1 bg-primary rounded-full mb-space-xs"></div>
+<blockquote class="font-headline-sm text-headline-sm text-on-surface max-w-xl italic">
+        「大雪滿弓刀，笑傲踏風行。白玉微瑕非為病，墨透千江自成春。」
+      </blockquote>
+<span class="font-label-md text-label-md text-on-surface-variant tracking-widest uppercase">
+        — 踏雪笑傲 核心網頁 UI 設計規範體系 · 武俠數位傳承
+      </span>
+</section>
+</div>
+</div>
+<script>
+  function setActiveTab(button) {
+    const parent = button.parentElement;
+    const tabs = parent.querySelectorAll('.demo-tab');
+    tabs.forEach(tab => {
+      tab.className = 'demo-tab px-space-md py-2 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-all flex items-center gap-space-xs';
+    });
+    button.className = 'demo-tab px-space-md py-2 rounded-lg bg-surface-container-lowest text-primary font-bold shadow-sm flex items-center gap-space-xs font-label-md text-label-md transition-all';
+  }
+
+  function toggleSwitch(btn) {
+    const thumb = btn.firstElementChild;
+    const isActive = thumb.classList.contains('translate-x-6');
+    if (isActive) {
+      thumb.classList.remove('translate-x-6');
+      thumb.classList.add('translate-x-0');
+      btn.classList.remove('bg-primary');
+      btn.classList.add('bg-surface-container-highest');
+    } else {
+      thumb.classList.remove('translate-x-0');
+      thumb.classList.add('translate-x-6');
+      btn.classList.remove('bg-surface-container-highest');
+      btn.classList.add('bg-primary');
+    }
+  }
+
+  // Section 10: Shield Pulse Interaction
+  function triggerShieldPulse(btn) {
+    btn.classList.add('scale-95');
+    setTimeout(() => {
+      btn.classList.remove('scale-95');
+    }, 150);
+    const card = btn.previousElementSibling;
+    const originalBorder = card.style.borderColor;
+    card.style.borderColor = '#5bb8fe';
+    card.style.boxShadow = '0 0 25px rgba(91, 184, 254, 0.6)';
+    setTimeout(() => {
+      card.style.borderColor = originalBorder;
+      card.style.boxShadow = '';
+    }, 600);
+  }
+
+  // Section 10: Interactive Ink Canvas
+  const canvas = document.getElementById('inkCanvas');
+  let ctx = null;
+  let particles = [];
+  let animId = null;
+
+  function initInkCanvas() {
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * window.devicePixelRatio || 500;
+    canvas.height = rect.height * window.devicePixelRatio || 250;
+    ctx = canvas.getContext('2d');
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+    function addParticle(x, y) {
+      const isPlum = Math.random() > 0.65;
+      particles.push({
+        x: x,
+        y: y,
+        vx: (Math.random() - 0.5) * 1.8,
+        vy: (Math.random() - 0.5) * 1.8 - 0.5,
+        radius: isPlum ? Math.random() * 4 + 2 : Math.random() * 6 + 3,
+        alpha: 0.85,
+        color: isPlum ? '#be123c' : '#191c1e',
+        shape: isPlum ? 'petal' : 'ink'
+      });
+      if (particles.length > 80) particles.shift();
+    }
+
+    const hint = document.getElementById('canvas-hint');
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (hint) hint.style.opacity = '0';
+      const b = canvas.getBoundingClientRect();
+      const mx = e.clientX - b.left;
+      const my = e.clientY - b.top;
+      addParticle(mx, my);
+      addParticle(mx + (Math.random() - 0.5) * 8, my + (Math.random() - 0.5) * 8);
+    });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (hint) hint.style.opacity = '0';
+      const b = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      if (!touch) return;
+      const mx = touch.clientX - b.left;
+      const my = touch.clientY - b.top;
+      addParticle(mx, my);
+    }, { passive: true });
+
+    function render() {
+      const w = canvas.width / window.devicePixelRatio;
+      const h = canvas.height / window.devicePixelRatio;
+      ctx.fillStyle = 'rgba(247, 249, 251, 0.12)';
+      ctx.fillRect(0, 0, w, h);
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.012;
+        p.radius *= 0.985;
+
+        if (p.alpha <= 0 || p.radius <= 0.5) {
+          particles.splice(i, 1);
+          i--;
+          continue;
+        }
+
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        if (p.shape === 'petal') {
+          ctx.ellipse(p.x, p.y, p.radius * 1.2, p.radius * 0.7, Math.PI / 4, 0, Math.PI * 2);
+        } else {
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        }
+        ctx.fill();
+        ctx.restore();
+      }
+
+      animId = requestAnimationFrame(render);
+    }
+
+    render();
+  }
+
+  function clearInkCanvas() {
+    if (!ctx || !canvas) return;
+    particles = [];
+    const w = canvas.width / window.devicePixelRatio;
+    const h = canvas.height / window.devicePixelRatio;
+    ctx.clearRect(0, 0, w, h);
+    const hint = document.getElementById('canvas-hint');
+    if (hint) hint.style.opacity = '1';
+  }
+
+  window.addEventListener('load', () => {
+    initInkCanvas();
+  });
+  window.addEventListener('resize', () => {
+    if (canvas) {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      if (ctx) ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+  });
+</script></main><footer class="w-full bg-surface-container-low py-space-xl"><div class="w-full px-margin flex flex-col md:flex-row items-center justify-between gap-space-lg"><div class="flex flex-col gap-space-xs text-center md:text-left"><div><span class="font-headline-sm text-headline-sm text-on-surface font-semibold">踏雪笑傲</span><span class="ml-space-sm font-label-md text-label-md text-on-surface-variant">Web UI Architecture</span></div><p class="font-body-sm text-body-sm text-on-surface-variant">© 2025 SNOW WANDERER ONLINE. 踏雪笑傲網頁元件設計系統</p></div><div class="flex items-center gap-space-lg"><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" data-path="official-portal" href="#">官網首頁</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" data-path="documentation" href="#">開發者文件</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" data-path="changelog" href="#">版本更迭誌</a><a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" data-path="design-tokens" href="#">設計標記庫</a></div></div></footer>
+</body></html>

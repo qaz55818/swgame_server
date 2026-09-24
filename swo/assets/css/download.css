@@ -1,0 +1,77 @@
+/* =============================================================
+   踏雪笑傲 · 下載頁專屬樣式（模組：download）
+   飄雪背景動效
+   ============================================================= */
+
+/* ---------- 捲軸 ---------- */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- 飄雪 ---------- */
+@keyframes snowfall {
+  0% { transform: translateY(-10px) translateX(0); opacity: 0; }
+  20% { opacity: .8; }
+  80% { opacity: .6; }
+  100% { transform: translateY(100vh) translateX(30px); opacity: 0; }
+}
+
+.snowflake {
+  position: absolute;
+  top: -20px;
+  background: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+/* ---------- 排版字階（補齊 download-tailwind 缺少的共用字階，與其他頁面一致） ---------- */
+.font-headline-xl,
+.font-headline-2xl {
+  font-family: "EB Garamond", serif;
+}
+
+.text-headline-lg {
+  font-size: 28px;
+  line-height: 38px;
+  letter-spacing: .04em;
+  font-weight: 600;
+}
+
+.text-headline-md {
+  font-size: 22px;
+  line-height: 32px;
+  letter-spacing: .03em;
+  font-weight: 600;
+}
+
+.text-body-lg {
+  font-size: 18px;
+  line-height: 30px;
+}
+
+.text-body-md {
+  font-size: 15px;
+  line-height: 26px;
+  letter-spacing: .01em;
+  font-weight: 400;
+}
+
+.text-label-md {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: .12em;
+  font-weight: 600;
+}
+
+.text-label-sm {
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: .16em;
+  font-weight: 700;
+}
+
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}

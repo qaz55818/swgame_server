@@ -1,0 +1,81 @@
+/* =============================================================
+   踏雪笑傲 · 活動頁專屬樣式（模組：events）
+   活動卡牌動效、標題流光與內容文章排版
+   ============================================================= */
+
+/* ---------- 捲軸 ---------- */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- 動畫 ---------- */
+@keyframes evFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes evShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes evPing {
+  0% { transform: scale(1); opacity: .7; }
+  70%, 100% { transform: scale(2.2); opacity: 0; }
+}
+
+.ev-float {
+  animation: evFloat 6s ease-in-out infinite;
+}
+
+.ev-shimmer {
+  background: linear-gradient(90deg, #be123c 0%, #f43f5e 20%, #be123c 40%, #be123c 100%);
+  background-size: 200% 100%;
+  animation: evShimmer 4s linear infinite;
+}
+
+.ev-card {
+  transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s ease;
+}
+
+.ev-card:hover {
+  transform: translateY(-6px);
+}
+
+/* ---------- 內容文章排版 ---------- */
+.ev-content h2 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 1.6rem 0 .6rem;
+}
+
+.ev-content h3 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #95002a;
+  margin: 1.4rem 0 .5rem;
+}
+
+.ev-content p {
+  font-size: 15px;
+  line-height: 2;
+  color: #334155;
+  margin: .7rem 0;
+}
+
+.ev-content ul {
+  list-style: disc;
+  padding-left: 1.4rem;
+  margin: .7rem 0;
+  color: #334155;
+  font-size: 15px;
+  line-height: 2;
+}
+
+.ev-content img {
+  max-width: 100%;
+  border-radius: .4rem;
+}

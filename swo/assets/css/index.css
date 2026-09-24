@@ -1,0 +1,222 @@
+/* =============================================================
+   踏雪笑傲 · 首頁專屬樣式（模組：index）
+   主視覺動畫、金色流光、水墨玻璃與宣傳影片彈窗
+   ============================================================= */
+
+/* ---------- 捲軸 ---------- */
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+  border: 2px solid #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.news-tabs {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.news-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Hero Keyframes & Aesthetic Touches ---------- */
+@keyframes subtleFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-7px) scale(1.008); }
+}
+
+@keyframes bgDrift {
+  0%, 100% { transform: scale(1.02) translate(0, 0); }
+  50% { transform: scale(1.06) translate(-8px, -4px); }
+}
+
+@keyframes goldShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes lightSweep {
+  0% { transform: translateX(-150%) skewX(-25deg); }
+  40%, 100% { transform: translateX(250%) skewX(-25deg); }
+}
+
+.animate-bg-drift {
+  animation: bgDrift 28s ease-in-out infinite alternate;
+}
+
+.animate-hero-float {
+  animation: subtleFloat 7s ease-in-out infinite;
+}
+
+.gold-shimmer-text {
+  background: linear-gradient(110deg, #111827 0%, #374151 25%, #d97706 48%, #fef08a 52%, #991b1b 65%, #0f172a 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer 9s linear infinite;
+}
+
+.gold-light-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.gold-light-sweep::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .4), rgba(254, 240, 138, .5), transparent);
+  animation: lightSweep 4.5s cubic-bezier(.4, 0, .2, 1) infinite;
+}
+
+.jade-glass {
+  background: rgba(255, 255, 255, .78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, .9);
+  box-shadow: 0 10px 30px -10px rgba(15, 23, 42, .08), inset 0 1px 0 rgba(255, 255, 255, .9);
+}
+
+/* ---------- 宣傳影片彈出視窗 ---------- */
+.pv-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .25s ease, visibility .25s;
+}
+
+.pv-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.pv-modal__bd {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 6, 23, .74);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.pv-modal__dlg {
+  position: relative;
+  width: 100%;
+  max-width: 56rem;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(150deg, #0b1120, #111827);
+  border: 1px solid rgba(148, 163, 184, .25);
+  border-radius: .6rem;
+  overflow: hidden;
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .85);
+  transform: translateY(14px) scale(.97);
+  transition: transform .3s cubic-bezier(.2, .8, .2, 1);
+}
+
+.pv-modal.is-open .pv-modal__dlg {
+  transform: translateY(0) scale(1);
+}
+
+.pv-modal__dlg iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.pv-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: .6rem;
+  color: #e2e8f0;
+  background: radial-gradient(circle at 50% 35%, rgba(56, 189, 248, .18), transparent 60%),
+              radial-gradient(circle at 70% 80%, rgba(190, 18, 60, .22), transparent 65%),
+              #0b1120;
+}
+
+.pv-placeholder .material-symbols-outlined {
+  font-size: 64px;
+  color: #fbbf24;
+}
+
+.pv-modal__close {
+  position: absolute;
+  top: .65rem;
+  right: .7rem;
+  z-index: 3;
+  width: 2.3rem;
+  height: 2.3rem;
+  border: 0;
+  border-radius: .5rem;
+  background: rgba(15, 23, 42, .55);
+  color: #fff;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.pv-modal__close:hover {
+  background: rgba(190, 18, 60, .85);
+}
+
+/* ---------- 頂部品牌 Logo（圓形水墨徽章） ---------- */
+.header-brand-logo {
+  height: 3.5rem;
+  width: 3.5rem;
+  flex: none;
+  border-radius: 9999px;
+  object-fit: cover;
+  object-position: center;
+  background: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 8px 20px -8px rgba(15, 23, 42, 0.4),
+    0 0 0 1px rgba(148, 163, 184, 0.4);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+
+a:hover > .header-brand-logo,
+a:focus-visible > .header-brand-logo {
+  transform: scale(1.06) rotate(-2deg);
+  box-shadow:
+    0 12px 26px -8px rgba(190, 18, 60, 0.45),
+    0 0 0 1px rgba(190, 18, 60, 0.35);
+}
+
+@media (max-width: 640px) {
+  .header-brand-logo {
+    height: 2.75rem;
+    width: 2.75rem;
+  }
+}

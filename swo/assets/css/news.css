@@ -1,0 +1,156 @@
+/* =============================================================
+   踏雪笑傲 · 新聞頁專屬樣式（模組：news）
+   公告內文（.news-content）文章排版
+   ============================================================= */
+
+/* ---------- 捲軸 ---------- */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- 內文排版 ---------- */
+.news-content h2 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 1.6rem 0 .6rem;
+  letter-spacing: .04em;
+}
+
+.news-content h3 {
+  font-family: "Noto Serif TC", serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #991b1b;
+  margin: 1.4rem 0 .5rem;
+  letter-spacing: .03em;
+}
+
+.news-content p {
+  font-size: 15px;
+  line-height: 2;
+  color: #334155;
+  margin: .7rem 0;
+}
+
+.news-content ul {
+  list-style: disc;
+  padding-left: 1.4rem;
+  margin: .7rem 0;
+  color: #334155;
+  font-size: 15px;
+  line-height: 2;
+}
+
+.news-content strong {
+  color: #0f172a;
+}
+
+.news-content a {
+  color: #991b1b;
+  text-decoration: underline;
+}
+
+.news-content h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 1.1rem 0 .4rem;
+}
+
+.news-content ol {
+  list-style: decimal;
+  padding-left: 1.4rem;
+  margin: .7rem 0;
+  color: #334155;
+  font-size: 15px;
+  line-height: 2;
+}
+
+.news-content blockquote {
+  border-left: 3px solid #be123c;
+  background: #fef2f2;
+  padding: .6rem .9rem;
+  margin: .8rem 0;
+  color: #7f1d1d;
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.news-content pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 1rem;
+  border-radius: .4rem;
+  overflow: auto;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.news-content code {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: .05rem .35rem;
+  border-radius: .3rem;
+  font-family: monospace;
+  font-size: .88em;
+  color: #be123c;
+}
+
+.news-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: .4rem;
+  margin: .6rem 0;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, .12);
+}
+
+.news-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: .9rem 0;
+  font-size: 14px;
+}
+
+.news-content th,
+.news-content td {
+  border: 1px solid #cbd5e1;
+  padding: .5rem .7rem;
+}
+
+.news-content th {
+  background: #f8fafc;
+  font-weight: 700;
+}
+
+.news-content hr {
+  border: 0;
+  border-top: 1px dashed #cbd5e1;
+  margin: 1.2rem 0;
+}
+
+.news-content iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border-radius: .4rem;
+  margin: .6rem 0;
+}
+
+.news-content video {
+  max-width: 100%;
+  border-radius: .4rem;
+  margin: .6rem 0;
+}
+
+.news-content figure {
+  margin: .9rem 0;
+}
+
+.news-content figcaption {
+  text-align: center;
+  font-size: 13px;
+  color: #64748b;
+  margin-top: .3rem;
+}
