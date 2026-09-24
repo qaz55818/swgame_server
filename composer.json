@@ -1,0 +1,14 @@
+{
+    "name": "snow-wanderer/sw",
+    "description": "踏雪笑傲 · 官方網站（含後台遠端伺服器管理）",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=7.4",
+        "phpseclib/phpseclib": "^3.0"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

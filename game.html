@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>雀神爭霸 · 皇家尊榮麻將老虎機</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&amp;family=Noto+Serif+TC:wght@600;700;900&amp;family=Ma+Shan+Zheng&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --felt-base: #041f13;
+            --gold-gradient: linear-gradient(135deg, #fff2a3 0%, #ffd043 35%, #e59c00 65%, #915a00 100%);
+            --gold-border: #f9d368;
+            --jade-dark: #052a1b;
+        }
+
+        body {
+            font-family: 'Noto Serif TC', serif;
+            background: radial-gradient(circle at 50% 25%, #0e3d28 0%, #061e14 55%, #010805 100%);
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
+            overflow-x: hidden;
+            transition: background 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body.free-spin-active {
+            background: radial-gradient(circle at 50% 25%, #500808 0%, #260505 55%, #0d0101 100%);
+        }
+
+        /* 奢華流金文字效果 */
+        .gold-text {
+            background: linear-gradient(180deg, #ffffff 0%, #fff0a4 25%, #f7c948 60%, #b87b12 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.85));
+        }
+
+        .calligraphy-font {
+            font-family: 'Ma Shan Zheng', cursive;
+        }
+
+        /* 頂級絲絨與古殿暗紋背景台面 */
+        .luxury-felt {
+            background-color: #062b19;
+            background-image: 
+                radial-gradient(circle at 50% 40%, rgba(245, 196, 66, 0.12) 0%, transparent 68%),
+                radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
+                repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.06) 0px, rgba(0, 0, 0, 0.06) 2px, transparent 2px, transparent 10px);
+            box-shadow: inset 0 0 45px rgba(0, 0, 0, 0.95), inset 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .free-spin-active .luxury-felt {
+            background-color: #380808;
+            background-image: 
+                radial-gradient(circle at 50% 40%, rgba(255, 215, 0, 0.2) 0%, transparent 70%),
+                radial-gradient(circle at 80% 20%, rgba(239, 68, 68, 0.15) 0%, transparent 45%),
+                repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.1) 0px, rgba(0, 0, 0, 0.1) 2px, transparent 2px, transparent 10px);
+            box-shadow: inset 0 0 50px rgba(220, 38, 38, 0.45), inset 0 0 20px rgba(0, 0, 0, 0.9);
+        }
+
+        /* 3D 旗艦級象牙白玉麻將牌 */
+        .mahjong-tile {
+            position: relative;
+            background: linear-gradient(170deg, #ffffff 0%, #fffef7 45%, #f5ecd3 85%, #ebdcb3 100%);
+            border-radius: 12px;
+            border-top: 1.5px solid rgba(255, 255, 255, 0.95);
+            border-left: 1.5px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 
+                inset 1px 1px 2px rgba(255, 255, 255, 1),
+                inset -2px -2px 4px rgba(185, 160, 115, 0.45),
+                0 4px 0 0 #d9cca4,
+                0 8px 0 0 #0d6849,
+                0 12px 0 0 #053b29,
+                0 18px 22px rgba(0, 0, 0, 0.75);
+            transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .free-spin-active .mahjong-tile {
+            background: linear-gradient(170deg, #ffffff 0%, #fff9f0 50%, #fdeacc 100%);
+            box-shadow: 
+                inset 1px 1px 2px rgba(255, 255, 255, 1),
+                inset -2px -2px 4px rgba(255, 180, 50, 0.35),
+                0 4px 0 0 #e6c575,
+                0 8px 0 0 #991b1b,
+                0 12px 0 0 #520909,
+                0 18px 24px rgba(0, 0, 0, 0.85);
+        }
+
+        /* 麻將牌表面象牙包漿玉質反光 */
+        .mahjong-tile::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            right: 5px;
+            height: 40%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.2) 60%, transparent 100%);
+            border-radius: 9px 9px 45% 45%;
+            pointer-events: none;
+        }
+
+        .reel-viewport {
+            position: relative;
+            overflow: hidden;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+        }
+
+        .reel-track {
+            will-change: transform, filter;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .blur-fast {
+            filter: blur(4px) brightness(1.1);
+            transform: scaleY(1.08);
+        }
+
+        /* 中獎牌面：古典燙金迴紋雕花動效 */
+        @keyframes tile-win-pulse {
+            0%, 100% {
+                transform: scale(1.06) translateY(0);
+                filter: brightness(1.25) contrast(1.15) drop-shadow(0 0 16px rgba(245, 158, 11, 0.85));
+                box-shadow: 
+                    inset 0 0 12px rgba(255, 215, 0, 0.9),
+                    0 0 25px rgba(245, 158, 11, 0.9),
+                    0 0 45px rgba(220, 38, 38, 0.5),
+                    0 16px 20px rgba(0, 0, 0, 0.8);
+            }
+            50% {
+                transform: scale(1.18) translateY(-8px);
+                filter: brightness(1.55) contrast(1.3) drop-shadow(0 0 28px #fde047);
+                box-shadow: 
+                    inset 0 0 24px rgba(255, 255, 255, 0.95),
+                    0 0 40px rgba(245, 158, 11, 1),
+                    0 0 75px rgba(239, 68, 68, 0.9),
+                    0 25px 35px rgba(0, 0, 0, 0.95);
+            }
+        }
+
+        .tile-win {
+            animation: tile-win-pulse 1.05s infinite ease-in-out;
+            z-index: 40;
+            position: relative;
+        }
+
+        /* 牌位金邊光環 */
+        .tile-win::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 14px;
+            border: 2px solid #facc15;
+            box-shadow: 0 0 15px #f59e0b, inset 0 0 8px #e11d48;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        @keyframes screen-shake {
+            0%, 100% { transform: translate(0, 0); }
+            20% { transform: translate(-6px, 5px) rotate(-0.6deg); }
+            40% { transform: translate(6px, -4px) rotate(0.6deg); }
+            60% { transform: translate(-5px, -5px); }
+            80% { transform: translate(5px, 4px); }
+        }
+
+        .shake-screen {
+            animation: screen-shake 0.45s ease-in-out;
+        }
+
+        .btn-gold-3d {
+            background: linear-gradient(180deg, #ffe082 0%, #f59e0b 50%, #b45309 100%);
+            box-shadow: 0 4px 0 #78350f, 0 8px 15px rgba(0,0,0,0.5);
+            border-top: 1px solid rgba(255,255,255,0.7);
+        }
+        .btn-gold-3d:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #78350f, 0 3px 8px rgba(0,0,0,0.4);
+        }
+
+        .btn-red-3d {
+            background: linear-gradient(180deg, #f87171 0%, #dc2626 50%, #7f1d1d 100%);
+            box-shadow: 0 6px 0 #450a0a, 0 12px 25px rgba(220,38,38,0.45);
+            border-top: 1.5px solid rgba(255,255,255,0.6);
+        }
+        .btn-red-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #450a0a, 0 5px 12px rgba(220,38,38,0.3);
+        }
+
+        #paylineCanvas {
+            pointer-events: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 30;
+        }
+
+        /* 中獎立體金印彈出動畫 */
+        @keyframes seal-badge-pop {
+            0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+            60% { transform: scale(1.15) rotate(2deg); opacity: 1; }
+            80% { transform: scale(0.95) rotate(-1deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .seal-pop {
+            animation: seal-badge-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes ray-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .ray-spin-anim {
+            animation: ray-spin 10s linear infinite;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-amber-100 flex flex-col items-center justify-between p-2 sm:p-5 relative">
+<header class="w-full max-w-2xl flex items-center justify-between py-2.5 px-4 sm:px-5 rounded-2xl bg-black/75 border border-amber-400/50 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.8)] z-20">
+<div class="flex items-center space-x-3.5">
+<div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-300 via-amber-500 to-yellow-800 flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.6)] border border-amber-100/70 relative overflow-hidden">
+<span class="text-2xl font-black text-emerald-950 calligraphy-font">雀</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h1 class="text-xl sm:text-2xl font-black tracking-wider gold-text">
+                        雀神爭霸
+                    </h1>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-gradient-to-r from-amber-600 to-yellow-500 text-stone-950 border border-yellow-200/60 shadow-sm">
+                        ROYAL DELUXE
+                    </span>
+</div>
+<p class="text-[10px] sm:text-xs text-emerald-400 font-mono tracking-widest flex items-center gap-1.5 mt-0.5">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    IMPERIAL CASINO VIP ROOM
+                </p>
+</div>
+</div>
+<div class="flex items-center space-x-2 sm:space-x-2.5">
+<div class="hidden px-3 py-1 rounded-xl bg-gradient-to-r from-red-600 via-red-500 to-amber-600 border border-amber-200 text-yellow-100 text-xs font-black animate-pulse shadow-[0_0_15px_rgba(239,68,68,0.7)]" id="multiplierBadge">
+                連莊 <span class="text-sm font-mono" id="multiplierValue">x2</span>
+</div>
+<button class="p-2 sm:p-2.5 rounded-xl bg-stone-900/90 border border-amber-500/40 hover:border-amber-400 text-amber-300 transition active:scale-95 shadow-md group" id="soundToggleBtn" title="音效設定">
+<svg class="w-5 h-5 text-amber-400 group-hover:scale-110 transition-transform" fill="none" id="soundIconOn" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<svg class="w-5 h-5 text-stone-500 hidden" fill="none" id="soundIconOff" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+<button class="px-3 sm:px-3.5 py-1.5 text-xs font-black rounded-xl btn-gold-3d text-emerald-950 transition active:scale-95 flex items-center gap-1" id="paytableBtn">
+<span class="">番數賠率</span>
+</button>
+<button class="px-2.5 sm:px-3 py-1.5 text-xs font-bold rounded-xl bg-gradient-to-b from-stone-800 to-stone-950 text-amber-300 border border-amber-400/50 hover:border-amber-300 shadow-md transition active:scale-95 flex items-center gap-1.5" id="adminPanelBtn">
+<svg class="w-3.5 h-3.5 text-amber-400 animate-spin" fill="none" stroke="currentColor" style="animation-duration: 9s;" viewbox="0 0 24 24">
+<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<span class="hidden sm:inline">控盤</span>
+</button>
+</div>
+</header>
+<main class="w-full max-w-2xl my-auto flex flex-col items-center" id="slotMachineContainer">
+<!-- 頂部招牌掛飾 -->
+<div class="relative w-full px-6 flex items-center justify-between -mb-3 z-10">
+<div class="h-3 w-20 sm:w-28 bg-gradient-to-r from-transparent via-amber-300 to-amber-500 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.8)]"></div>
+<div class="px-5 sm:px-7 py-1.5 bg-gradient-to-r from-red-900 via-red-700 to-red-900 border-2 border-amber-300 rounded-full text-amber-200 font-extrabold text-xs sm:text-sm tracking-widest shadow-[0_0_20px_rgba(220,38,38,0.7)] flex items-center gap-2" id="bonusStatusBanner">
+<span class="text-amber-300 animate-spin" style="animation-duration: 4s;">❖</span>
+<span class="font-bold" id="bannerGameModeText">五線齊鳴 · 3個【天胡】觸發連莊大滿貫</span>
+<span class="text-amber-300 animate-spin" style="animation-duration: 4s;">❖</span>
+</div>
+<div class="h-3 w-20 sm:w-28 bg-gradient-to-l from-transparent via-amber-300 to-amber-500 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.8)]"></div>
+</div>
+<div class="relative w-full rounded-[2.2rem] p-3.5 sm:p-5 bg-gradient-to-b from-[#38200d] via-[#122e1f] to-[#04110b] border-[5px] border-[#e8ba4b] shadow-[0_25px_60px_rgba(0,0,0,0.95),0_0_30px_rgba(245,158,11,0.25)]">
+<div class="absolute -top-3.5 -left-3.5 text-amber-300 text-3xl">⚜</div>
+<div class="absolute -top-3.5 -right-3.5 text-amber-300 text-3xl">⚜</div>
+<div class="absolute -bottom-3.5 -left-3.5 text-amber-300 text-3xl">⚜</div>
+<div class="absolute -bottom-3.5 -right-3.5 text-amber-300 text-3xl">⚜</div>
+<!-- 牌面展示區 -->
+<div class="relative rounded-2xl p-3 sm:p-4 luxury-felt border-2 border-amber-500/50 shadow-inner overflow-hidden">
+<div class="absolute left-1.5 top-0 bottom-0 flex flex-col justify-around text-[10px] font-mono text-amber-300 font-black z-20">
+<span class="px-1.5 py-0.5 bg-black/80 rounded-md border border-amber-500/50 shadow-md">L1</span>
+<span class="px-1.5 py-0.5 bg-black/80 rounded-md border border-amber-500/50 shadow-md">L2</span>
+<span class="px-1.5 py-0.5 bg-black/80 rounded-md border border-amber-500/50 shadow-md">L3</span>
+</div>
+<div class="absolute right-1.5 top-0 bottom-0 flex flex-col justify-around text-[10px] font-mono text-amber-300 font-black z-20">
+<span class="px-1.5 py-0.5 bg-black/80 rounded-md border border-amber-500/50 shadow-md">L4</span>
+<span class="px-1.5 py-0.5 bg-black/80 rounded-md border border-amber-500/50 shadow-md">L2</span>
+<span class="px-1.5 py-0.5 bg-black/80 rounded-md border border-amber-500/50 shadow-md">L5</span>
+</div>
+<canvas height="412" id="paylineCanvas" width="619"></canvas>
+<!-- 中獎中國風立體金印浮現徽章 -->
+<div class="pointer-events-none absolute inset-0 z-40 flex items-center justify-center opacity-0 transition-opacity duration-300" id="orientalWinBadge">
+<div class="relative flex flex-col items-center justify-center">
+<div class="absolute w-72 h-72 -z-10 rounded-full bg-gradient-to-tr from-amber-400/25 via-yellow-200/40 to-red-500/20 blur-lg ray-spin-anim"></div>
+<div class="relative flex flex-col items-center justify-center px-6 py-3.5 rounded-3xl bg-gradient-to-b from-red-800 via-stone-950 to-black border-2 border-amber-300 shadow-[0_0_40px_rgba(245,158,11,0.9)] backdrop-blur-md" id="winSealCard">
+<div class="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-500/20 border border-amber-300/60 mb-1">
+<span class="text-xs text-amber-300 animate-bounce">✨</span>
+<span class="text-[11px] font-mono text-amber-200 font-black tracking-widest" id="sealSubText">三線齊鳴 · 大吉大利</span>
+<span class="text-xs text-amber-300 animate-bounce">✨</span>
+</div>
+<div class="flex items-center gap-2.5">
+<span class="text-2xl text-amber-300">🀄</span>
+<h3 class="text-2xl sm:text-3xl font-black calligraphy-font gold-text tracking-widest filter drop-shadow" id="sealTitle">
+                                    食 胡 大 吉
+                                </h3>
+<span class="text-2xl text-amber-300">🀄</span>
+</div>
+<div class="text-2xl sm:text-3xl font-black text-yellow-300 font-mono tracking-tight filter drop-shadow mt-0.5" id="sealAmount">
+                                +0
+                            </div>
+</div>
+</div>
+</div>
+<!-- 3 軸滾輪 -->
+<div class="grid grid-cols-3 gap-2.5 sm:gap-4 h-[320px] sm:h-[380px] mx-4 sm:mx-6">
+<div class="reel-viewport h-full bg-emerald-950/80 rounded-xl border border-emerald-500/50 shadow-[inset_0_4px_12px_rgba(0,0,0,0.9)]">
+<div class="reel-track flex flex-col items-center" id="reel-0"><div class="mahjong-tile w-[82px] h-[98px] sm:w-[102px] sm:h-[118px] m-1 cursor-pointer select-none relative" data-tile-key="BAI">
+<svg class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md" viewbox="0 0 100 130">
+<defs><lineargradient id="baiGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" stop-color="#3b82f6"></stop><stop offset="100%" stop-color="#1d4ed8"></stop></lineargradient></defs>
+<rect fill="#ffffff" height="116" rx="10" stroke="#e2e8f0" stroke-width="1.5" width="86" x="7" y="7"></rect>
+<rect fill="none" height="82" rx="8" stroke="url(#baiGrad)" stroke-width="8" width="54" x="23" y="24"></rect>
+</svg></div><div class="mahjong-tile w-[82px] h-[98px] sm:w-[102px] sm:h-[118px] m-1 cursor-pointer select-none relative" data-tile-key="BAI">
+<svg class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md" viewbox="0 0 100 130">
+<defs><lineargradient id="baiGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" stop-color="#3b82f6"></stop><stop offset="100%" stop-color="#1d4ed8"></stop></lineargradient></defs>
+<rect fill="#ffffff" height="116" rx="10" stroke="#e2e8f0" stroke-width="1.5" width="86" x="7" y="7"></rect>
+<rect fill="none" height="82" rx="8" stroke="url(#baiGrad)" stroke-width="8" width="54" x="23" y="24"></rect>
+</svg></div><div class="mahjong-tile w-[82px] h-[98px] sm:w-[102px] sm:h-[118px] m-1 cursor-pointer select-none relative" data-tile-key="FA">
+<svg class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md" viewbox="0 0 100 130">
+<defs><lineargradient id="faGrad" x1="0%" x2="0%" y1="0%" y2="100%"><stop offset="0%" stop-color="#22c55e"></stop><stop offset="100%" stop-color="#14532d"></stop></lineargradient></defs>
+<rect fill="#ffffff" height="116" rx="10" stroke="#e2e8f0" stroke-width="1.5" width="86" x="7" y="7"></rect>
+<text fill="url(#faGrad)" font-family="'Noto Serif TC', serif" font-size="76" font-weight="900" text-anchor="middle" x="50" y="90">發</text>
+</svg></div></div>
+</div>
+<div class="reel-viewport h-full bg-emerald-950/80 rounded-xl border border-emerald-500/50 shadow-[inset_0_4px_12px_rgba(0,0,0,0.9)]">
+<div class="reel-track flex flex-col items-center" id="reel-1"><div class="mahjong-tile w-[82px] h-[98px] sm:w-[102px] sm:h-[118px] m-1 cursor-pointer select-none relative" data-tile-key="BAI">
+<svg class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md" viewbox="0 0 100 130">
+<defs><lineargradient id="baiGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" stop-color="#3b82f6"></stop><stop offset="100%" stop-color="#1d4ed8"></stop></lineargradient></defs>
+<rect fill="#ffffff" height="116" rx="10" stroke="#e2e8f0" stroke-width="1.5" width="86" x="7" y="7"></rect>
+<rect fill="none" height="82" rx="8" stroke="url(#baiGrad)" stroke-width="8" width="54" x="23" y="24"></rect>
+</svg></div><div class="mahjong-tile w-[82px] h-[98px] sm:w-[102px] sm:h-[118px] m-1 cursor-pointer select-none relative" data-tile-key="WAN">
+<svg class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md" viewbox="0 0 100 130">
+<rect fill="#ffffff" height="116" rx="10" stroke="#e2e8f0" stroke-width="1.5" width="86" x="7" y="7"></rect>
+<text fill="#dc2626" font-family="'Noto Serif TC', serif" font-size="46" font-weight="900" text-anchor="middle" x="50" y="58">九</text>
+<text fill="#dc2626" font-family="'Noto Serif TC', serif" font-size="46" font-weight="900" text-anchor="middle" x="50" y="105">萬</text>
+</svg></div><div class="mahjong-tile w-[82px] h-[98px] sm:w-[102px] sm:h-[118px] m-1 cursor-pointer select-none relative" data-tile-key="BAI">
+<svg class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md" viewbox="0 0 100 130">
+<defs><lineargradient id="baiGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" stop-color="#3b82f6"></stop><stop offset="100%" stop-color="#1d4ed8"></stop></lineargradient></defs>
+<rect fill="#ffffff" height="116" rx="10" stroke="#e2e8f0" stroke-width="1.5" width="86" x="7" y="7"></rect>
+<rect fill="none" height="82" rx="8" stroke="url(#baiGrad)" stroke-width="8" width="54" x="23" y="24"></rect>
+</svg></div></div>
+</div>
+<div class="reel-viewport h-full bg-emerald-950/80 rounded-xl border border-emerald-500/50 shadow-[inset_0_4px_12px_rgba(0,0,0,0.9)]">
+<div class="reel-track flex flex-col items-center" id="reel-2"><div class="mahjong-tile w-[82px] h-[98px] sm:w-[102px] sm:h-[118px] m-1 cursor-pointer select-none relative" data-tile-key="TONG">
+<svg class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md" viewbox="0 0 100 130">
+<rect fill="#ffffff" height="116" rx="10" stroke="#e2e8f0" stroke-width="1.5" width="86" x="7" y="7"></rect>
+<circle cx="50" cy="65" fill="#047857" r="33" stroke="#b91c1c" stroke-width="5.5"></circle>
+<circle cx="50" cy="65" fill="#dc2626" r="14"></circle><circle cx="50" cy="65" fill="#fef08a" r="6"></circle>
+</svg></div><div class="mahjong-tile w-[82px] h-[98px] sm:w-[102px] sm:h-[118px] m-1 cursor-pointer select-none relative" data-tile-key="BAI">
+<svg class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md" viewbox="0 0 100 130">
+<defs><lineargradient id="baiGrad" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" stop-color="#3b82f6"></stop><stop offset="100%" stop-color="#1d4ed8"></stop></lineargradient></defs>
+<rect fill="#ffffff" height="116" rx="10" stroke="#e2e8f0" stroke-width="1.5" width="86" x="7" y="7"></rect>
+<rect fill="none" height="82" rx="8" stroke="url(#baiGrad)" stroke-width="8" width="54" x="23" y="24"></rect>
+</svg></div><div class="mahjong-tile w-[82px] h-[98px] sm:w-[102px] sm:h-[118px] m-1 cursor-pointer select-none relative" data-tile-key="ZHONG">
+<svg class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md" viewbox="0 0 100 130">
+<defs><lineargradient id="zhongGrad" x1="0%" x2="0%" y1="0%" y2="100%"><stop offset="0%" stop-color="#ef4444"></stop><stop offset="100%" stop-color="#991b1b"></stop></lineargradient></defs>
+<rect fill="#ffffff" height="116" rx="10" stroke="#e2e8f0" stroke-width="1.5" width="86" x="7" y="7"></rect>
+<text fill="url(#zhongGrad)" font-family="'Noto Serif TC', serif" font-size="76" font-weight="900" text-anchor="middle" x="50" y="90">中</text>
+</svg></div></div>
+</div>
+</div>
+<div class="absolute left-5 right-5 top-1/2 -translate-y-1/2 h-[100px] sm:h-[122px] pointer-events-none border-y-2 border-amber-400/40 bg-gradient-to-r from-transparent via-amber-300/10 to-transparent shadow-[0_0_15px_rgba(245,158,11,0.15)]"></div>
+</div>
+<!-- 儀表盤 -->
+<div class="grid grid-cols-3 gap-2.5 sm:gap-3.5 mt-4">
+<div class="bg-gradient-to-b from-stone-900/95 to-black/90 rounded-2xl p-2 sm:p-3 border border-amber-500/40 text-center shadow-lg backdrop-blur">
+<p class="text-[10px] sm:text-xs text-amber-300/80 font-bold tracking-wider flex items-center justify-center gap-1">
+<span class="">🪙</span> 總持籌碼
+                    </p>
+<div class="text-base sm:text-2xl font-black text-amber-300 font-mono tracking-tight mt-0.5 filter drop-shadow" id="balanceDisplay">12,888</div>
+</div>
+<div class="bg-gradient-to-b from-red-950/90 to-stone-950/90 rounded-2xl p-2 sm:p-3 border border-red-500/60 text-center shadow-lg relative overflow-hidden backdrop-blur">
+<p class="text-[10px] sm:text-xs text-red-300 font-bold tracking-wider flex items-center justify-center gap-1">
+<span class="">🀄</span> 本局胡數
+                    </p>
+<div class="text-base sm:text-2xl font-black text-red-400 font-mono tracking-tight mt-0.5 filter drop-shadow" id="winDisplay">
+                        0
+                    </div>
+<div class="absolute -right-5 -bottom-5 w-14 h-14 bg-gradient-to-tr from-red-700 to-yellow-500 rounded-full flex items-center justify-center text-xs text-white font-black opacity-0 transform rotate-12 transition-all duration-300 shadow-[0_0_15px_rgba(239,68,68,0.8)] border border-yellow-200" id="huBadge">
+                        食胡!
+                    </div>
+</div>
+<div class="bg-gradient-to-b from-emerald-950/90 to-stone-950/90 rounded-2xl p-2 sm:p-3 border border-emerald-500/50 text-center shadow-lg backdrop-blur">
+<p class="text-[10px] sm:text-xs text-emerald-300/80 font-bold tracking-wider flex items-center justify-center gap-1">
+<span class="">⚖️</span> 單局底注
+                    </p>
+<div class="text-base sm:text-2xl font-black text-emerald-400 font-mono tracking-tight mt-0.5 filter drop-shadow" id="betDisplay">100</div>
+</div>
+</div>
+<!-- 賀詞跑馬 -->
+<div class="mt-3 py-2 px-3 rounded-xl bg-black/70 border border-amber-600/40 text-center min-h-[38px] flex items-center justify-center shadow-inner">
+<span class="text-xs sm:text-sm font-bold text-amber-200 flex items-center gap-1.5" id="bannerText">
+                    ✨ 吉星高照！百搭金牌隨意配，天胡連莊送好禮！
+                </span>
+</div>
+</div>
+<!-- 下方控制 -->
+<div class="w-full mt-3 flex items-center justify-between gap-2 sm:gap-3 p-2 sm:p-3 rounded-2xl sm:rounded-3xl bg-black/80 border-2 border-amber-500/50 shadow-[0_10px_35px_rgba(0,0,0,0.85)] backdrop-blur-md select-none">
+<!-- 左側：底注微調控制器 -->
+<div class="flex items-center bg-gradient-to-b from-stone-900/95 to-black/90 p-1 rounded-xl sm:rounded-2xl border border-amber-500/40 shadow-inner flex-shrink-0">
+<button aria-label="減少底注" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-b from-stone-800 to-stone-950 text-amber-300 hover:text-amber-200 border border-amber-500/30 font-black text-lg sm:text-xl active:scale-95 transition-transform flex items-center justify-center shadow-md" id="betDecreaseBtn" title="減少底注">
+            -
+        </button>
+<div class="flex flex-col items-center justify-center px-2 sm:px-2.5">
+<span class="text-[9px] sm:text-[10px] text-amber-300/80 font-bold tracking-widest">底注調整</span>
+<span class="text-[10px] sm:text-[11px] font-mono font-bold text-amber-100">±50 籌碼</span>
+</div>
+<button aria-label="增加底注" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-b from-stone-800 to-stone-950 text-amber-300 hover:text-amber-200 border border-amber-500/30 font-black text-lg sm:text-xl active:scale-95 transition-transform flex items-center justify-center shadow-md" id="betIncreaseBtn" title="增加底注">
+            +
+        </button>
+</div>
+<!-- 中間：滿注、極速與自動摸牌按鈕群 -->
+<div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+<button class="h-10 sm:h-12 px-2.5 sm:px-4 rounded-xl sm:rounded-2xl btn-gold-3d text-stone-950 font-black text-xs sm:text-sm tracking-wider flex items-center justify-center gap-1 shadow-md active:scale-95 transition-transform" id="maxBetBtn">
+<span class="text-xs hidden sm:inline">⚡</span>
+<span>滿注 (500)</span>
+</button>
+<button class="h-10 sm:h-12 px-2.5 sm:px-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-b from-stone-900 to-black border border-emerald-500/50 text-emerald-300 hover:bg-emerald-950/60 text-xs sm:text-sm font-bold active:scale-95 transition-all flex items-center gap-1.5 shadow-md" id="turboBtn">
+<span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-stone-600 transition-colors shadow-sm" id="turboIndicator"></span>
+<span class="tracking-wider">極速</span>
+</button>
+<button class="h-10 sm:h-12 px-2.5 sm:px-3.5 rounded-xl sm:rounded-2xl bg-gradient-to-b from-stone-850 to-stone-950 hover:from-stone-800 text-amber-300 border border-amber-600/50 font-black text-xs sm:text-sm shadow-md active:scale-95 transition flex items-center gap-1.5 group" id="autoSpinBtn">
+<span class="tracking-widest font-bold text-amber-200">自動</span>
+<span class="text-[10px] text-amber-400 font-mono font-bold px-1.5 py-0.5 rounded-full bg-black/50 border border-amber-500/30" id="autoCount">OFF</span>
+</button>
+</div>
+<!-- 右側：皇室開骰摸牌大按鈕 -->
+<button class="flex-1 max-w-[210px] sm:max-w-[260px] h-11 sm:h-14 rounded-xl sm:rounded-2xl btn-red-3d text-yellow-100 font-black text-lg sm:text-2xl tracking-[0.15em] transition-all flex items-center justify-center space-x-2 sm:space-x-3 shadow-[0_0_20px_rgba(220,38,38,0.7)] border-2 border-amber-300/80 active:scale-95 group relative overflow-hidden flex-shrink-0" id="spinBtn">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+<span class="text-2xl sm:text-3xl animate-bounce drop-shadow">🀄</span>
+<span class="calligraphy-font text-lg sm:text-2xl text-yellow-100 filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] tracking-widest" id="spinButtonText">
+            開 骰 摸 牌
+        </span>
+</button>
+</div>
+</main>
+<!-- 中國風開運粒子 (金元寶、銅錢、紅包、金箔) Canvas -->
+<canvas class="fixed inset-0 pointer-events-none z-50" id="confettiCanvas"></canvas>
+<!-- 大獎彈窗 -->
+<div class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden" id="winModal">
+<div class="relative bg-gradient-to-b from-[#2e0b0b] via-stone-950 to-black border-4 border-amber-400 rounded-3xl p-6 w-full max-w-md text-center shadow-[0_0_70px_rgba(245,158,11,0.7)] text-amber-100 transform transition-transform scale-95">
+<div class="text-6xl mb-2 animate-bounce">🏮</div>
+<h3 class="text-3xl sm:text-4xl font-black calligraphy-font gold-text" id="winModalTitle">
+                天 胡 連 莊！
+            </h3>
+<p class="text-amber-300 font-bold text-sm sm:text-base mt-2" id="winModalSubtitle">
+                恭賀雀王！大殺四方！
+            </p>
+<div class="my-6 p-4 rounded-2xl bg-black/70 border border-amber-500/40 shadow-inner">
+<p class="text-xs text-amber-300/80 font-bold">獲得籌碼賞金</p>
+<div class="text-4xl sm:text-5xl font-black text-yellow-400 font-mono tracking-tight mt-1 filter drop-shadow-[0_0_12px_rgba(250,204,21,0.8)]" id="winModalAmount">
+                    +0
+                </div>
+</div>
+<button class="w-full py-4 rounded-2xl btn-gold-3d text-stone-950 font-black text-lg shadow-xl active:scale-95 transition tracking-widest" id="closeWinModalBtn">
+                笑 納 橫 財
+            </button>
+</div>
+</div>
+<!-- 番數規則彈窗 -->
+<div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden" id="paytableModal">
+<div class="bg-gradient-to-b from-emerald-950 via-stone-950 to-black border-2 border-amber-400 rounded-3xl p-5 w-full max-w-lg shadow-[0_0_50px_rgba(0,0,0,0.9)] text-amber-100 max-h-[90vh] overflow-y-auto">
+<div class="flex items-center justify-between pb-3 border-b border-amber-500/40">
+<div class="flex items-center space-x-2">
+<span class="text-3xl">🀄</span>
+<h2 class="text-lg font-black text-amber-300">牌型番數與特殊獎勵規則</h2>
+</div>
+<button class="text-amber-400 hover:text-white text-2xl font-bold p-1" id="closePaytableBtn">✕</button>
+</div>
+<div class="mt-4 space-y-3.5 text-xs sm:text-sm">
+<div class="p-3 bg-amber-950/60 rounded-2xl border border-amber-500/40 space-y-2">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-red-700 text-amber-100 font-bold text-xs">SCATTER</span>
+<span class="font-bold text-amber-300">【天胡】連莊免費遊戲</span>
+</div>
+<p class="text-stone-300 text-[11px]">盤面上任意出現 <strong>3 個【天胡】</strong> 即可進入 <strong>10 次免費連莊摸牌</strong>！免費局內每次連續食胡，倍率翻倍升級 (x2 → x3 → x5 → x10)！</p>
+</div>
+<div class="p-3 bg-amber-950/60 rounded-2xl border border-amber-500/40 space-y-2">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-yellow-600 text-stone-950 font-bold text-xs">WILD</span>
+<span class="font-bold text-amber-300">【百搭】雀神萬能金牌</span>
+</div>
+<p class="text-stone-300 text-[11px]">可替代除【天胡】以外的任何麻將牌型，助您湊成連線大獎！</p>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex items-center justify-between p-2 rounded-xl bg-black/60 border border-amber-500/20">
+<span class="font-bold text-red-500 flex items-center gap-1.5"><span class="text-lg">🀄</span> 紅中</span>
+<span class="font-mono font-bold text-amber-400 text-base">x50</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl bg-black/60 border border-amber-500/20">
+<span class="font-bold text-emerald-500 flex items-center gap-1.5"><span class="text-lg">🀅</span> 青發</span>
+<span class="font-mono font-bold text-amber-400 text-base">x30</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl bg-black/60 border border-amber-500/20">
+<span class="font-bold text-blue-400 flex items-center gap-1.5"><span class="text-lg">🀆</span> 白板</span>
+<span class="font-mono font-bold text-amber-400 text-base">x20</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl bg-black/60 border border-amber-500/20">
+<span class="font-bold text-red-400 flex items-center gap-1.5"><span class="text-lg">🀐</span> 九萬</span>
+<span class="font-mono font-bold text-amber-400 text-base">x12</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl bg-black/60 border border-amber-500/20">
+<span class="font-bold text-emerald-400 flex items-center gap-1.5"><span class="text-lg">🀙</span> 一筒 (八寶)</span>
+<span class="font-mono font-bold text-amber-400 text-base">x10</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl bg-black/60 border border-amber-500/20">
+<span class="font-bold text-teal-400 flex items-center gap-1.5"><span class="text-lg">🀘</span> 一條 (金孔雀)</span>
+<span class="font-mono font-bold text-amber-400 text-base">x8</span>
+</div>
+</div>
+<p class="text-[11px] text-amber-400/80">※ 5條連線：三條橫線（上/中/下）與兩條對角交叉斜線。</p>
+</div>
+<button class="mt-4 w-full py-2.5 rounded-2xl btn-gold-3d text-emerald-950 font-black text-sm transition" id="closePaytableFooterBtn">
+                知悉明白 · 開骰摸牌
+            </button>
+</div>
+</div>
+<!-- 控盤系統彈窗 -->
+<div class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-2 sm:p-4 hidden" id="adminModal">
+<div class="bg-gradient-to-b from-stone-950 via-[#0a1510] to-[#040a07] border-2 border-amber-400/80 rounded-2xl sm:rounded-3xl w-full max-w-4xl shadow-[0_0_50px_rgba(0,0,0,0.9)] text-amber-100 flex flex-col max-h-[94vh] overflow-hidden">
+<div class="flex items-center justify-between px-5 py-3.5 border-b border-amber-500/30 bg-black/60">
+<div class="flex items-center gap-2.5">
+<span class="p-1.5 rounded-lg bg-amber-500/20 text-amber-300 text-lg border border-amber-500/30">⚙️</span>
+<div>
+<div class="flex items-center gap-2">
+<h2 class="text-base sm:text-lg font-black text-amber-300">雀神商業風控與機率管理系統</h2>
+<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-900/80 text-emerald-300 border border-emerald-500/40 font-bold">RNG LIVE</span>
+</div>
+<p class="text-[11px] text-stone-400">實時調控演算法參數、期望值、物理回彈與動態摸牌審計</p>
+</div>
+</div>
+<button class="text-stone-400 hover:text-white text-2xl font-bold px-2 py-1 transition" id="closeAdminModalBtn">✕</button>
+</div>
+<div class="flex border-b border-amber-500/20 bg-black/40 px-4 gap-1 overflow-x-auto text-xs sm:text-sm">
+<button class="admin-tab-btn active px-3.5 py-2.5 font-bold border-b-2 border-amber-400 text-amber-300" data-tab="tab-math">
+                    機率與 RTP 控盤
+                </button>
+<button class="admin-tab-btn px-3.5 py-2.5 font-bold border-b-2 border-transparent text-stone-400 hover:text-amber-200" data-tab="tab-control">
+                    指定開牌與風控
+                </button>
+<button class="admin-tab-btn px-3.5 py-2.5 font-bold border-b-2 border-transparent text-stone-400 hover:text-amber-200" data-tab="tab-physics">
+                    物理與動效調校
+                </button>
+<button class="admin-tab-btn px-3.5 py-2.5 font-bold border-b-2 border-transparent text-stone-400 hover:text-amber-200" data-tab="tab-telemetry">
+                    實時營運審計日誌
+                </button>
+</div>
+<div class="p-4 sm:p-5 overflow-y-auto flex-1 space-y-4 text-xs sm:text-sm">
+<!-- TAB 1 -->
+<div class="admin-tab-content space-y-4" id="tab-math">
+<div class="p-3.5 bg-black/50 rounded-2xl border border-amber-500/30">
+<div class="flex items-center justify-between mb-2.5">
+<span class="font-bold text-amber-300">預設期望值 (RTP Presets)</span>
+<span class="text-xs font-mono text-emerald-400 font-bold" id="currentRtpLabel">目前設定: 標準商業 96.0%</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+<button class="preset-btn px-3 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700 text-stone-300 font-bold text-center" data-preset="tight">緊湊高盈 (91%)</button>
+<button class="preset-btn px-3 py-2 rounded-xl bg-amber-900/40 border border-amber-500 text-amber-300 font-bold text-center" data-preset="standard">國際標準 (96%)</button>
+<button class="preset-btn px-3 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700 text-stone-300 font-bold text-center" data-preset="loose">寬鬆暢玩 (99%)</button>
+<button class="preset-btn px-3 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700 text-stone-300 font-bold text-center" data-preset="super">爆獎狂歡 (108%)</button>
+</div>
+</div>
+<div class="p-3.5 bg-black/50 rounded-2xl border border-amber-500/30 space-y-3">
+<div class="flex items-center justify-between">
+<span class="font-bold text-amber-300">各牌型符號輪盤權重 (Symbol Weights)</span>
+<span class="text-[11px] text-stone-400">數值愈高，轉輪滾出機率愈大</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="symbolSlidersContainer"><div class="p-2.5 bg-stone-900/80 rounded-xl border border-stone-700/60 flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5 w-24"><span class="text-xs font-bold" style="color: rgb(234, 179, 8);">百搭</span></div>
+<input class="symbol-weight-slider flex-1 accent-amber-500" data-symbol="WILD" max="60" min="1" type="range" value="4"/>
+<span class="font-mono text-amber-400 font-bold text-xs w-6 text-right" id="weight-val-WILD">4</span>
+</div><div class="p-2.5 bg-stone-900/80 rounded-xl border border-stone-700/60 flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5 w-24"><span class="text-xs font-bold" style="color: rgb(220, 38, 38);">天胡</span></div>
+<input class="symbol-weight-slider flex-1 accent-amber-500" data-symbol="SCATTER" max="60" min="1" type="range" value="4"/>
+<span class="font-mono text-amber-400 font-bold text-xs w-6 text-right" id="weight-val-SCATTER">4</span>
+</div><div class="p-2.5 bg-stone-900/80 rounded-xl border border-stone-700/60 flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5 w-24"><span class="text-xs font-bold" style="color: rgb(220, 38, 38);">紅中</span></div>
+<input class="symbol-weight-slider flex-1 accent-amber-500" data-symbol="ZHONG" max="60" min="1" type="range" value="10"/>
+<span class="font-mono text-amber-400 font-bold text-xs w-6 text-right" id="weight-val-ZHONG">10</span>
+</div><div class="p-2.5 bg-stone-900/80 rounded-xl border border-stone-700/60 flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5 w-24"><span class="text-xs font-bold" style="color: rgb(22, 163, 74);">青發</span></div>
+<input class="symbol-weight-slider flex-1 accent-amber-500" data-symbol="FA" max="60" min="1" type="range" value="14"/>
+<span class="font-mono text-amber-400 font-bold text-xs w-6 text-right" id="weight-val-FA">14</span>
+</div><div class="p-2.5 bg-stone-900/80 rounded-xl border border-stone-700/60 flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5 w-24"><span class="text-xs font-bold" style="color: rgb(37, 99, 235);">白板</span></div>
+<input class="symbol-weight-slider flex-1 accent-amber-500" data-symbol="BAI" max="60" min="1" type="range" value="20"/>
+<span class="font-mono text-amber-400 font-bold text-xs w-6 text-right" id="weight-val-BAI">20</span>
+</div><div class="p-2.5 bg-stone-900/80 rounded-xl border border-stone-700/60 flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5 w-24"><span class="text-xs font-bold" style="color: rgb(185, 28, 28);">九萬</span></div>
+<input class="symbol-weight-slider flex-1 accent-amber-500" data-symbol="WAN" max="60" min="1" type="range" value="26"/>
+<span class="font-mono text-amber-400 font-bold text-xs w-6 text-right" id="weight-val-WAN">26</span>
+</div><div class="p-2.5 bg-stone-900/80 rounded-xl border border-stone-700/60 flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5 w-24"><span class="text-xs font-bold" style="color: rgb(5, 150, 105);">一筒</span></div>
+<input class="symbol-weight-slider flex-1 accent-amber-500" data-symbol="TONG" max="60" min="1" type="range" value="32"/>
+<span class="font-mono text-amber-400 font-bold text-xs w-6 text-right" id="weight-val-TONG">32</span>
+</div><div class="p-2.5 bg-stone-900/80 rounded-xl border border-stone-700/60 flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5 w-24"><span class="text-xs font-bold" style="color: rgb(13, 148, 136);">一條</span></div>
+<input class="symbol-weight-slider flex-1 accent-amber-500" data-symbol="TIAO" max="60" min="1" type="range" value="38"/>
+<span class="font-mono text-amber-400 font-bold text-xs w-6 text-right" id="weight-val-TIAO">38</span>
+</div></div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<div class="p-3 bg-black/50 rounded-2xl border border-amber-500/30 space-y-2">
+<label class="block text-stone-300 font-bold">天胡免費局初始局數</label>
+<input class="w-full bg-stone-900 px-3 py-1.5 rounded-xl border border-stone-700 text-amber-300 font-mono" id="cfgFreeSpinsCount" max="30" min="5" type="number" value="10"/>
+</div>
+<div class="p-3 bg-black/50 rounded-2xl border border-amber-500/30 space-y-2">
+<label class="block text-stone-300 font-bold">免費局中央百搭保底機率 (%)</label>
+<div class="flex items-center gap-3">
+<input class="flex-1 accent-amber-500" id="cfgCenterWildRate" max="100" min="0" type="range" value="45"/>
+<span class="font-mono text-amber-400 font-bold w-10" id="cfgCenterWildVal">45%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB 2 -->
+<div class="admin-tab-content space-y-4 hidden" id="tab-control">
+<div class="p-3.5 bg-black/50 rounded-2xl border border-red-500/30 space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="font-bold text-red-300 flex items-center gap-1.5">🎯 下局強制開出結果 (Next Spin Force Outcome)</span>
+<span class="text-[10px] bg-red-950/80 text-red-300 px-2 py-0.5 rounded border border-red-800">測試與風控</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+<button class="force-btn px-3 py-2 rounded-xl bg-red-950/60 hover:bg-red-900 border border-red-500/60 text-red-200 font-bold text-xs" data-force="scatter">觸發【天胡連莊】</button>
+<button class="force-btn px-3 py-2 rounded-xl bg-amber-950/60 hover:bg-amber-900 border border-amber-500/60 text-amber-200 font-bold text-xs" data-force="wild_win">滿貫【百搭全中】</button>
+<button class="force-btn px-3 py-2 rounded-xl bg-emerald-950/60 hover:bg-emerald-900 border border-emerald-500/60 text-emerald-200 font-bold text-xs" data-force="zhong_line">食胡【紅中三連線】</button>
+<button class="force-btn px-3 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700 text-stone-400 font-bold text-xs" data-force="miss">強制未中 (Miss)</button>
+</div>
+<div class="text-xs font-mono text-amber-400 bg-amber-950/40 p-2 rounded-xl border border-amber-500/30 hidden" id="forceActiveBadge">
+                            ⚠️ 目前已掛起強制指令: <span class="font-bold" id="forceActiveText">無</span>
+</div>
+</div>
+<div class="p-3.5 bg-black/50 rounded-2xl border border-amber-500/30 space-y-3">
+<span class="font-bold text-amber-300">錢包籌碼調配</span>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-2 rounded-xl bg-emerald-900/60 hover:bg-emerald-800 border border-emerald-500/50 text-emerald-300 font-bold text-xs" id="add10kChips">+10,000 籌碼</button>
+<button class="px-3 py-2 rounded-xl bg-emerald-900/60 hover:bg-emerald-800 border border-emerald-500/50 text-emerald-300 font-bold text-xs" id="add100kChips">+100,000 籌碼</button>
+<button class="px-3 py-2 rounded-xl bg-stone-900 hover:bg-stone-800 border border-stone-700 text-stone-300 font-bold text-xs" id="resetChips">重置為初始 12,888</button>
+</div>
+</div>
+</div>
+<!-- TAB 3 -->
+<div class="admin-tab-content space-y-4 hidden" id="tab-physics">
+<div class="p-3.5 bg-black/50 rounded-2xl border border-amber-500/30 space-y-3">
+<span class="font-bold text-amber-300">滾輪動畫物理時間 (ms)</span>
+<div class="space-y-2">
+<div class="flex justify-between text-xs"><span class="">標準旋轉基準</span><span class="font-mono text-amber-400 font-bold" id="cfgBaseDurationVal">1000 ms</span></div>
+<input class="w-full accent-amber-500" id="cfgBaseDuration" max="2500" min="400" step="50" type="range" value="1000"/>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs"><span class="">滾軸階梯延遲</span><span class="font-mono text-amber-400 font-bold" id="cfgStaggerVal">320 ms</span></div>
+<input class="w-full accent-amber-500" id="cfgStagger" max="800" min="100" step="20" type="range" value="320"/>
+</div>
+</div>
+</div>
+<!-- TAB 4 -->
+<div class="admin-tab-content space-y-4 hidden" id="tab-telemetry">
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+<div class="bg-black/60 p-2.5 rounded-xl border border-amber-500/20 text-center">
+<p class="text-[10px] text-stone-400">總摸牌局數</p>
+<p class="text-lg font-mono font-bold text-amber-300" id="statTotalSpins">0</p>
+</div>
+<div class="bg-black/60 p-2.5 rounded-xl border border-amber-500/20 text-center">
+<p class="text-[10px] text-stone-400">實時回報率 (RTP)</p>
+<p class="text-lg font-mono font-bold text-emerald-400" id="statActualRtp">0.00%</p>
+</div>
+<div class="bg-black/60 p-2.5 rounded-xl border border-amber-500/20 text-center">
+<p class="text-[10px] text-stone-400">食胡命中率</p>
+<p class="text-lg font-mono font-bold text-yellow-400" id="statHitFreq">0.00%</p>
+</div>
+<div class="bg-black/60 p-2.5 rounded-xl border border-amber-500/20 text-center">
+<p class="text-[10px] text-stone-400">天胡免費局次數</p>
+<p class="text-lg font-mono font-bold text-red-400" id="statFreeSpinsWon">0</p>
+</div>
+</div>
+<div class="p-3 bg-black/60 rounded-2xl border border-amber-500/20">
+<div class="max-h-48 overflow-y-auto font-mono text-[11px]">
+<table class="w-full text-left">
+<thead class="text-stone-400 border-b border-stone-800 text-[10px]">
+<tr><th class="py-1">局號</th><th class="py-1">底注</th><th class="py-1">盤面</th><th class="py-1">連線</th><th class="py-1 text-right">獲利</th></tr>
+</thead>
+<tbody id="auditTableBody"><tr><td class="py-3 text-center text-stone-500" colspan="5">尚無摸牌紀錄</td></tr></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="px-5 py-3 border-t border-amber-500/30 bg-black/70 flex items-center justify-between">
+<span class="text-[11px] text-emerald-400">● 參數即時生效，無需重啟機台</span>
+<button class="px-5 py-2 rounded-xl btn-gold-3d text-stone-950 font-black text-xs sm:text-sm" id="saveAndCloseAdminBtn">確認並返回</button>
+</div>
+</div>
+</div>
+<script>
+        class MahjongAudioSystem {
+            constructor() {
+                this.ctx = null;
+                this.muted = false;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (AudioContext) this.ctx = new AudioContext();
+                }
+                if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
+            }
+
+            playTileClick() {
+                if (this.muted || !this.ctx) return;
+                const now = this.ctx.currentTime;
+                
+                const oscHigh = this.ctx.createOscillator();
+                const gainHigh = this.ctx.createGain();
+                oscHigh.type = 'square';
+                oscHigh.frequency.setValueAtTime(820, now);
+                oscHigh.frequency.exponentialRampToValueAtTime(120, now + 0.025);
+                gainHigh.gain.setValueAtTime(0.65, now);
+                gainHigh.gain.exponentialRampToValueAtTime(0.01, now + 0.035);
+                oscHigh.connect(gainHigh);
+                gainHigh.connect(this.ctx.destination);
+                
+                const oscLow = this.ctx.createOscillator();
+                const gainLow = this.ctx.createGain();
+                oscLow.type = 'sine';
+                oscLow.frequency.setValueAtTime(220, now);
+                oscLow.frequency.exponentialRampToValueAtTime(35, now + 0.06);
+                gainLow.gain.setValueAtTime(0.9, now);
+                gainLow.gain.exponentialRampToValueAtTime(0.01, now + 0.09);
+                oscLow.connect(gainLow);
+                gainLow.connect(this.ctx.destination);
+                
+                oscHigh.start(now); oscHigh.stop(now + 0.05);
+                oscLow.start(now); oscLow.stop(now + 0.11);
+            }
+
+            playReelTick() {
+                if (this.muted || !this.ctx) return;
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(460, now);
+                osc.frequency.exponentialRampToValueAtTime(75, now + 0.02);
+                gain.gain.setValueAtTime(0.07, now);
+                gain.gain.linearRampToValueAtTime(0.001, now + 0.03);
+                
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 850;
+                
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start(now); osc.stop(now + 0.04);
+            }
+
+            /* 東方國樂中獎喜慶樂韻：五聲音階琵琶撥弦 + 金磬鐘鳴 + 歡騰小鑼 */
+            playWinJingle(isBig = false) {
+                if (this.muted || !this.ctx) return;
+                const now = this.ctx.currentTime;
+
+                // 1. 宮商角徵羽五聲音階
+                const pentatonic = isBig 
+                    ? [392.00, 440.00, 523.25, 587.33, 659.25, 783.99, 880.00, 1046.50, 1174.66]
+                    : [523.25, 587.33, 659.25, 783.99, 1046.50];
+
+                pentatonic.forEach((freq, idx) => {
+                    const startTime = now + idx * 0.08;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, startTime);
+                    osc.frequency.exponentialRampToValueAtTime(freq * 1.02, startTime + 0.04);
+
+                    const filter = this.ctx.createBiquadFilter();
+                    filter.type = 'bandpass';
+                    filter.frequency.setValueAtTime(freq * 1.7, startTime);
+                    filter.Q.value = 3.0;
+
+                    gain.gain.setValueAtTime(0.38, startTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.5);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start(startTime);
+                    osc.stop(startTime + 0.55);
+                });
+
+                // 2. 金磬鐘鳴 (高音清越悠長)
+                const bellOsc = this.ctx.createOscillator();
+                const bellGain = this.ctx.createGain();
+                bellOsc.type = 'sine';
+                bellOsc.frequency.setValueAtTime(1568, now);
+                bellGain.gain.setValueAtTime(0.32, now);
+                bellGain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+                bellOsc.connect(bellGain);
+                bellGain.connect(this.ctx.destination);
+                bellOsc.start(now);
+                bellOsc.stop(now + 1.9);
+
+                // 3. 快板喜慶小銅鑼
+                const cymbals = isBig ? [0.0, 0.2, 0.42, 0.68] : [0.0, 0.25];
+                cymbals.forEach(delay => {
+                    const hit = now + delay;
+                    const oscC = this.ctx.createOscillator();
+                    const gainC = this.ctx.createGain();
+                    oscC.type = 'sawtooth';
+                    oscC.frequency.setValueAtTime(560, hit);
+                    oscC.frequency.exponentialRampToValueAtTime(310, hit + 0.3);
+                    gainC.gain.setValueAtTime(0.22, hit);
+                    gainC.gain.exponentialRampToValueAtTime(0.002, hit + 0.38);
+                    oscC.connect(gainC);
+                    gainC.connect(this.ctx.destination);
+                    oscC.start(hit);
+                    oscC.stop(hit + 0.4);
+                });
+            }
+
+            playGong() {
+                if (this.muted || !this.ctx) return;
+                const now = this.ctx.currentTime;
+                const freqs = [148, 230, 312, 495, 715];
+                freqs.forEach((f, i) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = i % 2 === 0 ? 'square' : 'sawtooth';
+                    osc.frequency.setValueAtTime(f, now);
+                    osc.frequency.exponentialRampToValueAtTime(f * 0.92, now + 1.6);
+                    gain.gain.setValueAtTime(0.22, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 2.8);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now);
+                    osc.stop(now + 2.9);
+                });
+            }
+
+            playCoinCascade() {
+                if (this.muted || !this.ctx) return;
+                for (let i = 0; i < 9; i++) {
+                    setTimeout(() => {
+                        if (!this.ctx || this.muted) return;
+                        const now = this.ctx.currentTime;
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        osc.type = 'triangle';
+                        osc.frequency.setValueAtTime(1250 + Math.random() * 1200, now);
+                        gain.gain.setValueAtTime(0.22, now);
+                        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.11);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(now);
+                        osc.stop(now + 0.15);
+                    }, i * 60);
+                }
+            }
+        }
+
+        const audio = new MahjongAudioSystem();
+
+        const TILE_DATA = {
+            WILD: {
+                name: '百搭',
+                color: '#eab308',
+                multiplier: 100,
+                svg: `
+                    <svg viewBox="0 0 100 130" class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md">
+                        <defs>
+                            <linearGradient id="goldPlate" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#fff8db" /><stop offset="40%" stop-color="#f5c037" /><stop offset="100%" stop-color="#b45309" />
+                            </linearGradient>
+                            <linearGradient id="goldInner" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#fef3c7" /><stop offset="100%" stop-color="#d97706" />
+                            </linearGradient>
+                        </defs>
+                        <rect x="7" y="7" width="86" height="116" rx="10" fill="url(#goldPlate)" stroke="#92400e" stroke-width="1.5"/>
+                        <rect x="11" y="11" width="78" height="108" rx="8" fill="#140b02" stroke="#fef08a" stroke-width="1.2"/>
+                        <circle cx="50" cy="65" r="33" fill="url(#goldInner)" stroke="#fef3c7" stroke-width="2"/>
+                        <circle cx="50" cy="65" r="28" fill="none" stroke="#78350f" stroke-width="1.5" stroke-dasharray="3 2"/>
+                        <text x="50" y="77" font-family="'Ma Shan Zheng', cursive" font-size="34" font-weight="900" fill="#451a03" text-anchor="middle">百搭</text>
+                    </svg>`
+            },
+            SCATTER: {
+                name: '天胡',
+                color: '#dc2626',
+                multiplier: 60,
+                svg: `
+                    <svg viewBox="0 0 100 130" class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md">
+                        <defs>
+                            <linearGradient id="redTileBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#fff1f2"/><stop offset="100%" stop-color="#ffe4e6"/>
+                            </linearGradient>
+                            <linearGradient id="goldTrim" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#d97706"/><stop offset="50%" stop-color="#fef08a"/><stop offset="100%" stop-color="#d97706"/>
+                            </linearGradient>
+                        </defs>
+                        <rect x="7" y="7" width="86" height="116" rx="10" fill="url(#redTileBg)" stroke="#e11d48" stroke-width="2"/>
+                        <rect x="12" y="12" width="76" height="106" rx="8" fill="#4c0519" stroke="url(#goldTrim)" stroke-width="1.5"/>
+                        <rect x="16" y="16" width="68" height="98" rx="6" fill="none" stroke="#f43f5e" stroke-width="1" stroke-dasharray="3 3"/>
+                        <text x="50" y="58" font-family="'Ma Shan Zheng', cursive" font-size="38" font-weight="900" fill="#fef08a" text-anchor="middle">天</text>
+                        <text x="50" y="100" font-family="'Ma Shan Zheng', cursive" font-size="38" font-weight="900" fill="#fef08a" text-anchor="middle">胡</text>
+                    </svg>`
+            },
+            ZHONG: {
+                name: '紅中',
+                color: '#dc2626',
+                multiplier: 50,
+                svg: `
+                    <svg viewBox="0 0 100 130" class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md">
+                        <defs><linearGradient id="zhongGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#991b1b"/></linearGradient></defs>
+                        <rect x="7" y="7" width="86" height="116" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                        <text x="50" y="90" font-family="'Noto Serif TC', serif" font-size="76" font-weight="900" fill="url(#zhongGrad)" text-anchor="middle">中</text>
+                    </svg>`
+            },
+            FA: {
+                name: '青發',
+                color: '#16a34a',
+                multiplier: 30,
+                svg: `
+                    <svg viewBox="0 0 100 130" class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md">
+                        <defs><linearGradient id="faGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#22c55e"/><stop offset="100%" stop-color="#14532d"/></linearGradient></defs>
+                        <rect x="7" y="7" width="86" height="116" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                        <text x="50" y="90" font-family="'Noto Serif TC', serif" font-size="76" font-weight="900" fill="url(#faGrad)" text-anchor="middle">發</text>
+                    </svg>`
+            },
+            BAI: {
+                name: '白板',
+                color: '#2563eb',
+                multiplier: 20,
+                svg: `
+                    <svg viewBox="0 0 100 130" class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md">
+                        <defs><linearGradient id="baiGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient></defs>
+                        <rect x="7" y="7" width="86" height="116" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                        <rect x="23" y="24" width="54" height="82" rx="8" fill="none" stroke="url(#baiGrad)" stroke-width="8"/>
+                    </svg>`
+            },
+            WAN: {
+                name: '九萬',
+                color: '#b91c1c',
+                multiplier: 12,
+                svg: `
+                    <svg viewBox="0 0 100 130" class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md">
+                        <rect x="7" y="7" width="86" height="116" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                        <text x="50" y="58" font-family="'Noto Serif TC', serif" font-size="46" font-weight="900" fill="#dc2626" text-anchor="middle">九</text>
+                        <text x="50" y="105" font-family="'Noto Serif TC', serif" font-size="46" font-weight="900" fill="#dc2626" text-anchor="middle">萬</text>
+                    </svg>`
+            },
+            TONG: {
+                name: '一筒',
+                color: '#059669',
+                multiplier: 10,
+                svg: `
+                    <svg viewBox="0 0 100 130" class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md">
+                        <rect x="7" y="7" width="86" height="116" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                        <circle cx="50" cy="65" r="33" fill="#047857" stroke="#b91c1c" stroke-width="5.5"/>
+                        <circle cx="50" cy="65" r="14" fill="#dc2626"/><circle cx="50" cy="65" r="6" fill="#fef08a"/>
+                    </svg>`
+            },
+            TIAO: {
+                name: '一條',
+                color: '#0d9488',
+                multiplier: 8,
+                svg: `
+                    <svg viewBox="0 0 100 130" class="w-16 h-20 sm:w-20 sm:h-24 drop-shadow-md">
+                        <rect x="7" y="7" width="86" height="116" rx="10" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+                        <circle cx="50" cy="48" r="19" fill="#0d9488" stroke="#042f2e" stroke-width="1"/>
+                        <path d="M40 68 C 38 52, 62 52, 60 68 L 66 100 C 50 108, 50 108, 34 100 Z" fill="#0f766e"/>
+                    </svg>`
+            }
+        };
+
+        const SYMBOL_KEYS = Object.keys(TILE_DATA);
+
+        const PAYLINES = [
+            [[0, 0], [1, 0], [2, 0]], // L1
+            [[0, 1], [1, 1], [2, 1]], // L2
+            [[0, 2], [1, 2], [2, 2]], // L3
+            [[0, 0], [1, 1], [2, 2]], // L4
+            [[0, 2], [1, 1], [2, 0]]  // L5
+        ];
+
+        let balance = 12888;
+        let currentBet = 100;
+        let isSpinning = false;
+        let isTurbo = false;
+        let autoSpinActive = false;
+        let autoSpinRemaining = 0;
+        let freeSpinsActive = false;
+        let freeSpinsRemaining = 0;
+        let freeSpinWinMultiplier = 1;
+        let freeSpinTotalWon = 0;
+
+        let currentGrid = [[], [], []];
+
+        const ADMIN_CONFIG = {
+            rtpPreset: 'standard',
+            weights: { WILD: 4, SCATTER: 4, ZHONG: 10, FA: 14, BAI: 20, WAN: 26, TONG: 32, TIAO: 38 },
+            freeSpinsCount: 10,
+            centerWildProb: 0.45,
+            forceOutcome: null,
+            maxBet: 500,
+            bigWinMultiplier: 10,
+            baseDuration: 1000,
+            staggerDuration: 320,
+            turboDuration: 500,
+            bounceElasticity: 1.7
+        };
+
+        const ADMIN_STATS = {
+            totalSpins: 0,
+            totalBet: 0,
+            totalWon: 0,
+            hitCount: 0,
+            freeSpinsTriggered: 0,
+            history: []
+        };
+
+        const PRESET_CONFIGS = {
+            tight: { name: '緊湊高盈 (91%)', weights: { WILD: 2, SCATTER: 2, ZHONG: 6, FA: 10, BAI: 18, WAN: 28, TONG: 36, TIAO: 45 }, centerWildProb: 0.25 },
+            standard: { name: '國際標準 (96%)', weights: { WILD: 4, SCATTER: 4, ZHONG: 10, FA: 14, BAI: 20, WAN: 26, TONG: 32, TIAO: 38 }, centerWildProb: 0.45 },
+            loose: { name: '寬鬆暢玩 (99%)', weights: { WILD: 6, SCATTER: 6, ZHONG: 14, FA: 18, BAI: 24, WAN: 28, TONG: 32, TIAO: 36 }, centerWildProb: 0.60 },
+            super: { name: '爆獎狂歡 (108%)', weights: { WILD: 12, SCATTER: 9, ZHONG: 20, FA: 24, BAI: 26, WAN: 28, TONG: 30, TIAO: 32 }, centerWildProb: 0.85 }
+        };
+
+        function getRandomSymbolByWeight() {
+            const weights = ADMIN_CONFIG.weights;
+            let totalWeight = 0;
+            for (const key of SYMBOL_KEYS) totalWeight += weights[key] || 10;
+            let rand = Math.random() * totalWeight;
+            for (const key of SYMBOL_KEYS) {
+                const w = weights[key] || 10;
+                if (rand < w) return key;
+                rand -= w;
+            }
+            return SYMBOL_KEYS[0];
+        }
+
+        function createTileElement(tileKey) {
+            const el = document.createElement('div');
+            el.className = 'mahjong-tile w-[82px] h-[98px] sm:w-[102px] sm:h-[118px] m-1 cursor-pointer select-none relative';
+            el.dataset.tileKey = tileKey;
+            el.innerHTML = TILE_DATA[tileKey].svg;
+            return el;
+        }
+
+        function initReels() {
+            for (let c = 0; c < 3; c++) {
+                const track = document.getElementById(`reel-${c}`);
+                track.innerHTML = '';
+                const initialSymbols = [getRandomSymbolByWeight(), getRandomSymbolByWeight(), getRandomSymbolByWeight()];
+                currentGrid[c] = [...initialSymbols];
+                initialSymbols.forEach(sym => track.appendChild(createTileElement(sym)));
+            }
+        }
+
+        function easeOutBack(x) {
+            const c1 = ADMIN_CONFIG.bounceElasticity;
+            const c3 = c1 + 1;
+            return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+        }
+
+        function spinReel(reelIndex, targetSymbols, duration) {
+            return new Promise(resolve => {
+                const track = document.getElementById(`reel-${reelIndex}`);
+                const tileHeight = track.children[0] ? track.children[0].getBoundingClientRect().height + 8 : 115;
+                const extraRounds = 12 + reelIndex * 5;
+                const bufferSymbols = [];
+                for (let i = 0; i < extraRounds; i++) bufferSymbols.push(getRandomSymbolByWeight());
+
+                bufferSymbols.forEach(sym => track.insertBefore(createTileElement(sym), track.firstChild));
+                targetSymbols.slice().reverse().forEach(sym => track.insertBefore(createTileElement(sym), track.firstChild));
+
+                const totalNewTiles = extraRounds + 3;
+                const totalDistance = totalNewTiles * tileHeight;
+
+                track.style.transition = 'none';
+                track.style.transform = `translate3d(0, -${totalDistance}px, 0)`;
+                track.classList.add('blur-fast');
+
+                let startTime = null;
+
+                function step(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const elapsed = timestamp - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+
+                    if (progress < 0.8) track.classList.add('blur-fast');
+                    else track.classList.remove('blur-fast');
+
+                    const easedProgress = easeOutBack(progress);
+                    const currentY = -totalDistance * (1 - easedProgress);
+                    track.style.transform = `translate3d(0, ${currentY}px, 0)`;
+
+                    if (progress < 1) {
+                        if (Math.random() < 0.28) audio.playReelTick();
+                        requestAnimationFrame(step);
+                    } else {
+                        track.style.transform = `translate3d(0, 0px, 0)`;
+                        track.classList.remove('blur-fast');
+                        while (track.children.length > 3) track.removeChild(track.lastChild);
+                        audio.playTileClick();
+                        resolve();
+                    }
+                }
+                requestAnimationFrame(step);
+            });
+        }
+
+        function evaluateResults(grid) {
+            let totalWin = 0;
+            const winningLines = [];
+            let scatterCount = 0;
+
+            for (let c = 0; c < 3; c++) {
+                for (let r = 0; r < 3; r++) {
+                    if (grid[c][r] === 'SCATTER') scatterCount++;
+                }
+            }
+
+            PAYLINES.forEach((line, index) => {
+                const s0 = grid[line[0][0]][line[0][1]];
+                const s1 = grid[line[1][0]][line[1][1]];
+                const s2 = grid[line[2][0]][line[2][1]];
+
+                let matchSymbol = null;
+                const regularSymbols = [s0, s1, s2].filter(s => s !== 'WILD' && s !== 'SCATTER');
+
+                if (regularSymbols.length === 0) {
+                    if (s0 === 'WILD' && s1 === 'WILD' && s2 === 'WILD') matchSymbol = 'WILD';
+                } else {
+                    const candidate = regularSymbols[0];
+                    if ([s0, s1, s2].every(s => s === candidate || s === 'WILD')) matchSymbol = candidate;
+                }
+
+                if (matchSymbol) {
+                    const mult = TILE_DATA[matchSymbol].multiplier;
+                    const lineWin = Math.floor(currentBet * (mult / 5));
+                    totalWin += lineWin;
+                    winningLines.push({ lineIndex: index, symbol: matchSymbol, coords: line, win: lineWin });
+                }
+            });
+
+            return { totalWin, winningLines, triggeredFreeSpins: scatterCount >= 3 };
+        }
+
+        /* 觸發中國風立體金印徽章動畫 */
+        function triggerOrientalBadge(linesCount, finalWin) {
+            const badge = document.getElementById('orientalWinBadge');
+            const card = document.getElementById('winSealCard');
+            const title = document.getElementById('sealTitle');
+            const sub = document.getElementById('sealSubText');
+            const amt = document.getElementById('sealAmount');
+
+            if (linesCount >= 3 || finalWin >= currentBet * 20) {
+                title.textContent = "滿 貫 連 莊";
+                sub.textContent = "五線齊鳴 · 雀帝降臨";
+            } else if (linesCount >= 2 || finalWin >= currentBet * 10) {
+                title.textContent = "大 吉 大 利";
+                sub.textContent = `${linesCount} 線同開 · 瑞氣盈門`;
+            } else {
+                title.textContent = "食 胡 大 吉";
+                sub.textContent = "財星高照 · 喜逢大彩";
+            }
+
+            amt.textContent = `+${finalWin.toLocaleString()}`;
+
+            badge.classList.remove('opacity-0');
+            card.classList.remove('seal-pop');
+            void card.offsetWidth;
+            card.classList.add('seal-pop');
+
+            setTimeout(() => {
+                badge.classList.add('opacity-0');
+            }, 2300);
+        }
+
+        async function executeSpin() {
+            if (isSpinning) return;
+            audio.init();
+
+            if (!freeSpinsActive && balance < currentBet) {
+                bannerText.textContent = "籌碼不足！請調整底注或由後台補充籌碼。";
+                return;
+            }
+
+            if (!freeSpinsActive) balance -= currentBet;
+            else {
+                freeSpinsRemaining--;
+                bannerGameModeText.textContent = `免費連莊摸牌中！剩餘 ${freeSpinsRemaining} 局`;
+            }
+
+            isSpinning = true;
+            updateUI();
+            clearPaylines();
+
+            if (!freeSpinsActive) {
+                ADMIN_STATS.totalSpins++;
+                ADMIN_STATS.totalBet += currentBet;
+            }
+
+            document.getElementById('winDisplay').textContent = "0";
+            document.getElementById('huBadge').style.opacity = '0';
+            const spinBtn = document.getElementById('spinBtn');
+            const spinButtonText = document.getElementById('spinButtonText');
+            spinBtn.disabled = true;
+            spinBtn.classList.add('opacity-80', 'cursor-not-allowed');
+            spinButtonText.textContent = freeSpinsActive ? "免費摸牌中..." : "摸牌中...";
+
+            const targetGrid = [[], [], []];
+            for (let c = 0; c < 3; c++) {
+                for (let r = 0; r < 3; r++) targetGrid[c][r] = getRandomSymbolByWeight();
+            }
+
+            if (freeSpinsActive && Math.random() < ADMIN_CONFIG.centerWildProb) targetGrid[1][1] = 'WILD';
+
+            if (ADMIN_CONFIG.forceOutcome) {
+                const f = ADMIN_CONFIG.forceOutcome;
+                if (f === 'scatter') {
+                    targetGrid[0][0] = 'SCATTER'; targetGrid[1][1] = 'SCATTER'; targetGrid[2][2] = 'SCATTER';
+                } else if (f === 'wild_win') {
+                    targetGrid[0][1] = 'WILD'; targetGrid[1][1] = 'WILD'; targetGrid[2][1] = 'WILD';
+                } else if (f === 'zhong_line') {
+                    targetGrid[0][1] = 'ZHONG'; targetGrid[1][1] = 'ZHONG'; targetGrid[2][1] = 'ZHONG';
+                } else if (f === 'miss') {
+                    targetGrid[0] = ['ZHONG', 'FA', 'BAI'];
+                    targetGrid[1] = ['WAN', 'TONG', 'TIAO'];
+                    targetGrid[2] = ['FA', 'BAI', 'ZHONG'];
+                }
+                ADMIN_CONFIG.forceOutcome = null;
+                updateAdminForceUI();
+            }
+
+            const baseTime = isTurbo ? ADMIN_CONFIG.turboDuration : ADMIN_CONFIG.baseDuration;
+            const stagger = isTurbo ? Math.floor(ADMIN_CONFIG.staggerDuration * 0.5) : ADMIN_CONFIG.staggerDuration;
+
+            const p0 = spinReel(0, targetGrid[0], baseTime);
+            const p1 = spinReel(1, targetGrid[1], baseTime + stagger);
+            const p2 = spinReel(2, targetGrid[2], baseTime + stagger * 2);
+
+            await Promise.all([p0, p1, p2]);
+
+            currentGrid = targetGrid;
+            const { totalWin, winningLines, triggeredFreeSpins } = evaluateResults(currentGrid);
+            let finalWin = totalWin;
+
+            if (freeSpinsActive && totalWin > 0) {
+                finalWin = totalWin * freeSpinWinMultiplier;
+                if (freeSpinWinMultiplier === 1) freeSpinWinMultiplier = 2;
+                else if (freeSpinWinMultiplier === 2) freeSpinWinMultiplier = 3;
+                else if (freeSpinWinMultiplier === 3) freeSpinWinMultiplier = 5;
+                else freeSpinWinMultiplier = 10;
+                document.getElementById('multiplierValue').textContent = `x${freeSpinWinMultiplier}`;
+            }
+
+            ADMIN_STATS.totalWon += finalWin;
+            if (finalWin > 0) ADMIN_STATS.hitCount++;
+            if (triggeredFreeSpins && !freeSpinsActive) ADMIN_STATS.freeSpinsTriggered++;
+
+            logAuditEntry(currentBet, targetGrid, winningLines.length, finalWin, freeSpinsActive);
+            updateAdminStatsDisplay();
+
+            if (finalWin > 0) {
+                balance += finalWin;
+                if (freeSpinsActive) freeSpinTotalWon += finalWin;
+
+                animateCounter(document.getElementById('winDisplay'), 0, finalWin, 500);
+                animateCounter(document.getElementById('balanceDisplay'), balance - finalWin, balance, 700);
+
+                drawPaylines(winningLines);
+                triggerOrientalBadge(winningLines.length, finalWin);
+                document.getElementById('huBadge').style.opacity = '1';
+
+                const isBigWin = finalWin >= currentBet * ADMIN_CONFIG.bigWinMultiplier;
+                if (isBigWin) {
+                    const container = document.getElementById('slotMachineContainer');
+                    container.classList.add('shake-screen');
+                    setTimeout(() => container.classList.remove('shake-screen'), 450);
+                }
+
+                audio.playWinJingle(isBigWin);
+                audio.playCoinCascade();
+                triggerConfetti(isBigWin);
+
+                bannerText.innerHTML = `🀄 <span class="text-red-400 font-extrabold text-sm sm:text-base">食胡！</span> 恭喜中得 ${winningLines.length} 條連線，進帳 +${finalWin.toLocaleString()} 籌碼！`;
+
+                if (isBigWin && !freeSpinsActive) {
+                    showBigWinModal('雀 神 降 臨！', '五線金龍齊嘯 · 威震八方！', finalWin);
+                }
+            } else {
+                if (freeSpinsActive) {
+                    freeSpinWinMultiplier = 1;
+                    document.getElementById('multiplierValue').textContent = 'x1';
+                }
+                bannerText.textContent = freeSpinsActive ? "牌局平穩，下把繼續摸金！" : "此局沉潛，吸納天地靈氣！繼續開骰！";
+            }
+
+            if (triggeredFreeSpins && !freeSpinsActive) {
+                audio.playGong();
+                showBigWinModal('天 胡 連 莊！', `集齊3張【天胡】，獲贈 ${ADMIN_CONFIG.freeSpinsCount} 局免費摸牌！`, currentBet * 5);
+                startFreeSpins(ADMIN_CONFIG.freeSpinsCount);
+            }
+
+            if (freeSpinsActive && freeSpinsRemaining <= 0) endFreeSpins();
+
+            isSpinning = false;
+            spinBtn.disabled = false;
+            spinBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+            spinButtonText.textContent = freeSpinsActive ? "免費摸牌" : "開 骰 摸 牌";
+
+            if (freeSpinsActive) {
+                setTimeout(() => { if (freeSpinsActive) executeSpin(); }, isTurbo ? 600 : 1200);
+            } else if (autoSpinActive) {
+                if (autoSpinRemaining > 0) {
+                    autoSpinRemaining--;
+                    document.getElementById('autoCount').textContent = `${autoSpinRemaining}次`;
+                    if (autoSpinRemaining === 0) stopAutoSpin();
+                    else setTimeout(() => { if (autoSpinActive) executeSpin(); }, isTurbo ? 400 : 800);
+                }
+            }
+        }
+
+        /* ------------------ 中國風連線光軌渲染 (Dragon & Filigree Paylines) ------------------ */
+        const paylineCanvas = document.getElementById('paylineCanvas');
+        const pCtx = paylineCanvas.getContext('2d');
+        let activeWinningLines = [];
+        let paylineAnimId = null;
+        let lineTick = 0;
+
+        function resizeCanvas() {
+            const container = paylineCanvas.parentElement;
+            if (container) {
+                paylineCanvas.width = container.clientWidth;
+                paylineCanvas.height = container.clientHeight;
+            }
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        function drawPaylines(lines) {
+            clearPaylines();
+            if (lines.length === 0) return;
+            activeWinningLines = lines;
+            resizeCanvas();
+
+            lines.forEach(item => {
+                item.coords.forEach(coord => {
+                    const track = document.getElementById(`reel-${coord[0]}`);
+                    if (track && track.children[coord[1]]) {
+                        track.children[coord[1]].classList.add('tile-win');
+                    }
+                });
+            });
+
+            renderPaylinesLoop();
+        }
+
+        function renderPaylinesLoop() {
+            if (activeWinningLines.length === 0) return;
+            pCtx.clearRect(0, 0, paylineCanvas.width, paylineCanvas.height);
+
+            const w = paylineCanvas.width;
+            const h = paylineCanvas.height;
+            const colX = [w * 0.20, w * 0.50, w * 0.80];
+            const rowY = [h * 0.22, h * 0.50, h * 0.78];
+            lineTick += 0.05;
+
+            activeWinningLines.forEach((item, lIdx) => {
+                const coords = item.coords;
+                const p0 = { x: colX[coords[0][0]], y: rowY[coords[0][1]] };
+                const p1 = { x: colX[coords[1][0]], y: rowY[coords[1][1]] };
+                const p2 = { x: colX[coords[2][0]], y: rowY[coords[2][1]] };
+
+                // 1. 金龍祥雲流光底層 (寬厚發光)
+                pCtx.beginPath();
+                pCtx.moveTo(p0.x, p0.y);
+                pCtx.lineTo(p1.x, p1.y);
+                pCtx.lineTo(p2.x, p2.y);
+                pCtx.strokeStyle = 'rgba(245, 158, 11, 0.45)';
+                pCtx.lineWidth = 14 + Math.sin(lineTick * 3 + lIdx) * 2;
+                pCtx.lineCap = 'round';
+                pCtx.lineJoin = 'round';
+                pCtx.stroke();
+
+                // 2. 飛龍金線主軌道 (赤金與亮金雙色)
+                pCtx.beginPath();
+                pCtx.moveTo(p0.x, p0.y);
+                pCtx.lineTo(p1.x, p1.y);
+                pCtx.lineTo(p2.x, p2.y);
+                pCtx.strokeStyle = '#fef08a';
+                pCtx.lineWidth = 3.5;
+                pCtx.shadowColor = '#f59e0b';
+                pCtx.shadowBlur = 18;
+                pCtx.stroke();
+                pCtx.shadowBlur = 0;
+
+                // 3. 節點繪製：如意祥雲與太極光點
+                [p0, p1, p2].forEach(p => {
+                    pCtx.save();
+                    pCtx.translate(p.x, p.y);
+                    const pulse = 1 + Math.sin(lineTick * 4) * 0.15;
+                    pCtx.scale(pulse, pulse);
+
+                    // 外圈金環
+                    pCtx.beginPath();
+                    pCtx.arc(0, 0, 11, 0, Math.PI * 2);
+                    pCtx.strokeStyle = '#ffd700';
+                    pCtx.lineWidth = 2;
+                    pCtx.stroke();
+
+                    // 內核朱紅金點
+                    pCtx.beginPath();
+                    pCtx.arc(0, 0, 6, 0, Math.PI * 2);
+                    pCtx.fillStyle = '#dc2626';
+                    pCtx.fill();
+                    pCtx.restore();
+                });
+
+                // 4. 動態飛掠金芒微粒 (Dragon Pearl Sparkles)
+                const sparkPos = (lineTick * 1.2 + lIdx * 0.3) % 2;
+                let curX, curY;
+                if (sparkPos < 1) {
+                    curX = p0.x + (p1.x - p0.x) * sparkPos;
+                    curY = p0.y + (p1.y - p0.y) * sparkPos;
+                } else {
+                    const t = sparkPos - 1;
+                    curX = p1.x + (p2.x - p1.x) * t;
+                    curY = p1.y + (p2.y - p1.y) * t;
+                }
+
+                pCtx.save();
+                pCtx.beginPath();
+                pCtx.arc(curX, curY, 5, 0, Math.PI * 2);
+                pCtx.fillStyle = '#ffffff';
+                pCtx.shadowColor = '#fde047';
+                pCtx.shadowBlur = 15;
+                pCtx.fill();
+                pCtx.restore();
+            });
+
+            paylineAnimId = requestAnimationFrame(renderPaylinesLoop);
+        }
+
+        function clearPaylines() {
+            activeWinningLines = [];
+            if (paylineAnimId) {
+                cancelAnimationFrame(paylineAnimId);
+                paylineAnimId = null;
+            }
+            pCtx.clearRect(0, 0, paylineCanvas.width, paylineCanvas.height);
+            document.querySelectorAll('.tile-win').forEach(el => el.classList.remove('tile-win'));
+        }
+
+        /* ------------------ 中國風開運粒子 (金元寶、開運方孔銅錢、紅包、碎金箔) ------------------ */
+        const confettiCanvas = document.getElementById('confettiCanvas');
+        const cCtx = confettiCanvas.getContext('2d');
+        let orientalParticles = [];
+        let confettiAnimId = null;
+
+        function triggerConfetti(isBig = false) {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+            orientalParticles = [];
+            const count = isBig ? 130 : 65;
+
+            for (let i = 0; i < count; i++) {
+                const types = ['sycee', 'coin', 'redpack', 'goldleaf'];
+                const type = types[Math.floor(Math.random() * types.length)];
+
+                orientalParticles.push({
+                    type: type,
+                    x: window.innerWidth * 0.5,
+                    y: window.innerHeight * 0.35,
+                    vx: (Math.random() - 0.5) * (isBig ? 28 : 20),
+                    vy: (Math.random() - 0.85) * (isBig ? 26 : 18),
+                    size: Math.random() * 10 + 12,
+                    rot: Math.random() * 360,
+                    rotSpeed: (Math.random() - 0.5) * 12,
+                    flip: Math.random() * Math.PI,
+                    flipSpeed: 0.08 + Math.random() * 0.1,
+                    life: 1
+                });
+            }
+
+            if (!confettiAnimId) renderConfetti();
+        }
+
+        function renderConfetti() {
+            cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            let active = false;
+
+            orientalParticles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.45;
+                p.rot += p.rotSpeed;
+                p.flip += p.flipSpeed;
+                p.life -= 0.011;
+
+                if (p.life > 0) {
+                    active = true;
+                    cCtx.save();
+                    cCtx.translate(p.x, p.y);
+                    cCtx.rotate((p.rot * Math.PI) / 180);
+                    cCtx.globalAlpha = Math.max(0, p.life);
+
+                    const scaleY = Math.cos(p.flip);
+
+                    if (p.type === 'coin') {
+                        // 1. 開運八寶方孔銅錢
+                        cCtx.beginPath();
+                        cCtx.ellipse(0, 0, p.size, Math.abs(p.size * scaleY), 0, 0, Math.PI * 2);
+                        cCtx.fillStyle = '#f59e0b';
+                        cCtx.fill();
+                        cCtx.lineWidth = 2;
+                        cCtx.strokeStyle = '#b45309';
+                        cCtx.stroke();
+
+                        // 方孔
+                        const hole = p.size * 0.35;
+                        cCtx.fillStyle = '#1c1917';
+                        cCtx.fillRect(-hole / 2, (-hole / 2) * scaleY, hole, hole * Math.abs(scaleY));
+                    } else if (p.type === 'sycee') {
+                        // 2. 招財金元寶 (Sycee)
+                        cCtx.scale(1, Math.abs(scaleY));
+                        cCtx.beginPath();
+                        cCtx.moveTo(-p.size, 0);
+                        cCtx.quadraticCurveTo(0, p.size * 0.9, p.size, 0);
+                        cCtx.quadraticCurveTo(p.size * 0.6, -p.size * 0.4, 0, -p.size * 0.3);
+                        cCtx.quadraticCurveTo(-p.size * 0.6, -p.size * 0.4, -p.size, 0);
+                        cCtx.fillStyle = '#fde047';
+                        cCtx.fill();
+                        cCtx.lineWidth = 1.5;
+                        cCtx.strokeStyle = '#b45309';
+                        cCtx.stroke();
+
+                        // 元寶中間圓凸
+                        cCtx.beginPath();
+                        cCtx.arc(0, -p.size * 0.15, p.size * 0.3, 0, Math.PI * 2);
+                        cCtx.fillStyle = '#f59e0b';
+                        cCtx.fill();
+                    } else if (p.type === 'redpack') {
+                        // 3. 硃砂紅包
+                        cCtx.scale(1, Math.abs(scaleY));
+                        cCtx.fillStyle = '#dc2626';
+                        cCtx.fillRect(-p.size * 0.7, -p.size, p.size * 1.4, p.size * 2);
+                        cCtx.lineWidth = 1.5;
+                        cCtx.strokeStyle = '#facc15';
+                        cCtx.strokeRect(-p.size * 0.7, -p.size, p.size * 1.4, p.size * 2);
+                        // 金黃封口
+                        cCtx.fillStyle = '#facc15';
+                        cCtx.beginPath();
+                        cCtx.arc(0, -p.size * 0.2, p.size * 0.3, 0, Math.PI);
+                        cCtx.fill();
+                    } else {
+                        // 4. 碎金箔
+                        cCtx.fillStyle = '#fef08a';
+                        cCtx.fillRect(-p.size * 0.4, -p.size * 0.4, p.size * 0.8, p.size * 0.8);
+                    }
+
+                    cCtx.restore();
+                }
+            });
+
+            if (active) confettiAnimId = requestAnimationFrame(renderConfetti);
+            else {
+                cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                confettiAnimId = null;
+            }
+        }
+
+        /* 輔助與 UI 綁定 */
+        function animateCounter(element, start, end, duration) {
+            const range = end - start;
+            let current = start;
+            const increment = end > start ? 1 : -1;
+            const stepTime = Math.abs(Math.floor(duration / (range || 1)));
+            const timer = setInterval(() => {
+                current += increment * Math.ceil(Math.abs(range) / 20);
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                element.textContent = current.toLocaleString();
+            }, Math.max(stepTime, 20));
+        }
+
+        function updateUI() {
+            document.getElementById('balanceDisplay').textContent = balance.toLocaleString();
+            document.getElementById('betDisplay').textContent = currentBet.toLocaleString();
+        }
+
+        function initAdminSymbolSliders() {
+            const container = document.getElementById('symbolSlidersContainer');
+            container.innerHTML = '';
+            SYMBOL_KEYS.forEach(key => {
+                const item = TILE_DATA[key];
+                const row = document.createElement('div');
+                row.className = 'p-2.5 bg-stone-900/80 rounded-xl border border-stone-700/60 flex items-center justify-between gap-2';
+                row.innerHTML = `
+                    <div class="flex items-center gap-1.5 w-24"><span class="text-xs font-bold" style="color: ${item.color}">${item.name}</span></div>
+                    <input type="range" min="1" max="60" value="${ADMIN_CONFIG.weights[key]}" data-symbol="${key}" class="symbol-weight-slider flex-1 accent-amber-500">
+                    <span id="weight-val-${key}" class="font-mono text-amber-400 font-bold text-xs w-6 text-right">${ADMIN_CONFIG.weights[key]}</span>
+                `;
+                container.appendChild(row);
+            });
+
+            container.querySelectorAll('.symbol-weight-slider').forEach(slider => {
+                slider.addEventListener('input', (e) => {
+                    const sym = e.target.dataset.symbol;
+                    const val = parseInt(e.target.value, 10);
+                    ADMIN_CONFIG.weights[sym] = val;
+                    document.getElementById(`weight-val-${sym}`).textContent = val;
+                    document.getElementById('currentRtpLabel').textContent = '目前設定: 自訂權重配置';
+                });
+            });
+        }
+
+        function logAuditEntry(bet, grid, linesCount, won, isFree) {
+            const summary = `${grid[0][1]}-${grid[1][1]}-${grid[2][1]}`;
+            ADMIN_STATS.history.unshift({ spinId: ADMIN_STATS.totalSpins, bet, summary, linesCount, won, isFree });
+            if (ADMIN_STATS.history.length > 25) ADMIN_STATS.history.pop();
+            renderAuditTable();
+        }
+
+        function renderAuditTable() {
+            const tbody = document.getElementById('auditTableBody');
+            if (ADMIN_STATS.history.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="py-3 text-center text-stone-500">尚無摸牌紀錄</td></tr>';
+                return;
+            }
+            tbody.innerHTML = ADMIN_STATS.history.map(item => `
+                <tr class="border-b border-stone-900 hover:bg-stone-900/40">
+                    <td class="py-1.5 text-stone-300">#${item.spinId}${item.isFree ? '<span class="text-red-400 text-[9px] ml-1 font-bold">[免]</span>' : ''}</td>
+                    <td class="py-1.5 text-stone-400">${item.bet}</td>
+                    <td class="py-1.5 text-amber-200">${item.summary}</td>
+                    <td class="py-1.5 ${item.linesCount > 0 ? 'text-emerald-400 font-bold' : 'text-stone-600'}">${item.linesCount} 線</td>
+                    <td class="py-1.5 text-right ${item.won > 0 ? 'text-yellow-400 font-bold' : 'text-stone-500'}">+${item.won}</td>
+                </tr>
+            `).join('');
+        }
+
+        function updateAdminStatsDisplay() {
+            document.getElementById('statTotalSpins').textContent = ADMIN_STATS.totalSpins.toLocaleString();
+            const rtp = ADMIN_STATS.totalBet > 0 ? ((ADMIN_STATS.totalWon / ADMIN_STATS.totalBet) * 100).toFixed(2) : '0.00';
+            document.getElementById('statActualRtp').textContent = `${rtp}%`;
+            const hitFreq = ADMIN_STATS.totalSpins > 0 ? ((ADMIN_STATS.hitCount / ADMIN_STATS.totalSpins) * 100).toFixed(2) : '0.00';
+            document.getElementById('statHitFreq').textContent = `${hitFreq}%`;
+            document.getElementById('statFreeSpinsWon').textContent = ADMIN_STATS.freeSpinsTriggered;
+        }
+
+        function updateAdminForceUI() {
+            const badge = document.getElementById('forceActiveBadge');
+            const txt = document.getElementById('forceActiveText');
+            if (ADMIN_CONFIG.forceOutcome) {
+                badge.classList.remove('hidden');
+                txt.textContent = ADMIN_CONFIG.forceOutcome;
+            } else {
+                badge.classList.add('hidden');
+                txt.textContent = '無';
+            }
+        }
+
+        document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.admin-tab-btn').forEach(b => {
+                    b.classList.remove('active', 'border-amber-400', 'text-amber-300');
+                    b.classList.add('border-transparent', 'text-stone-400');
+                });
+                btn.classList.add('active', 'border-amber-400', 'text-amber-300');
+                btn.classList.remove('border-transparent', 'text-stone-400');
+                const targetTab = btn.dataset.tab;
+                document.querySelectorAll('.admin-tab-content').forEach(content => {
+                    if (content.id === targetTab) content.classList.remove('hidden');
+                    else content.classList.add('hidden');
+                });
+            });
+        });
+
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const presetKey = btn.dataset.preset;
+                const p = PRESET_CONFIGS[presetKey];
+                if (!p) return;
+                ADMIN_CONFIG.rtpPreset = presetKey;
+                ADMIN_CONFIG.weights = { ...p.weights };
+                ADMIN_CONFIG.centerWildProb = p.centerWildProb;
+                document.getElementById('currentRtpLabel').textContent = `目前設定: ${p.name}`;
+                document.getElementById('cfgCenterWildRate').value = Math.round(p.centerWildProb * 100);
+                document.getElementById('cfgCenterWildVal').textContent = `${Math.round(p.centerWildProb * 100)}%`;
+                initAdminSymbolSliders();
+            });
+        });
+
+        document.querySelectorAll('.force-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                ADMIN_CONFIG.forceOutcome = btn.dataset.force;
+                updateAdminForceUI();
+            });
+        });
+
+        document.getElementById('add10kChips').addEventListener('click', () => { balance += 10000; updateUI(); audio.playCoinCascade(); });
+        document.getElementById('add100kChips').addEventListener('click', () => { balance += 100000; updateUI(); audio.playCoinCascade(); });
+        document.getElementById('resetChips').addEventListener('click', () => { balance = 12888; updateUI(); audio.playTileClick(); });
+
+        document.getElementById('adminPanelBtn').addEventListener('click', () => {
+            audio.playTileClick();
+            updateAdminStatsDisplay();
+            renderAuditTable();
+            document.getElementById('adminModal').classList.remove('hidden');
+        });
+        const closeAdminModal = () => { audio.playTileClick(); document.getElementById('adminModal').classList.add('hidden'); };
+        document.getElementById('closeAdminModalBtn').addEventListener('click', closeAdminModal);
+        document.getElementById('saveAndCloseAdminBtn').addEventListener('click', closeAdminModal);
+
+        function startFreeSpins(count) {
+            freeSpinsActive = true; freeSpinsRemaining = count; freeSpinWinMultiplier = 2; freeSpinTotalWon = 0;
+            document.body.classList.add('free-spin-active');
+            document.getElementById('multiplierBadge').classList.remove('hidden');
+            document.getElementById('multiplierValue').textContent = `x${freeSpinWinMultiplier}`;
+            document.getElementById('bannerGameModeText').textContent = `【免費連莊摸牌】剩餘 ${freeSpinsRemaining} 局`;
+            updateUI();
+        }
+
+        function endFreeSpins() {
+            freeSpinsActive = false;
+            document.body.classList.remove('free-spin-active');
+            document.getElementById('multiplierBadge').classList.add('hidden');
+            document.getElementById('bannerGameModeText').textContent = "五線齊鳴 · 3個【天胡】觸發連莊大滿貫";
+            showBigWinModal('連 莊 總 結 算！', '雀帝歸來 · 盆滿缽滿！', freeSpinTotalWon);
+            updateUI();
+        }
+
+        function showBigWinModal(title, subtitle, amount) {
+            document.getElementById('winModalTitle').textContent = title;
+            document.getElementById('winModalSubtitle').textContent = subtitle;
+            document.getElementById('winModalAmount').textContent = `+${amount.toLocaleString()}`;
+            document.getElementById('winModal').classList.remove('hidden');
+        }
+
+        document.getElementById('closeWinModalBtn').addEventListener('click', () => {
+            audio.playTileClick();
+            document.getElementById('winModal').classList.add('hidden');
+        });
+
+        document.getElementById('betIncreaseBtn').addEventListener('click', () => {
+            audio.playTileClick();
+            if (currentBet < ADMIN_CONFIG.maxBet) { currentBet += 50; updateUI(); }
+        });
+        document.getElementById('betDecreaseBtn').addEventListener('click', () => {
+            audio.playTileClick();
+            if (currentBet > 50) { currentBet -= 50; updateUI(); }
+        });
+        document.getElementById('maxBetBtn').addEventListener('click', () => {
+            audio.playTileClick();
+            currentBet = ADMIN_CONFIG.maxBet;
+            updateUI();
+        });
+
+        const turboBtn = document.getElementById('turboBtn');
+        const turboIndicator = document.getElementById('turboIndicator');
+        turboBtn.addEventListener('click', () => {
+            audio.playTileClick();
+            isTurbo = !isTurbo;
+            if (isTurbo) {
+                turboIndicator.classList.replace('bg-stone-600', 'bg-emerald-400');
+                turboBtn.classList.add('border-emerald-400', 'text-emerald-200');
+            } else {
+                turboIndicator.classList.replace('bg-emerald-400', 'bg-stone-600');
+                turboBtn.classList.remove('border-emerald-400', 'text-emerald-200');
+            }
+        });
+
+        const autoSpinBtn = document.getElementById('autoSpinBtn');
+        const autoCount = document.getElementById('autoCount');
+        autoSpinBtn.addEventListener('click', () => {
+            audio.playTileClick();
+            if (autoSpinActive) stopAutoSpin();
+            else {
+                autoSpinActive = true;
+                autoSpinRemaining = 20;
+                autoCount.textContent = `${autoSpinRemaining}次`;
+                autoSpinBtn.classList.add('border-amber-400', 'bg-amber-950/80');
+                if (!isSpinning) executeSpin();
+            }
+        });
+
+        function stopAutoSpin() {
+            autoSpinActive = false;
+            autoSpinRemaining = 0;
+            autoCount.textContent = 'OFF';
+            autoSpinBtn.classList.remove('border-amber-400', 'bg-amber-950/80');
+        }
+
+        document.getElementById('spinBtn').addEventListener('click', () => executeSpin());
+
+        const paytableModal = document.getElementById('paytableModal');
+        document.getElementById('paytableBtn').addEventListener('click', () => { audio.playTileClick(); paytableModal.classList.remove('hidden'); });
+        document.getElementById('closePaytableBtn').addEventListener('click', () => { audio.playTileClick(); paytableModal.classList.add('hidden'); });
+        document.getElementById('closePaytableFooterBtn').addEventListener('click', () => { audio.playTileClick(); paytableModal.classList.add('hidden'); });
+
+        const soundToggleBtn = document.getElementById('soundToggleBtn');
+        const soundIconOn = document.getElementById('soundIconOn');
+        const soundIconOff = document.getElementById('soundIconOff');
+        soundToggleBtn.addEventListener('click', () => {
+            audio.init();
+            audio.muted = !audio.muted;
+            if (audio.muted) {
+                soundIconOn.classList.add('hidden');
+                soundIconOff.classList.remove('hidden');
+            } else {
+                soundIconOn.classList.remove('hidden');
+                soundIconOff.classList.add('hidden');
+                audio.playTileClick();
+            }
+        });
+
+        window.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' && !e.repeat && 
+                document.getElementById('paytableModal').classList.contains('hidden') && 
+                document.getElementById('winModal').classList.contains('hidden') && 
+                document.getElementById('adminModal').classList.contains('hidden')) {
+                e.preventDefault();
+                audio.init();
+                executeSpin();
+            }
+        });
+
+        window.addEventListener('load', () => {
+            initReels();
+            initAdminSymbolSliders();
+            updateUI();
+            resizeCanvas();
+        });
+    </script>
+</body></html>

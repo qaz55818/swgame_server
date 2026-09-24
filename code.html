@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>踏雪笑傲 · 視窗框與彈窗組件體系 (雪白水墨風)</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&amp;family=Ma+Shan+Zheng&amp;family=Noto+Serif+TC:wght@400;600;700;900&amp;family=Noto+Sans+TC:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/tailwind.css">
+<!-- 樣式由 assets/tailwind.css 提供（編譯後靜態檔，不再使用 Tailwind CDN） -->
+<style>
+        body {
+            background-color: #0b1120;
+            background-image: 
+                radial-gradient(at 15% 20%, rgba(2, 132, 199, 0.18) 0px, transparent 50%),
+                radial-gradient(at 85% 80%, rgba(190, 18, 60, 0.12) 0px, transparent 55%),
+                radial-gradient(at 50% 50%, rgba(15, 23, 42, 0.95) 0px, #070d19 100%);
+            color: #0f172a;
+            font-family: 'Noto Sans TC', sans-serif;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Ambient snowfall Canvas background - GPU 隔離層，避免造成主文檔重繪閃爍 */
+        #snow-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: transform;
+        }
+
+        /* 視窗框共用雪白琉璃基底 (Glassmorphism & Crisp ink edge) */
+        .wuxia-frame-base {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%);
+            box-shadow: 
+                0 25px 60px -15px rgba(2, 6, 23, 0.35),
+                0 0 0 1px rgba(255, 255, 255, 0.9),
+                0 0 35px rgba(56, 189, 248, 0.18);
+            border-radius: 12px;
+            position: relative;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        /* 古風四角回紋金屬與水墨角花裝飾 */
+        .corner-ornament {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            pointer-events: none;
+            opacity: 0.85;
+            transition: opacity 0.3s ease;
+        }
+        .corner-tl { top: -2px; left: -2px; border-top: 3px solid #be123c; border-left: 3px solid #be123c; border-top-left-radius: 6px; }
+        .corner-tr { top: -2px; right: -2px; border-top: 3px solid #be123c; border-right: 3px solid #be123c; border-top-right-radius: 6px; }
+        .corner-bl { bottom: -2px; left: -2px; border-bottom: 3px solid #0284c7; border-left: 3px solid #0284c7; border-bottom-left-radius: 6px; }
+        .corner-br { bottom: -2px; right: -2px; border-bottom: 3px solid #0284c7; border-right: 3px solid #0284c7; border-bottom-right-radius: 6px; }
+
+        /* 回字雲紋細邊框內線 */
+        .inner-border-line {
+            position: absolute;
+            inset: 6px;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        /* 標題裝飾帶 (水墨漸層中軸底線) */
+        .ink-header-line {
+            background: linear-gradient(90deg, transparent 0%, rgba(15, 23, 42, 0.25) 25%, rgba(190, 18, 60, 0.6) 50%, rgba(15, 23, 42, 0.25) 75%, transparent 100%);
+            height: 1px;
+            width: 100%;
+        }
+
+        /* 捲軸竹簡質感 */
+        .scroll-rod {
+            background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), inset 0 1px 1px #fff;
+            border-radius: 9999px;
+        }
+
+        /* 硃砂小印章樣式 */
+        .seal-stamp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #be123c;
+            color: #fff;
+            border-radius: 3px;
+            font-size: 11px;
+            padding: 1px 4px;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 4px rgba(190, 18, 60, 0.25);
+            font-family: 'Noto Serif TC', serif;
+        }
+
+        /* 標籤頁開關按鈕樣式 */
+        .tab-btn.active {
+            color: #be123c;
+            border-bottom: 2px solid #be123c;
+            font-weight: 600;
+        }
+
+        /* 平滑穩定的邊框呼吸微光（移除劇烈跳變與過度重繪） */
+        @keyframes frostPulseSmooth {
+            0%, 100% {
+                box-shadow: 0 22px 50px -12px rgba(2, 6, 23, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.92), 0 0 25px rgba(56, 189, 248, 0.16);
+            }
+            50% {
+                box-shadow: 0 25px 60px -12px rgba(2, 6, 23, 0.38), 0 0 0 1px rgba(255, 255, 255, 1), 0 0 36px rgba(56, 189, 248, 0.26);
+            }
+        }
+        .glow-frost {
+            animation: frostPulseSmooth 6s ease-in-out infinite;
+            will-change: box-shadow;
+        }
+
+        /* 互動按鈕平穩過渡 */
+        .action-btn-smooth {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateZ(0);
+        }
+        .action-btn-smooth:hover {
+            box-shadow: 0 4px 14px rgba(190, 18, 60, 0.35);
+        }
+
+        /* 古風客製化水墨輸入框微調 */
+        .wuxia-input {
+            background-color: #ffffff;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .wuxia-input:focus {
+            outline: none;
+            border-color: #0284c7;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15), 0 2px 8px rgba(2, 132, 199, 0.08);
+        }
+        .wuxia-input-error {
+            border-color: #be123c !important;
+            box-shadow: 0 0 0 3px rgba(190, 18, 60, 0.12) !important;
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden pb-16">
+<canvas id="snow-canvas"></canvas>
+<div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+<!-- 頂部標頭與規範說明 -->
+<header class="mb-10 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-slate-700/60">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-full bg-white/10 p-1 backdrop-blur-md border border-white/20 shadow-lg flex items-center justify-center">
+<img alt="踏雪笑傲標誌" class="w-12 h-12 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1Wsd0e9jdYtpth3jcEkzRgc3Q3nbGxMoxjUwRpT-ahdBpMjz-jWalicQwd-SsvqbqBZ6GNKzog1nkiALew8__5AnHCjN_SVfR2W9YSoNr8yXecCGhilBhoI1i7HYimf3nJdr8OAhLzYh4mIQGzkGTAyufNzrzj0dF1VTbqoRcg8Mh3zwImD8MK3IiQP0WIAHU0FNUiDpuK3N7W_AiN-R_yYX3PJnrD9duVLcJrdQg2KMLXS7g83_9YQ0klJ"/>
+</div>
+<div>
+<div class="flex items-center gap-3">
+<h1 class="text-2xl sm:text-3xl font-bold font-calligraphy text-white tracking-widest flex items-center gap-2">
+                            踏雪笑傲 <span class="text-sm font-sans font-normal text-sky-400 bg-sky-950/70 border border-sky-400/30 px-2 py-0.5 rounded">UI 視窗框體系</span>
+</h1>
+<span class="seal-stamp">雪境水墨</span>
+</div>
+<p class="text-sm text-slate-400 mt-1 font-serif">
+                        延續「雪落寒山孤劍影，天地笑傲任平生」之雪白水墨視覺語言，涵蓋通用彈窗、告警確認框、公告捲軸框與邊框元素庫。
+                    </p>
+</div>
+</div>
+<!-- 操作按鈕 -->
+<div class="flex items-center gap-2 bg-slate-900/80 p-1.5 rounded-lg border border-slate-700/80">
+<button class="action-btn-smooth px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md bg-gradient-to-r from-rose-700 to-rose-600 text-white shadow-md hover:from-rose-600 hover:to-rose-500 flex items-center gap-1.5" id="btn-show-modal">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                    預覽互動彈窗
+                </button>
+<a class="px-3.5 py-1.5 text-xs sm:text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition-colors" href="#frames-gallery">
+                    查看所有規格
+                </a>
+</div>
+</header>
+<!-- 主體網格：展示四大區塊與新增組件體系 -->
+<main class="space-y-12" id="frames-gallery">
+<!-- SECTION 1: 經典仙俠視窗框 (標準彈窗 / 角色資訊 / 裝備屬性) -->
+<section class="space-y-4">
+<div class="flex items-center justify-between border-l-4 border-rose-600 pl-3">
+<div>
+<h2 class="text-lg font-bold text-white tracking-wide font-serif flex items-center gap-2">
+                            一、雅緻雪白標準視窗框 (Standard Dialog Frame)
+                            <span class="text-xs font-normal text-slate-400">適用於：角色資訊、道具背包、系統設定、屬性面板</span>
+</h2>
+</div>
+<span class="text-xs text-sky-400 font-mono">FRAME-TYPE: CLASSIC-SNOW</span>
+</div>
+<!-- 預覽容器 -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- 視窗框本體 (佔8格) -->
+<div class="lg:col-span-8">
+<div class="wuxia-frame-base glow-frost p-6 sm:p-7 relative border border-slate-200/90">
+<!-- 四角迴紋裝飾 -->
+<div class="corner-ornament corner-tl"></div>
+<div class="corner-ornament corner-tr"></div>
+<div class="corner-ornament corner-bl"></div>
+<div class="corner-ornament corner-br"></div>
+<div class="inner-border-line"></div>
+<!-- 頂部標題列 -->
+<div class="relative z-10 flex items-center justify-between pb-3 border-b border-slate-200">
+<div class="flex items-center gap-3">
+<div class="w-2.5 h-2.5 bg-rose-600 rotate-45 shadow-sm"></div>
+<h3 class="text-xl font-bold font-serif text-slate-900 tracking-wider">
+                                        角色資訊 · 技能詳細
+                                    </h3>
+<span class="text-xs px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-200 font-medium">華山派</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-7 h-7 rounded-full bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-500 flex items-center justify-center transition-colors text-sm font-serif" title="關閉">
+                                        ✕
+                                    </button>
+</div>
+</div>
+<!-- 墨色漸層水墨中軸裝飾線 -->
+<div class="ink-header-line my-1"></div>
+<!-- 內容主體 (Tabs + Content) -->
+<div class="relative z-10 pt-4 pb-2 space-y-4">
+<!-- 頂部水墨風格切換標籤 (Tabs) -->
+<div class="flex border-b border-slate-200 text-sm gap-6">
+<button class="tab-btn active pb-2">技能概覽</button>
+<button class="tab-btn text-slate-500 hover:text-slate-800 pb-2 transition-colors">心法修煉</button>
+<button class="tab-btn text-slate-500 hover:text-slate-800 pb-2 transition-colors">裝備配置</button>
+<button class="tab-btn text-slate-500 hover:text-slate-800 pb-2 transition-colors">歷程紀錄</button>
+</div>
+<!-- 內容卡片內嵌結構 -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
+<!-- 裝備卡片 1 -->
+<div class="p-3.5 rounded-lg bg-white border border-slate-200/80 shadow-sm relative overflow-hidden group hover:border-sky-300 transition-colors">
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
+<svg class="w-24 h-24" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2L2 22h20L12 2z"></path></svg>
+</div>
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-serif text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">主動技能</span>
+<span class="text-xs font-mono text-slate-400">Lv.99</span>
+</div>
+<div class="text-base font-bold font-serif text-slate-800">破劍式</div>
+<p class="text-xs text-slate-500 mt-1 leading-relaxed">洞察各門派武學破綻，以攻代守，掌握對戰先機。</p>
+</div>
+<!-- 裝備卡片 2 -->
+<div class="p-3.5 rounded-lg bg-white border border-slate-200/80 shadow-sm relative overflow-hidden group hover:border-sky-300 transition-colors">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-serif text-sky-700 bg-sky-50 px-1.5 py-0.5 rounded border border-sky-200">當前裝備</span>
+<span class="text-xs font-mono text-emerald-600">已強化</span>
+</div>
+<div class="text-base font-bold font-serif text-slate-800">寒梅佩劍</div>
+<p class="text-xs text-slate-500 mt-1 leading-relaxed">採用玄鐵與極寒冰晶淬鍊打造，揮劍帶有寒霜劍氣。</p>
+</div>
+<!-- 裝備卡片 3 -->
+<div class="p-3.5 rounded-lg bg-white border border-slate-200/80 shadow-sm relative overflow-hidden group hover:border-sky-300 transition-colors">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-serif text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">身法技能</span>
+<span class="text-xs font-mono text-slate-400">快速位移</span>
+</div>
+<div class="text-base font-bold font-serif text-slate-800">踏雪尋梅步</div>
+<p class="text-xs text-slate-500 mt-1 leading-relaxed">踏雪無痕，大幅提升行進速度與閃避能力，身法輕盈敏捷。</p>
+</div>
+</div>
+<!-- 典雅水墨說明條 -->
+<div class="bg-gradient-to-r from-slate-50 via-sky-50/50 to-slate-50 border border-slate-200/90 rounded-lg p-3 text-xs text-slate-600 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-rose-600 font-bold">【系統提示】</span>
+<span>今日門派比武尚有 3 次挑戰機會，每日清晨 05:00 重置。</span>
+</div>
+<span class="text-slate-400 font-serif">系統說明 · 第 1 頁</span>
+</div>
+</div>
+<!-- 底部按鈕操作列 -->
+<div class="relative z-10 pt-4 mt-2 border-t border-slate-200 flex items-center justify-end gap-3">
+<button class="px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-900 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
+                                    關閉視窗
+                                </button>
+<button class="px-5 py-2 text-xs font-medium bg-gradient-to-r from-rose-700 to-rose-600 text-white rounded-md shadow-sm hover:from-rose-600 hover:to-rose-500 transition-all flex items-center gap-1.5">
+<span>確認升級</span>
+<span class="text-rose-200">→</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 規格與設計語彙標籤 (佔4格) -->
+<div class="lg:col-span-4 bg-slate-900/90 rounded-xl p-5 border border-slate-800 text-slate-300 space-y-4">
+<h4 class="text-sm font-bold text-white font-serif border-b border-slate-800 pb-2 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-sky-400"></span>
+                            視窗規格結構特點
+                        </h4>
+<ul class="text-xs space-y-3 leading-relaxed">
+<li class="flex items-start gap-2">
+<span class="text-rose-400 font-bold">●</span>
+<div><strong class="text-white">雙層邊框線 (Double Border)</strong>：外層微透柔光陰影、內層 1px 典雅內嵌飾線（如羊脂白玉般溫潤的邊框層次）。</div>
+</li>
+<li class="flex items-start gap-2">
+<span class="text-sky-400 font-bold">●</span>
+<div><strong class="text-white">四角對稱回紋角花</strong>：上方採用「硃砂紅梅」、下方採用「寒冰冷藍」交織，兼具古典意境與現代視覺平衡。</div>
+</li>
+<li class="flex items-start gap-2">
+<span class="text-amber-400 font-bold">●</span>
+<div><strong class="text-white">水墨漸層中軸線</strong>：標題下方帶有左右漸隱的水墨筆觸分隔線，取代生硬的 HTML 線段。</div>
+</li>
+</ul>
+<div class="p-3 bg-slate-950/70 rounded border border-slate-800 text-[11px] font-mono text-slate-400">
+                            CSS class: <code>.wuxia-frame-base</code><br/>
+                            Background: <code>rgba(255, 255, 255, 0.96)</code><br/>
+                            Accent: <code>#be123c (朱砂), #0284c7 (冰藍)</code>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 2: 系統確認對話框 (Compact Confirmation & Alert Frame) -->
+<section class="space-y-4">
+<div class="flex items-center justify-between border-l-4 border-sky-500 pl-3">
+<div>
+<h2 class="text-lg font-bold text-white tracking-wide font-serif flex items-center gap-2">
+                            二、雪峰警示與確認小視窗 (Compact Alert / Confirmation Frame)
+                            <span class="text-xs font-normal text-slate-400">適用於：挑戰確認、道具消耗提示、登出確認、重要操作提示</span>
+</h2>
+</div>
+<span class="text-xs text-sky-400 font-mono">FRAME-TYPE: SYSTEM-ALERT</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+<!-- 範例 A: 硃砂警告框 (危險操作 / 決鬥確認) -->
+<div class="wuxia-frame-base p-6 border border-rose-200/90 relative">
+<div class="corner-ornament corner-tl"></div>
+<div class="corner-ornament corner-tr"></div>
+<div class="corner-ornament corner-bl"></div>
+<div class="corner-ornament corner-br"></div>
+<div class="inner-border-line"></div>
+<div class="relative z-10 text-center space-y-3">
+<!-- 頂部警示徽記 -->
+<div class="w-12 h-12 mx-auto rounded-full bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 shadow-inner">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h3 class="text-lg font-bold font-serif text-slate-900">
+                                挑戰進入確認
+                            </h3>
+<p class="text-xs text-slate-600 leading-relaxed px-4">
+                                即將進入「華山思過崖」進行挑戰。本次行動將消耗【寒梅令】×1，是否確認前往？
+                            </p>
+<!-- 操作按鈕組合 -->
+<div class="pt-3 flex items-center justify-center gap-3">
+<button class="px-5 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
+                                    取消
+                                </button>
+<button class="px-6 py-1.5 text-xs font-medium bg-rose-700 text-white rounded-md shadow hover:bg-rose-600 transition-colors">
+                                    確認前往
+                                </button>
+</div>
+</div>
+</div>
+<!-- 範例 B: 冰藍資訊框 (恭賀獲得、修為突破) -->
+<div class="wuxia-frame-base p-6 border border-sky-200/90 relative">
+<div class="corner-ornament corner-tl" style="border-color: #0284c7;"></div>
+<div class="corner-ornament corner-tr" style="border-color: #0284c7;"></div>
+<div class="corner-ornament corner-bl" style="border-color: #0284c7;"></div>
+<div class="corner-ornament corner-br" style="border-color: #0284c7;"></div>
+<div class="inner-border-line"></div>
+<div class="relative z-10 text-center space-y-3">
+<!-- 頂部成就徽記 -->
+<div class="w-12 h-12 mx-auto rounded-full bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600 shadow-inner">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+<h3 class="text-lg font-bold font-serif text-slate-900">
+                                突破成功
+                            </h3>
+<p class="text-xs text-slate-600 leading-relaxed px-4">
+                                恭喜成功突破境界，解鎖全新技能【踏雪無痕】。移動速度提升 25%，攻擊穿透提升 40 點。
+                            </p>
+<!-- 操作按鈕組合 -->
+<div class="pt-3 flex items-center justify-center gap-3">
+<button class="px-8 py-1.5 text-xs font-medium bg-gradient-to-r from-sky-700 to-sky-600 text-white rounded-md shadow hover:from-sky-600 hover:to-sky-500 transition-all">
+                                    確認領取
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: 水墨古卷公告框 (Scroll Notice Frame) -->
+<section class="space-y-4">
+<div class="flex items-center justify-between border-l-4 border-amber-600 pl-3">
+<div>
+<h2 class="text-lg font-bold text-white tracking-wide font-serif flex items-center gap-2">
+                            三、雪山水墨捲軸框 (Imperial Scroll Notice Frame)
+                            <span class="text-xs font-normal text-slate-400">適用於：開服公告、系統維護通知、活動資訊、排行榜</span>
+</h2>
+</div>
+<span class="text-xs text-amber-400 font-mono">FRAME-TYPE: SCROLL-PARCHMENT</span>
+</div>
+<!-- 捲軸樣式框體 -->
+<div class="max-w-3xl mx-auto relative">
+<!-- 上捲軸桿 -->
+<div class="scroll-rod h-4 w-full relative z-20 flex items-center justify-between px-3">
+<div class="w-5 h-5 rounded-full bg-slate-400 border-2 border-slate-600 shadow-md"></div>
+<div class="w-5 h-5 rounded-full bg-slate-400 border-2 border-slate-600 shadow-md"></div>
+</div>
+<!-- 捲軸紙質主體 -->
+<div class="bg-[#fcfbf9] border-x-4 border-slate-300 px-7 py-8 relative shadow-2xl -my-1 z-10">
+<!-- 紙張紋理暗紋與中軸水墨背景 -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]"></div>
+<!-- 捲軸抬頭 -->
+<div class="text-center pb-4 border-b border-slate-200 relative">
+<span class="seal-stamp mb-2">系統公告</span>
+<h3 class="text-2xl font-bold font-calligraphy text-slate-900 tracking-widest mt-1">
+                                《踏雪笑傲》新伺服器開啟與活動公告
+                            </h3>
+<p class="text-xs text-slate-400 mt-1 font-serif">官方營運團隊 · 全伺服器公告</p>
+</div>
+<!-- 捲軸正文 -->
+<div class="py-5 space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed font-serif">
+<p class="indent-6">
+                                親愛的玩家您好：全新伺服器【踏雪尋梅】已正式開放！感謝各位玩家的熱情支持與耐心等候。凡於今日登入遊戲的新創角色，皆可於活動介面領取專屬武器【寒梅佩劍】及雪地限定坐騎。
+                            </p>
+<div class="bg-slate-100/70 p-3.5 rounded border-l-2 border-rose-600 text-xs space-y-1.5">
+<div class="font-bold text-slate-800">【重要活動事宜】</div>
+<div>1. 全伺服器經驗加倍時段：每日 14:00 - 16:00 與 20:00 - 22:00。</div>
+<div>2. 陣營戰活動時間：每週六晚間 20:00 正式開放限時戰場。</div>
+<div>3. 伺服器狀態：良好（全分流連線穩定）。</div>
+</div>
+<p class="text-right text-xs text-slate-500 pt-2">
+                                《踏雪笑傲》營運團隊 敬上
+                            </p>
+</div>
+<!-- 捲軸按鈕列 -->
+<div class="pt-3 border-t border-slate-200 flex items-center justify-between">
+<label class="flex items-center gap-2 text-xs text-slate-500 cursor-pointer select-none">
+<input class="rounded text-rose-600 focus:ring-rose-500" type="checkbox"/>
+<span>今日不再顯示此公告</span>
+</label>
+<button class="px-5 py-1.5 bg-slate-800 text-white hover:bg-slate-700 rounded text-xs transition-colors">
+                                進入遊戲
+                            </button>
+</div>
+</div>
+<!-- 下捲軸桿 -->
+<div class="scroll-rod h-4 w-full relative z-20 flex items-center justify-between px-3">
+<div class="w-5 h-5 rounded-full bg-slate-400 border-2 border-slate-600 shadow-md"></div>
+<div class="w-5 h-5 rounded-full bg-slate-400 border-2 border-slate-600 shadow-md"></div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: 視窗裝飾零件庫 (UI Corner Ornaments & Border Tokens) -->
+<section class="space-y-4">
+<div class="flex items-center justify-between border-l-4 border-slate-400 pl-3">
+<div>
+<h2 class="text-lg font-bold text-white tracking-wide font-serif flex items-center gap-2">
+                            四、邊框裝飾與邊角符號組件庫 (Border &amp; Ornament Asset Kit)
+                            <span class="text-xs font-normal text-slate-400">可自由拆解複用於各類介面 HUD、按鈕與彈窗組件</span>
+</h2>
+</div>
+<span class="text-xs text-slate-400 font-mono">ASSET-KIT: ORNAMENTS</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- 裝飾件 1: 朱砂梅花金屬角 -->
+<div class="bg-white/95 rounded-lg p-4 border border-slate-200 flex flex-col items-center justify-center text-center relative">
+<div class="w-12 h-12 relative mb-2">
+<div class="absolute inset-0 border-t-2 border-l-2 border-rose-600 rounded-tl-md"></div>
+<div class="absolute top-1 left-1 w-2.5 h-2.5 bg-rose-600 rotate-45"></div>
+</div>
+<span class="text-xs font-bold text-slate-800 font-serif">硃砂梅花角飾 (TL)</span>
+<span class="text-[10px] text-slate-500 mt-0.5">適用於主視窗左上、右上角</span>
+</div>
+<!-- 裝飾件 2: 冰藍霜魄回紋角 -->
+<div class="bg-white/95 rounded-lg p-4 border border-slate-200 flex flex-col items-center justify-center text-center relative">
+<div class="w-12 h-12 relative mb-2">
+<div class="absolute inset-0 border-b-2 border-r-2 border-sky-600 rounded-br-md"></div>
+<div class="absolute bottom-1 right-1 w-2 h-2 rounded-full bg-sky-500"></div>
+</div>
+<span class="text-xs font-bold text-slate-800 font-serif">冰藍霜魄角飾 (BR)</span>
+<span class="text-[10px] text-slate-500 mt-0.5">適用於主視窗左下、右下角</span>
+</div>
+<!-- 裝飾件 3: 水墨中軸漸隱線 -->
+<div class="bg-white/95 rounded-lg p-4 border border-slate-200 flex flex-col items-center justify-center text-center">
+<div class="w-full py-4 px-2">
+<div class="ink-header-line"></div>
+</div>
+<span class="text-xs font-bold text-slate-800 font-serif">水墨漸層分隔線</span>
+<span class="text-[10px] text-slate-500 mt-0.5">自然漸隱的水墨筆觸分界線</span>
+</div>
+<!-- 裝飾件 4: 硃砂古印章標籤 -->
+<div class="bg-white/95 rounded-lg p-4 border border-slate-200 flex flex-col items-center justify-center text-center">
+<div class="py-2.5">
+<span class="seal-stamp text-xs px-2.5 py-1">踏雪尋梅</span>
+</div>
+<span class="text-xs font-bold text-slate-800 font-serif">硃砂印章標記</span>
+<span class="text-[10px] text-slate-500 mt-0.5">適用於狀態標籤或已核可印記</span>
+</div>
+</div>
+</section>
+<!-- SECTION 5: 註冊表單與常用系統表單輸入元素框 (Form & System Input Components) -->
+<section class="space-y-4">
+<div class="flex items-center justify-between border-l-4 border-emerald-600 pl-3">
+<div>
+<h2 class="text-lg font-bold text-white tracking-wide font-serif flex items-center gap-2">
+                            五、註冊表單與常用系統表單輸入元素框 (Form &amp; System Input Components)
+                            <span class="text-xs font-normal text-slate-400">適用於：俠客註冊、角色更名、帳號登入、伺服器綁定與安全驗證</span>
+</h2>
+</div>
+<span class="text-xs text-emerald-400 font-mono">FRAME-TYPE: WUXIA-FORMS</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- 表單實際視窗展示 (佔8格) -->
+<div class="lg:col-span-8">
+<div class="wuxia-frame-base p-6 sm:p-8 relative border border-slate-200/90 shadow-2xl">
+<!-- 四角迴紋角飾 -->
+<div class="corner-ornament corner-tl"></div>
+<div class="corner-ornament corner-tr"></div>
+<div class="corner-ornament corner-bl"></div>
+<div class="corner-ornament corner-br"></div>
+<div class="inner-border-line"></div>
+<!-- 視窗標題 -->
+<div class="relative z-10 flex items-center justify-between pb-3 border-b border-slate-200">
+<div class="flex items-center gap-3">
+<div class="w-2.5 h-2.5 bg-rose-600 rotate-45 shadow-sm"></div>
+<h3 class="text-xl font-bold font-serif text-slate-900 tracking-wider">
+                                俠客通行證 · 帳號註冊與角色綁定
+                            </h3>
+<span class="text-xs px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">雪境通行</span>
+</div>
+<span class="seal-stamp text-[10px]">踏雪留名</span>
+</div>
+<div class="ink-header-line my-1"></div>
+<!-- 表單主體結構 -->
+<div class="relative z-10 pt-4 space-y-6">
+<!-- 1. 帳號輸入框多狀態並列展示 (標準、聚焦冰藍、驗證錯誤) -->
+<div class="space-y-3">
+<label class="block text-xs font-bold text-slate-800 font-serif flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
+                                帳號輸入框狀態範例（標準 / 聚焦光暈 / 驗證錯誤）
+                            </label>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+<!-- 標準狀態 -->
+<div>
+<span class="block text-[11px] text-slate-500 mb-1">【標準預設狀態】</span>
+<div class="relative">
+<input class="wuxia-input w-full px-3 py-2 text-xs border border-slate-300 rounded-md placeholder-slate-400 focus:outline-none focus:border-sky-500" placeholder="請輸入門派號 / 帳號" type="text" value="LinghuChong_99"/>
+<div class="absolute right-2.5 top-2.5 text-slate-400 text-xs">俠</div>
+</div>
+<span class="text-[10px] text-slate-400 mt-1 block">4-16 位英數字符</span>
+</div>
+<!-- 聚焦光暈狀態 Focus with Ice Blue Glow -->
+<div>
+<span class="block text-[11px] text-sky-600 font-medium mb-1">【聚焦狀態 · 冰藍光暈】</span>
+<div class="relative">
+<input class="wuxia-input w-full px-3 py-2 text-xs border-sky-500 rounded-md shadow-[0_0_0_3px_rgba(2,132,199,0.18)] focus:outline-none" placeholder="輸入常用電子郵件" type="text" value="wuxia@xueshan.tw"/>
+<div class="absolute right-2.5 top-2.5 text-sky-500">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+<span class="text-[10px] text-sky-600 mt-1 block">正在輸入中...</span>
+</div>
+<!-- 錯誤驗證狀態 Error with Vermilion Border -->
+<div>
+<span class="block text-[11px] text-rose-600 font-medium mb-1">【錯誤狀態 · 硃砂告警】</span>
+<div class="relative">
+<input class="wuxia-input wuxia-input-error w-full px-3 py-2 text-xs border-rose-600 rounded-md text-rose-900 bg-rose-50/20" placeholder="輸入江湖別號" type="text" value="令狐*沖！"/>
+<div class="absolute right-2.5 top-2.5 text-rose-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+<span class="text-[10px] text-rose-600 mt-1 block">此稱號包含特殊字元，請重新輸入</span>
+</div>
+</div>
+</div>
+<!-- 2. 密碼輸入框與安全強度指示條 -->
+<div class="p-4 rounded-lg bg-slate-50/80 border border-slate-200/90 space-y-3">
+<div class="flex items-center justify-between">
+<label class="text-xs font-bold text-slate-800 font-serif flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span>
+                                    通行密碼設置與安全強度條
+                                </label>
+<span class="text-[11px] text-slate-500">密碼強度：<strong class="text-emerald-600">【高 · 固若金湯】</strong></span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+<div class="sm:col-span-8 relative">
+<input class="wuxia-input w-full px-3.5 py-2 text-xs border border-slate-300 rounded-md placeholder-slate-400 focus:outline-none focus:border-sky-500 font-mono" placeholder="請設定 8-20 位密碼" type="text" value="XueShan#2025*Sword"/>
+<button class="absolute right-2.5 top-2 text-slate-400 hover:text-slate-700 transition-colors p-0.5" title="顯示/隱藏密碼">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<div class="sm:col-span-4 space-y-1">
+<div class="flex h-1.5 w-full rounded-full overflow-hidden bg-slate-200">
+<div class="w-1/3 bg-rose-500"></div>
+<div class="w-1/3 bg-amber-500"></div>
+<div class="w-1/3 bg-emerald-500"></div>
+</div>
+<div class="flex justify-between text-[10px] text-slate-400">
+<span>弱 (易破)</span>
+<span>中 (尋常)</span>
+<span class="text-emerald-600 font-bold">強 (極險)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. 下拉選擇器 (伺服器選擇 / 門派流派選擇) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-bold text-slate-800 font-serif mb-1.5 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                                選擇入駐伺服器 (Select Server)
+                            </label>
+<div class="relative">
+<select class="wuxia-input w-full px-3 py-2 text-xs border border-slate-300 rounded-md bg-white text-slate-800 appearance-none focus:outline-none focus:border-sky-500 pr-8 cursor-pointer">
+<option>S1 踏雪尋梅（推薦 · 人氣爆滿）</option>
+<option>S2 寒江獨釣（新開 · 暢行無阻）</option>
+<option>S3 萬里霜天（新開 · 陣營火熱）</option>
+<option>S4 笑傲雲峰（維護準備中）</option>
+</select>
+<div class="pointer-events-none absolute right-2.5 top-2.5 text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-800 font-serif mb-1.5 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                                所屬門派與心法路線 (Sect Selection)
+                            </label>
+<div class="relative">
+<select class="wuxia-input w-full px-3 py-2 text-xs border border-slate-300 rounded-md bg-white text-slate-800 appearance-none focus:outline-none focus:border-sky-500 pr-8 cursor-pointer">
+<option>華山派 · 獨孤九劍流 (極致快劍)</option>
+<option>武當派 · 太極純陽心法 (以柔克剛)</option>
+<option>日月神教 · 吸星神功 (霸道控場)</option>
+<option>衡山派 · 瀟湘夜雨劍譜 (身法敏捷)</option>
+</select>
+<div class="pointer-events-none absolute right-2.5 top-2.5 text-slate-400">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. 驗證碼輸入與發送倒數計時按鈕組 (SMS / Captcha Verification) -->
+<div>
+<label class="block text-xs font-bold text-slate-800 font-serif mb-1.5 flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-600"></span>
+                                江湖飛鴿驗證碼 (Verification Code)
+                            </label>
+<div class="flex gap-2">
+<div class="relative flex-1">
+<input class="wuxia-input w-full px-3 py-2 text-xs border border-slate-300 rounded-md placeholder-slate-400 focus:outline-none focus:border-sky-500 font-mono tracking-wider" placeholder="輸入 6 位數密函驗證碼" type="text" value="849201"/>
+<span class="absolute right-2.5 top-2 text-[10px] text-emerald-600 font-serif">已驗證</span>
+</div>
+<button class="px-4 py-2 text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-300 rounded-md transition-colors flex items-center gap-1 whitespace-nowrap" type="button">
+<svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>重新發送 (58s)</span>
+</button>
+</div>
+</div>
+<!-- 5. 單選框 (Radio) 與複選框 (Checkbox) -->
+<div class="p-3.5 rounded-lg bg-white border border-slate-200/90 space-y-3">
+<div class="flex flex-wrap items-center justify-between gap-3 text-xs border-b border-slate-100 pb-2.5">
+<span class="font-bold text-slate-800 font-serif">角色初始身世選擇 (Radio 單選)：</span>
+<div class="flex items-center gap-4">
+<label class="flex items-center gap-1.5 cursor-pointer text-slate-700">
+<input checked="" class="text-rose-600 focus:ring-rose-500 h-3.5 w-3.5 border-slate-300" name="origin" type="radio"/>
+<span>名門世家</span>
+</label>
+<label class="flex items-center gap-1.5 cursor-pointer text-slate-700">
+<input class="text-rose-600 focus:ring-rose-500 h-3.5 w-3.5 border-slate-300" name="origin" type="radio"/>
+<span>塞外孤俠</span>
+</label>
+<label class="flex items-center gap-1.5 cursor-pointer text-slate-700">
+<input class="text-rose-600 focus:ring-rose-500 h-3.5 w-3.5 border-slate-300" name="origin" type="radio"/>
+<span>隱士高徒</span>
+</label>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs pt-0.5">
+<label class="flex items-center gap-2 cursor-pointer select-none text-slate-600">
+<input checked="" class="rounded text-rose-600 focus:ring-rose-500 h-3.5 w-3.5 border-slate-300" type="checkbox"/>
+<span>我已詳細閱讀並同意遵守《踏雪笑傲使用者條款》與《隱私政策》</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer select-none text-slate-500">
+<input class="rounded text-sky-600 focus:ring-sky-500 h-3.5 w-3.5 border-slate-300" type="checkbox"/>
+<span>在此設備記住此俠客帳號</span>
+</label>
+</div>
+</div>
+<!-- 底部操作按鈕組 -->
+<div class="pt-3 border-t border-slate-200 flex items-center justify-end gap-3">
+<button class="px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-900 border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
+                                重設表單
+                            </button>
+<button class="px-6 py-2 text-xs font-medium bg-gradient-to-r from-rose-700 to-rose-600 text-white rounded-md shadow hover:from-rose-600 hover:to-rose-500 transition-all flex items-center gap-1.5">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>完成註冊並即刻入世</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- 表單設計說明規範卡 (佔4格) -->
+<div class="lg:col-span-4 bg-slate-900/90 rounded-xl p-5 border border-slate-800 text-slate-300 space-y-4">
+<h4 class="text-sm font-bold text-white font-serif border-b border-slate-800 pb-2 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            輸入元件設計規範 (Form Guidelines)
+                        </h4>
+<ul class="text-xs space-y-3 leading-relaxed">
+<li class="flex items-start gap-2">
+<span class="text-sky-400 font-bold">●</span>
+<div><strong class="text-white">冰藍光暈聚焦態 (Ice Glow Focus)</strong>：表單於 Active / Focus 時，邊框轉為 <code>#0284c7</code>，並附帶 3px 柔和冰晶光暈，傳達寒峰雪霽之意境。</div>
+</li>
+<li class="flex items-start gap-2">
+<span class="text-rose-400 font-bold">●</span>
+<div><strong class="text-white">硃砂警戒驗證態 (Vermilion Alert)</strong>：不符合校驗規則時，即時切換至硃砂紅框與淺色背景，並給出直覺中文提示。</div>
+</li>
+<li class="flex items-start gap-2">
+<span class="text-emerald-400 font-bold">●</span>
+<div><strong class="text-white">安全性階梯識別 (Security Bar)</strong>：採用三色進階強度，直覺辨識弱、中、強，兼具現代感與古典風格。</div>
+</li>
+</ul>
+<div class="p-3 bg-slate-950/70 rounded border border-slate-800 text-[11px] font-mono text-slate-400">
+                            Components: <code>Input, Password, Select, Radio, Checkbox, Verification</code><br/>
+                            Theme: <code>Ink &amp; Snow Frost</code><br/>
+                            Validation: <code>Inline Reactive States</code>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 6: 系統狀態徽章與操作按鈕規格庫 (Badges & Buttons Kit) -->
+<section class="space-y-4">
+<div class="flex items-center justify-between border-l-4 border-rose-500 pl-3">
+<div>
+<h2 class="text-lg font-bold text-white tracking-wide font-serif flex items-center gap-2">
+                            六、系統狀態徽章與操作按鈕規格庫 (Badges &amp; Buttons Kit)
+                            <span class="text-xs font-normal text-slate-400">收錄資訊橫幅（Banner）、狀態膠囊徽章與全尺寸操作按鈕體系</span>
+</h2>
+</div>
+<span class="text-xs text-rose-400 font-mono">ASSET-KIT: BUTTONS &amp; BADGES</span>
+</div>
+<div class="wuxia-frame-base p-6 sm:p-7 relative border border-slate-200/90 shadow-2xl">
+<!-- 四角迴紋角飾 -->
+<div class="corner-ornament corner-tl"></div>
+<div class="corner-ornament corner-tr"></div>
+<div class="corner-ornament corner-bl"></div>
+<div class="corner-ornament corner-br"></div>
+<div class="inner-border-line"></div>
+<div class="relative z-10 space-y-8">
+<!-- 1. 系統資訊提示橫幅列 (Info / Success / Warning / Danger Banner) -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<h4 class="text-sm font-bold text-slate-900 font-serif flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-rose-600"></span>
+                                四象系統狀態提示橫幅 (System Notification Banners)
+                            </h4>
+<span class="text-xs text-slate-400 font-mono">STYLE: BORDER-ACCENT</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
+<!-- 提示 Banner (冰藍) -->
+<div class="p-3 bg-sky-50/80 border-l-4 border-sky-600 rounded-r-md flex items-start gap-2.5 text-sky-950">
+<svg class="w-4 h-4 text-sky-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<div>
+<strong class="font-bold">【情報】</strong>
+<span>伺服器預計於今夜 04:00 進行跨服論劍演算法更新，預計耗時 30 分鐘。</span>
+</div>
+</div>
+<!-- 成功 Banner (翠竹) -->
+<div class="p-3 bg-emerald-50/80 border-l-4 border-emerald-600 rounded-r-md flex items-start gap-2.5 text-emerald-950">
+<svg class="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<div>
+<strong class="font-bold">【圓滿】</strong>
+<span>俠客帳號認證成功，專屬迎新禮包【踏雪尋梅匣】已寄送至郵件中。</span>
+</div>
+</div>
+<!-- 警告 Banner (金琥珀) -->
+<div class="p-3 bg-amber-50/80 border-l-4 border-amber-600 rounded-r-md flex items-start gap-2.5 text-amber-950">
+<svg class="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<div>
+<strong class="font-bold">【警示】</strong>
+<span>當前身處高寒極險區域「絕情崖」，角色體力消耗速度將提升 50%。</span>
+</div>
+</div>
+<!-- 危機 Banner (硃砂) -->
+<div class="p-3 bg-rose-50/80 border-l-4 border-rose-600 rounded-r-md flex items-start gap-2.5 text-rose-950">
+<svg class="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<div>
+<strong class="font-bold">【危殆】</strong>
+<span>裝備【寒梅佩劍】耐久度已低於 5%，請及時前往門派鐵匠處淬火修繕。</span>
+</div>
+</div>
+</div>
+</div>
+<div class="ink-header-line"></div>
+<!-- 2. 狀態徽章 (Status Badges & Pill Tags) -->
+<div class="space-y-3">
+<h4 class="text-sm font-bold text-slate-900 font-serif flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-sky-600"></span>
+                            門派與狀態膠囊徽章體系 (State &amp; Identity Badges)
+                        </h4>
+<div class="flex flex-wrap items-center gap-2.5">
+<!-- 硃砂印章 -->
+<span class="seal-stamp text-xs px-2.5 py-0.5">宗門首座</span>
+<span class="seal-stamp text-xs px-2.5 py-0.5 bg-sky-700">冰魄寒谷</span>
+<span class="seal-stamp text-xs px-2.5 py-0.5 bg-amber-600">天下無雙</span>
+<span class="seal-stamp text-xs px-2.5 py-0.5 bg-slate-800">隱世高人</span>
+<!-- 現代膠囊徽章 -->
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs bg-rose-100 text-rose-800 border border-rose-200 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse"></span>
+                                交戰中
+                            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs bg-sky-100 text-sky-800 border border-sky-200 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                                閉關修煉
+                            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs bg-emerald-100 text-emerald-800 border border-emerald-200 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                狀態極佳
+                            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs bg-slate-200 text-slate-700 border border-slate-300 font-medium">
+                                離線暫離
+                            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs bg-amber-100 text-amber-800 border border-amber-200 font-medium">
+                                VIP·劍聖特權
+                            </span>
+</div>
+</div>
+<div class="ink-header-line"></div>
+<!-- 3. 常用操作按鈕組態體系 (Buttons Kit) -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<h4 class="text-sm font-bold text-slate-900 font-serif flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-slate-800"></span>
+                                常用操作按鈕組態體系 (Interactive Button Kit)
+                            </h4>
+<span class="text-xs text-slate-400 font-serif">支援 Primary、Secondary、Ghost、Disabled 規格</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- 1. 主要按鈕 (硃砂紅漸變) -->
+<div class="p-4 rounded-lg bg-slate-50 border border-slate-200 text-center space-y-2.5">
+<span class="text-xs font-serif text-slate-600 font-bold block">主要操作 (Primary)</span>
+<button class="w-full px-4 py-2 text-xs font-medium bg-gradient-to-r from-rose-700 to-rose-600 hover:from-rose-600 hover:to-rose-500 text-white rounded-md shadow-md transition-all flex items-center justify-center gap-1.5">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>硃砂鋒芒 · 拔劍出鞘</span>
+</button>
+<span class="text-[10px] text-slate-400 block font-mono">bg-rose-700 / shadow</span>
+</div>
+<!-- 2. 次要按鈕 (冰藍 Outline 描邊) -->
+<div class="p-4 rounded-lg bg-slate-50 border border-slate-200 text-center space-y-2.5">
+<span class="text-xs font-serif text-slate-600 font-bold block">次要操作 (Secondary)</span>
+<button class="w-full px-4 py-2 text-xs font-medium text-sky-700 bg-white border border-sky-500 hover:bg-sky-50 rounded-md shadow-sm transition-all flex items-center justify-center gap-1.5">
+<svg class="w-3.5 h-3.5 text-sky-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>冰藍冷月 · 參悟心法</span>
+</button>
+<span class="text-[10px] text-slate-400 block font-mono">border-sky-500 / outline</span>
+</div>
+<!-- 3. 幽靈文字按鈕 (Ghost Text Button) -->
+<div class="p-4 rounded-lg bg-slate-50 border border-slate-200 text-center space-y-2.5">
+<span class="text-xs font-serif text-slate-600 font-bold block">幽靈按鈕 (Ghost)</span>
+<button class="w-full px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 rounded-md transition-colors flex items-center justify-center gap-1.5">
+<svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>清風拂袖 · 暫且退隱</span>
+</button>
+<span class="text-[10px] text-slate-400 block font-mono">text-slate-600 / ghost</span>
+</div>
+<!-- 4. 禁用按鈕 (Disabled 墨灰) -->
+<div class="p-4 rounded-lg bg-slate-50 border border-slate-200 text-center space-y-2.5">
+<span class="text-xs font-serif text-slate-600 font-bold block">禁用狀態 (Disabled)</span>
+<button class="w-full px-4 py-2 text-xs font-medium bg-slate-200 text-slate-400 border border-slate-300 rounded-md cursor-not-allowed flex items-center justify-center gap-1.5" disabled="">
+<svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>修為不足 · 尚鎖定中</span>
+</button>
+<span class="text-[10px] text-slate-400 block font-mono">bg-slate-200 / disabled</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- 互動展示用：浮動動態模態視窗 (Live Modal) -->
+<div class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 pointer-events-none" id="demo-modal-backdrop">
+<div class="wuxia-frame-base max-w-lg w-full p-6 sm:p-7 relative border border-white transform scale-95 transition-transform duration-300" id="demo-modal-container">
+<!-- 四角迴紋角飾 -->
+<div class="corner-ornament corner-tl"></div>
+<div class="corner-ornament corner-tr"></div>
+<div class="corner-ornament corner-bl"></div>
+<div class="corner-ornament corner-br"></div>
+<div class="inner-border-line"></div>
+<!-- 頂部列 -->
+<div class="relative z-10 flex items-center justify-between pb-3 border-b border-slate-200">
+<div class="flex items-center gap-2.5">
+<img alt="LOGO" class="w-6 h-6 rounded-full" src="https://lh3.googleusercontent.com/aida/AEtjO1Wsd0e9jdYtpth3jcEkzRgc3Q3nbGxMoxjUwRpT-ahdBpMjz-jWalicQwd-SsvqbqBZ6GNKzog1nkiALew8__5AnHCjN_SVfR2W9YSoNr8yXecCGhilBhoI1i7HYimf3nJdr8OAhLzYh4mIQGzkGTAyufNzrzj0dF1VTbqoRcg8Mh3zwImD8MK3IiQP0WIAHU0FNUiDpuK3N7W_AiN-R_yYX3PJnrD9duVLcJrdQg2KMLXS7g83_9YQ0klJ"/>
+<h3 class="text-lg font-bold font-serif text-slate-900">
+                        五嶽論劍 · 戰帖確認
+                    </h3>
+</div>
+<button class="w-7 h-7 rounded-full bg-slate-100 hover:bg-rose-50 hover:text-rose-600 text-slate-500 flex items-center justify-center transition-colors" id="btn-close-modal">
+                    ✕
+                </button>
+</div>
+<div class="ink-header-line my-1"></div>
+<!-- 內容主體 -->
+<div class="relative z-10 py-4 space-y-3">
+<p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-serif">
+                    俠士即將登臨「華山絕頂雪嶺」，迎接笑傲江湖群豪的挑戰。場內氣候冰寒刺骨，建議裝備【寒梅佩劍】抵禦劍氣風霜。
+                </p>
+<div class="bg-slate-50 p-3 rounded-md border border-slate-200 text-xs text-slate-600 space-y-1">
+<div class="flex justify-between">
+<span>入場要求：</span>
+<span class="font-medium text-slate-800">修為達到 40 階</span>
+</div>
+<div class="flex justify-between">
+<span>首通獎勵：</span>
+<span class="font-medium text-rose-600">【笑傲江湖】專屬稱號、踏雪靈丹</span>
+</div>
+</div>
+</div>
+<!-- 底部操作列 -->
+<div class="relative z-10 pt-3 border-t border-slate-200 flex items-center justify-end gap-3">
+<button class="px-4 py-1.5 text-xs text-slate-600 hover:text-slate-800 border border-slate-300 rounded hover:bg-slate-50 transition-colors" id="btn-cancel-modal">
+                    暫且返回
+                </button>
+<button class="px-5 py-1.5 text-xs bg-rose-700 hover:bg-rose-600 text-white font-medium rounded shadow transition-colors" id="btn-confirm-modal">
+                    拔劍應戰
+                </button>
+</div>
+</div>
+</div>
+<!-- 高穩定落雪系統 (無抖動、無全螢幕重繪閃白、受控幀率與穩定透明度) -->
+<script>
+        (function() {
+            const canvas = document.getElementById('snow-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d', { alpha: true });
+            let width = 0, height = 0;
+            let particles = [];
+            let lastTimestamp = 0;
+
+            function resize() {
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = Math.floor(width * dpr);
+                canvas.height = Math.floor(height * dpr);
+                canvas.style.width = width + 'px';
+                canvas.style.height = height + 'px';
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                ctx.scale(dpr, dpr);
+            }
+
+            function createParticles() {
+                particles = [];
+                // 適中粒子密度，避免高 GPU 開銷造成的幀率抖動
+                const count = Math.min(Math.max(Math.floor(width / 35), 32), 65);
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        r: Math.random() * 1.8 + 0.8,
+                        speedY: Math.random() * 0.8 + 0.6,
+                        speedX: (Math.random() - 0.5) * 0.4,
+                        opacity: Math.random() * 0.35 + 0.25, // 穩定在 0.25 ~ 0.60 區間，禁止瞬態跳閃
+                        phase: Math.random() * Math.PI * 2
+                    });
+                }
+            }
+
+            function render(timestamp) {
+                if (!lastTimestamp) lastTimestamp = timestamp;
+                const delta = Math.min((timestamp - lastTimestamp) / 1000, 0.1);
+                lastTimestamp = timestamp;
+
+                ctx.clearRect(0, 0, width, height);
+
+                const len = particles.length;
+                for (let i = 0; i < len; i++) {
+                    const p = particles[i];
+                    p.phase += delta * 1.5;
+                    p.y += p.speedY * 60 * delta;
+                    p.x += (p.speedX + Math.sin(p.phase) * 0.3) * 60 * delta;
+
+                    // 循環落地
+                    if (p.y > height + 8) {
+                        p.y = -8;
+                        p.x = Math.random() * width;
+                    }
+                    if (p.x > width + 10) {
+                        p.x = -10;
+                    } else if (p.x < -10) {
+                        p.x = width + 10;
+                    }
+
+                    ctx.fillStyle = `rgba(240, 246, 255, ${p.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                requestAnimationFrame(render);
+            }
+
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    resize();
+                    createParticles();
+                }, 150);
+            }, { passive: true });
+
+            resize();
+            createParticles();
+            requestAnimationFrame(render);
+        })();
+
+        // 彈窗展示控制
+        const modalBackdrop = document.getElementById('demo-modal-backdrop');
+        const modalContainer = document.getElementById('demo-modal-container');
+        const btnShowModal = document.getElementById('btn-show-modal');
+        const btnCloseModal = document.getElementById('btn-close-modal');
+        const btnCancelModal = document.getElementById('btn-cancel-modal');
+        const btnConfirmModal = document.getElementById('btn-confirm-modal');
+
+        function openModal() {
+            modalBackdrop.classList.remove('opacity-0', 'pointer-events-none');
+            modalContainer.classList.remove('scale-95');
+            modalContainer.classList.add('scale-100');
+        }
+
+        function closeModal() {
+            modalBackdrop.classList.add('opacity-0', 'pointer-events-none');
+            modalContainer.classList.remove('scale-100');
+            modalContainer.classList.add('scale-95');
+        }
+
+        btnShowModal.addEventListener('click', openModal);
+        btnCloseModal.addEventListener('click', closeModal);
+        btnCancelModal.addEventListener('click', closeModal);
+        btnConfirmModal.addEventListener('click', () => {
+            alert('戰帖已確認！');
+            closeModal();
+        });
+
+        // 點擊背景關閉
+        modalBackdrop.addEventListener('click', (e) => {
+            if (e.target === modalBackdrop) {
+                closeModal();
+            }
+        });
+    </script>
+</body></html>
